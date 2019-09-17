@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     }
 
     // clear screen and fill with blue
-    App.clear(sf::Color::Blue);
+    App.clear(sf::Color::Green);
 
     // display
     App.display();
