@@ -9,6 +9,7 @@ int main(int argc, char** argv)
   while(App.isOpen())
   {
     // process events
+    //asdfasdfaweodmawe
     sf::Event Event;
     while(App.pollEvent(Event))
     {
