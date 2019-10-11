@@ -2,7 +2,7 @@
 #define _CameraView_H_
 
 #include <SFML/Graphics.hpp>
-#include 'GameLogic.h'
+#include "GameLogic.h"
 
 class CameraView {
   public:
