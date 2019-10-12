@@ -9,15 +9,16 @@ class GameLogic {
     void handlePlayerDeath(int);
     void togglePause();
     void generateMap();
-
+    enum GameState {mainMenu, playing, paused, gameOverMenu};
+    GameState getState();
 
   private:
     // walrus 1: player
     // Walrus 2: player
     // stage: stage
     //need to implement the above
-    // we also have a gamestate variable, but no gamestate class in the diagram. Do we need one? or should we use ints?
-    
+
+    GameState state;
 
 
 
