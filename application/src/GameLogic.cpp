@@ -20,9 +20,13 @@ void GameLogic::handlePlayerDeath(int x) {
 }
 
 void GameLogic::togglePause() {
-  this->state = pauseMenu;
-
+  if (this->state == pauseMenu) {
+      this->state = playing;
+  } else if (this->state == playing) {
+      this->state = pauseMenu;
+  }
 }
+
 void GameLogic::playGame() {
     this->state = playing;
 }
