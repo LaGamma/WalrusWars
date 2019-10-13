@@ -19,4 +19,7 @@ void GameLogic::handlePlayerDeath(int) {
 void GameLogic::togglePause() {
 
 }
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes

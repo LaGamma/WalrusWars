@@ -16,6 +16,7 @@ void CameraView::draw(sf::RenderWindow &) {
 void CameraView::switchScreen(int) {
 
 }
+<<<<<<< Updated upstream
 
 
 
@@ -24,3 +25,5 @@ void CameraView::switchScreen(int) {
 
 
 
+=======
+>>>>>>> Stashed changes
