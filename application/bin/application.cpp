@@ -11,10 +11,7 @@ int main(int argc, char** argv)
   // get window dimensions  
   sf::Vector2u dim = App.getSize();
 
-  // create major update classes
-  //Controller player1;
-  //Controller player2;
-  CameraView camera;
+  CameraView view;
   GameLogic logic;
 
   //create clock
@@ -23,14 +20,6 @@ int main(int argc, char** argv)
   // start main loop
   while(App.isOpen())
   {
-    // process events
-    sf::Event Event;
-    while(App.pollEvent(Event))
-    {
-      // Exit
-      if(Event.type == sf::Event::Closed)
-        App.close();
-    }
 
     // clear screen and fill with blue
     App.clear(sf::Color::Blue);
@@ -42,18 +31,15 @@ int main(int argc, char** argv)
     float dSec = elapsed.asSeconds() * 2000;
 
     // debug clock
-    std::cout << dSec << "\n";
+    //std::cout << dSec << "\n";
 
-    // process user/bot input
-    //player1.update(dSec);
-    //player2.update(dSec);
+    // process game input
+    view.processInput(App, dSec);
     // tick natural game logic
     logic.update(dSec);
-    // draw window in cameraView
-    camera.draw(App);
+    // draw window
+    view.draw(App);
 
-    // display
-    App.display();
   }
 
   // Done.

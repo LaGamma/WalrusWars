@@ -1,10 +1,11 @@
 #include "GameLogic.h"
 
 GameLogic::GameLogic() {
-
+    this->state = mainMenu;
 }
 
-void GameLogic::update(float) {
+void GameLogic::update(float dSec) {
+
 
 }
 
@@ -12,14 +13,19 @@ void GameLogic::generateMap() {
 
 }
 
-void GameLogic::handlePlayerDeath(int) {
+
+void GameLogic::handlePlayerDeath(int x) {
+
 
 }
 
 void GameLogic::togglePause() {
 
 }
-<<<<<<< Updated upstream
+void GameLogic::playGame() {
+    this->state = playing;
+}
 
-=======
->>>>>>> Stashed changes
+GameLogic::GameState GameLogic::getState() {
+    return this->state;
+}
