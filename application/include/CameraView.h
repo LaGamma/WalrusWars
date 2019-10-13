@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameLogic.h"
+#include "Controller.h"
 
 class CameraView {
   public:
@@ -15,8 +16,8 @@ class CameraView {
     sf::Font font;
     GameLogic logic;
     // major update classes
-    //Controller player1;
-    //Controller player2;
+    Controller player1Controller;
+    Controller player2Controller;
 
     //other drawable objects??
 

@@ -111,7 +111,7 @@ endif()
 # executables (any CPP file in 'bin' dir)
 foreach(EXEC ${EXECLIST})
   get_filename_component(EXECNAME ${EXEC} NAME_WE)
-  add_executable(${EXECNAME} ${EXEC} src/GameLogic.cpp src/CameraView.cpp include/Player.h include/PlayerController.h src/PlayerController.cpp)
+  add_executable(${EXECNAME} ${EXEC} src/GameLogic.cpp src/CameraView.cpp include/Player.h include/PlayerController.h src/PlayerController.cpp include/Controller.h src/Controller.cpp src/Player.cpp)
 
   if(NOT SRC STREQUAL "")
     target_link_libraries(${EXECNAME} LINK_PUBLIC ${LIBNAME})

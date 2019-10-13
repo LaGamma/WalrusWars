@@ -2,12 +2,13 @@
 #define _PlayerController_H_
 
 #include "Player.h"
+#include "Controller.h"
 
-class PlayerController {
+class PlayerController : public Controller {
 
 public:
     PlayerController();
-    void translateInput();
+    void update(float dSec);
 private:
     Player player;
 

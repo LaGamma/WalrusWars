@@ -20,7 +20,13 @@ void GameLogic::togglePause() {
 
 }
 
+void GameLogic::playGame() {
+    this->state = playing;
+}
+
 GameLogic::GameState GameLogic::getState() {
     return this->state;
 }
+
+
 

@@ -9,7 +9,8 @@ class GameLogic {
     void handlePlayerDeath(int);
     void togglePause();
     void generateMap();
-    enum GameState {mainMenu, playing, paused, gameOverMenu};
+    void playGame();
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
 
   private:
