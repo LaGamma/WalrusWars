@@ -4,6 +4,6 @@
 class Controller {
   public:
     Controller();
-    virtual void update()=0
+    virtual void update()=0;
 }
 #endif
