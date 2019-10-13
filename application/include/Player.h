@@ -6,8 +6,8 @@
 class Player {
   public:
     Player();
-    void applyPassiveForce(sf::Vector2d);
-    void applyActiveForce(sf::Vector2d);
+    void applyPassiveForce(sf::Vector2f);
+    void applyActiveForce(sf::Vector2f);
     void handlePowerUp(int);
   private:
       sf::Vector2f pos;
