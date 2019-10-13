@@ -1,6 +1,7 @@
 #ifndef _GameLogic_H_
 #define _GameLogic_H_
-
+#include "Player.h"
+#include "Stage.h"
 
 class GameLogic {
   public:
@@ -12,12 +13,12 @@ class GameLogic {
 
 
   private:
-    // walrus 1: player
-    // Walrus 2: player
-    // stage: stage
+    Player walrus1;
+    Player walrus2;
+    Stage stage;
     //need to implement the above
     // we also have a gamestate variable, but no gamestate class in the diagram. Do we need one? or should we use ints?
-    
+
 
 
 
