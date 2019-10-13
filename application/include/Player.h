@@ -1,7 +1,8 @@
 #ifndef _Player_H_
 #define _Player_H_
 
-#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
 
 class Player {
   public:
