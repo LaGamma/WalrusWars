@@ -9,5 +9,5 @@ void Stage::generateMap(){
 }
 
 float Stage::getBlockDura(int x, int y){
-  
+
 }

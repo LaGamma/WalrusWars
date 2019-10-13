@@ -6,8 +6,8 @@ CameraView::CameraView() {
 
 }
 
-void CameraView::init() {
-
+void CameraView::init(GameLogic logic) {
+  this->logic = logic;
 
 }
 
@@ -79,11 +79,3 @@ void CameraView::processInput(sf::RenderWindow &window, float dSec) {
     }
 
 }
-
-
-
-
-
-
-
-
