@@ -8,7 +8,7 @@ class Stage {
     float getBlockDura(int,int);
     //not doing fish methods for now
   private:
-    int[50][50] stageTiles;
+    int[][] stageTiles;
 
 };
 
