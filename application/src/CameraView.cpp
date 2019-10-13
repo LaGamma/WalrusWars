@@ -15,7 +15,7 @@ void CameraView::init() {
 void CameraView::switchScreen(int screen) {
 
 }
-void CameraView::draw(sf::RenderWindow & App) {
+void CameraView::draw(sf::RenderWindow &window) {
 
 }
 
