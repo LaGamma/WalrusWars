@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameLogic.h"
-#include "Controller.h"
+#include "PlayerController.h"
 
 class CameraView {
   public:

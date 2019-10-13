@@ -3,21 +3,18 @@
 
 #include <SFML/System.hpp>
 
+
 class Player {
-
-public:
+  public:
     Player();
-    void applyPassiveForce();
+    void applyPassiveForce(sf::Vector2f);
     void applyActiveForce(sf::Vector2f);
-    void handlePowerup(int);
-private:
-    float stamina;
-    float mass;
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-
+    void handlePowerUp(int);
+  private:
+      sf::Vector2f pos;
+      sf::Vector2f vel;
+      float stamina;
+      float mass;
 };
 
-
 #endif
-

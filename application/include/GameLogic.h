@@ -1,6 +1,7 @@
 #ifndef _GameLogic_H_
 #define _GameLogic_H_
-
+#include "Player.h"
+#include "Stage.h"
 
 class GameLogic {
   public:
@@ -14,14 +15,11 @@ class GameLogic {
     GameState getState();
 
   private:
-    // walrus 1: player
-    // Walrus 2: player
-    // stage: stage
+    Player walrus1;
+    Player walrus2;
+    Stage stage;
     //need to implement the above
-
     GameState state;
-
-
 
 };
 

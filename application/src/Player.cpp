@@ -4,15 +4,15 @@ Player::Player() {
 
 }
 
-void Player::handlePowerup(int) {
+
+void Player::applyPassiveForce(sf::Vector2f force) {
 
 }
 
-void Player::applyActiveForce(sf::Vector2f) {
+void Player::applyActiveForce(sf::Vector2f force) {
 
 }
 
-void Player::applyPassiveForce() {
+void Player::handlePowerUp(int powerup) {
 
-};
-
+}

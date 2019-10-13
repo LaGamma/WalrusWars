@@ -13,14 +13,19 @@ void CameraView::init() {
 
 void CameraView::draw(sf::RenderWindow &window) {
 
+    if (logic.getState() == GameLogic::GameState::playing) {
+        window.clear(sf::Color::Green);
+    }
+
     // display
     window.display();
+}
+
+
+void CameraView::switchScreen(int screen) {
 
 }
 
-void CameraView::switchScreen(int) {
-
-}
 
 void CameraView::processInput(sf::RenderWindow &window, float dSec) {
 
