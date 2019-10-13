@@ -3,7 +3,7 @@
 #include <iostream>
 
 PlayerController::PlayerController() {
-
+  
 };
 
 void PlayerController::update(float dSec) {
@@ -21,4 +21,3 @@ void PlayerController::update(float dSec) {
         //logic.pauseGame();
     }
 };
-

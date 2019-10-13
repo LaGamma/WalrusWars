@@ -1,7 +1,9 @@
 #include "Player.h"
 
 Player::Player() {
-
+  this->mass = 1;
+  this->stamina = 100;
+  
 }
 
 

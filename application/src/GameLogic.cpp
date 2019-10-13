@@ -10,7 +10,7 @@ void GameLogic::update(float dSec) {
 }
 
 void GameLogic::generateMap() {
-
+  this->stage.generateMap();
 }
 
 
@@ -20,6 +20,7 @@ void GameLogic::handlePlayerDeath(int x) {
 }
 
 void GameLogic::togglePause() {
+  this->state = pauseMenu;
 
 }
 void GameLogic::playGame() {

@@ -8,7 +8,7 @@
 class CameraView {
   public:
     CameraView();
-    void init();
+    void init(GameLogic logic);
     void draw(sf::RenderWindow &window);
     void switchScreen(int);
     void processInput(sf::RenderWindow &window, float dSec);

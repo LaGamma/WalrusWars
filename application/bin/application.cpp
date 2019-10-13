@@ -8,11 +8,12 @@ int main(int argc, char** argv)
 {
   // create main window
   sf::RenderWindow App(sf::VideoMode(800,600,32), "Walrus Wars");
-  // get window dimensions  
+  // get window dimensions
   sf::Vector2u dim = App.getSize();
 
   CameraView view;
   GameLogic logic;
+  view.init(logic);
 
   //create clock
   sf::Clock clock;
