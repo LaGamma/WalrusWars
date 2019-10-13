@@ -9,13 +9,16 @@ void CameraView::init() {
 
 }
 
-void CameraView::draw(sf::RenderWindow &) {
+
+
+
+void CameraView::switchScreen(int screen) {
+
+}
+void CameraView::draw(sf::RenderWindow &window) {
 
 }
 
-void CameraView::switchScreen(int) {
-
-}
 
 
 
