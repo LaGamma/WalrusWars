@@ -41,14 +41,14 @@ void CameraView::drawPlayers(sf::RenderWindow &window) {
 
     // draw ball
     circle.setPosition(this->logic->walrus2->pos);
-    circle.setRadius(15);
+    circle.setRadius(10);
     circle.setFillColor(sf::Color::Magenta);
     window.draw(circle);
 
     // draw ball
     circle.setPosition(this->logic->walrus1->pos);
     circle.setRadius(10);
-    circle.setFillColor(sf::Color::White);
+    circle.setFillColor(sf::Color::Cyan);
     window.draw(circle);
 
 }
