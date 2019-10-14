@@ -9,13 +9,14 @@ GameLogic::GameLogic() {
 
 void GameLogic::update(float dSec) {
 
-
+    // process movement
     this->walrus1->tickMovement(dSec);
     this->walrus2->tickMovement(dSec);
 
-    // deceleration
+    // apply deceleration
     this->walrus1->applyPassiveForce(dSec);
     this->walrus2->applyPassiveForce(dSec);
+
 
 }
 
@@ -25,7 +26,6 @@ void GameLogic::generateMap() {
 
 
 void GameLogic::handlePlayerDeath(int x) {
-
 
 }
 

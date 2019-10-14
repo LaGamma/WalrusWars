@@ -5,7 +5,6 @@ Player::Player() {
   this->stamina = 100;
   this->pos = sf::Vector2f(1.0f, 1.0f);
   this->vel = sf::Vector2f(0.0f, 0.0f);
-  
 }
 
 void Player::tickMovement(float dSec) {
@@ -29,9 +28,7 @@ void Player::applyPassiveForce(float dSec) {
 }
 
 void Player::applyActiveForce(sf::Vector2f force) {
-
     this->vel += force;
-
 }
 
 void Player::handlePowerUp(int powerup) {

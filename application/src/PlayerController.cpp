@@ -10,37 +10,29 @@ void PlayerController::update(sf::RenderWindow &window, float dSec, int playerNu
     if (playerNum == 1) {
         //process keyboard input for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            std::cout << "1 Move Up\n";
             logic->walrus1->applyActiveForce(sf::Vector2f(0, -0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            std::cout << "1 Move Down\n";
             logic->walrus1->applyActiveForce(sf::Vector2f(0, 0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            std::cout << "1 Move Left\n";
             logic->walrus1->applyActiveForce(sf::Vector2f(-0.5, 0));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            std::cout << "1 Move Right\n";
             logic->walrus1->applyActiveForce(sf::Vector2f(0.5, 0));
         }
     } else {
         //process keyboard input for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            std::cout << "2 Move Up\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(0, -0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            std::cout << "2 Move Down\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(0,0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            std::cout << "2 Move Left\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(-0.5, 0));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            std::cout << "2 Move Right\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(0.5, 0));
         }
     }
@@ -56,10 +48,9 @@ void PlayerController::update(sf::RenderWindow &window, float dSec, int playerNu
                 break;
                 //window out of focus
             case sf::Event::LostFocus:
-                //logic.pauseGame();
+                logic->togglePause();
                 break;
             case sf::Event::GainedFocus:
-                //logic.resumeGame();
                 break;
             case sf::Event::KeyPressed:
                 if (Event.key.code == sf::Keyboard::P) {
