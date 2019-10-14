@@ -9,33 +9,13 @@ GameLogic::GameLogic() {
 
 void GameLogic::update(float dSec) {
 
+
     this->walrus1->tickMovement(dSec);
     this->walrus2->tickMovement(dSec);
-    //std::cout << this->walrus1->pos.x << "," << this->walrus1->pos.y << "  " <<  this->walrus1->vel.x << "," << this->walrus1->vel.y << std::endl;
-    //this->walrus2.pos += (this->walrus2.vel) * dSec;
-    if (this->walrus1->vel.x > 0) {
-        this->walrus1->vel.x -= 0.0001f * dSec;
-    } else if (this->walrus1->vel.x < 0) {
-        this->walrus1->vel.x += 0.0001f * dSec;
-    }
-    if (this->walrus1->vel.y > 0) {
-        this->walrus1->vel.y -= 0.0001f * dSec;
-    } else if (this->walrus1->vel.y < 0) {
-        this->walrus1->vel.y += 0.0001f * dSec;
-    }
 
-    if (this->walrus2->vel.x > 0) {
-        this->walrus2->vel.x -= 0.0001f * dSec;
-    } else if (this->walrus2->vel.x < 0) {
-        this->walrus2->vel.x += 0.0001f * dSec;
-    }
-    if (this->walrus2->vel.y > 0) {
-        this->walrus2->vel.y -= 0.0001f * dSec;
-    } else if (this->walrus2->vel.y < 0) {
-        this->walrus2->vel.y += 0.0001f * dSec;
-    }
-
-
+    // deceleration
+    this->walrus1->applyPassiveForce(dSec);
+    this->walrus2->applyPassiveForce(dSec);
 
 }
 

@@ -13,9 +13,18 @@ void Player::tickMovement(float dSec) {
 }
 
 
-void Player::applyPassiveForce(sf::Vector2f force) {
+void Player::applyPassiveForce(float dSec) {
 
-    this->vel += force;
+    if (this->vel.x > 0) {
+        this->vel.x -= 0.0001f * dSec;
+    } else if (this->vel.x < 0) {
+        this->vel.x += 0.0001f * dSec;
+    }
+    if (this->vel.y > 0) {
+        this->vel.y -= 0.0001f * dSec;
+    } else if (this->vel.y < 0) {
+        this->vel.y += 0.0001f * dSec;
+    }
 
 }
 

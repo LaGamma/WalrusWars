@@ -7,7 +7,7 @@
 class Player {
   public:
     Player();
-    void applyPassiveForce(sf::Vector2f);
+    void applyPassiveForce(float);
     void applyActiveForce(sf::Vector2f);
     void tickMovement(float);
     void handlePowerUp(int);

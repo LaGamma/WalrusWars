@@ -11,31 +11,35 @@ void PlayerController::update(sf::RenderWindow &window, float dSec, int playerNu
         //process keyboard input for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             std::cout << "1 Move Up\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(0,-0.001));
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            std::cout << "1 Move Down\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(0,0.001));
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            std::cout << "1 Move Left\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(-0.001,0));
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            std::cout << "1 Move Right\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(0.001,0));
-
+            logic->walrus1->applyActiveForce(sf::Vector2f(0, -0.0005));
         }
-        //std::cout << logic.walrus1.pos.x << "," << logic.walrus1.pos.y << "  " <<  logic.walrus1.vel.x << "," << logic.walrus1.vel.y << std::endl;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            std::cout << "1 Move Down\n";
+            logic->walrus1->applyActiveForce(sf::Vector2f(0, 0.0005));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+            std::cout << "1 Move Left\n";
+            logic->walrus1->applyActiveForce(sf::Vector2f(-0.0005, 0));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            std::cout << "1 Move Right\n";
+            logic->walrus1->applyActiveForce(sf::Vector2f(0.0005, 0));
+        }
     } else {
         //process keyboard input for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             std::cout << "2 Move Up\n";
-            logic->walrus2->applyActiveForce(sf::Vector2f(0,-0.001));
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+            logic->walrus2->applyActiveForce(sf::Vector2f(0, -0.001));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             std::cout << "2 Move Down\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(0,0.001));
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             std::cout << "2 Move Left\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(-0.001, 0));
-        } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             std::cout << "2 Move Right\n";
             logic->walrus2->applyActiveForce(sf::Vector2f(0.001, 0));
         }
