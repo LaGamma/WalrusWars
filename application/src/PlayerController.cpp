@@ -16,9 +16,6 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         std::cout << "Move Left\n";
     } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         std::cout << "Move Right\n";
-    } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
-        std::cout << "Pause\n";
-        //logic.pauseGame();
     }
 
     // process events
@@ -37,13 +34,9 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
                 //logic.resumeGame();
                 break;
             case sf::Event::KeyPressed:
-                if (Event.key.code == sf::Keyboard::Up) {
-                    std::cout << "menu up" << std::endl;
-                } else if (Event.key.code == sf::Keyboard::Down) {
-                    std::cout << "menu down" << std::endl;
-                } else if (Event.key.code == sf::Keyboard::Return) {
-                    std::cout << "start game!" << std::endl;
-                    logic.playGame();
+                if (Event.key.code == sf::Keyboard::P) {
+                    std::cout << "Pause\n";
+                    logic.togglePause();
                 }
                 break;
         }

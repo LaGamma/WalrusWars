@@ -14,8 +14,20 @@ void CameraView::init(GameLogic logic) {
 
 void CameraView::draw(sf::RenderWindow &window) {
 
-    if (logic.getState() == GameLogic::GameState::playing) {
-        window.clear(sf::Color::Green);
+    GameLogic::GameState state = logic.getState();
+    switch (state) {
+        case GameLogic::GameState::mainMenu:
+            window.clear(sf::Color::Blue);
+            break;
+        case GameLogic::GameState::playing:
+            window.clear(sf::Color::Green);
+            break;
+        case GameLogic::GameState::pauseMenu:
+            window.clear(sf::Color::Yellow);
+            break;
+        case GameLogic::GameState::gameOverMenu:
+            window.clear(sf::Color::Red);
+            break;
     }
 
     // display
@@ -62,6 +74,9 @@ void CameraView::processInput(sf::RenderWindow &window, float dSec) {
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
                         logic.playGame();
+                    } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
+                        std::cout << "toggle pause" << std::endl;
+                        logic.togglePause();
                     }
                     break;
             }
