@@ -12,12 +12,13 @@ class CameraView {
     void draw(sf::RenderWindow &window);
     void switchScreen(int);
     void processInput(sf::RenderWindow &window, float dSec);
+    std::unique_ptr<Controller> createController(bool player);
   private:
     sf::Font font;
     GameLogic logic;
     // major update classes
-    Controller player1Controller;
-    Controller player2Controller;
+    std::unique_ptr<Controller> player1Controller;
+    std::unique_ptr<Controller> player2Controller;
 
     //other drawable objects??
 

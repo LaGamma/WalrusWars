@@ -14,12 +14,13 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
 
-  private:
+  protected:
     Player walrus1;
     Player walrus2;
     Stage stage;
-    //need to implement the above
     GameState state;
+
+  private:
 
 };
 
