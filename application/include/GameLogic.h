@@ -14,13 +14,17 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
 
-  protected:
-    Player walrus1;
-    Player walrus2;
+    std::unique_ptr<Player> walrus1;
+    std::unique_ptr<Player> walrus2;
+
+    //Player walrus1;
+    //Player walrus2;
+protected:
     Stage stage;
-    GameState state;
+
 
   private:
+    GameState state;
 
 };
 

@@ -6,21 +6,22 @@ CameraView::CameraView() {
 
 }
 
-void CameraView::init(GameLogic logic) {
-  this->logic = logic;
-  this->player1Controller = createController(true);
-  this->player2Controller = createController(true);
+void CameraView::init(GameLogic* gameLogic) {
+    this->logic = gameLogic;
+    this->player1Controller = createController(true);
+    this->player2Controller = createController(true);
 }
 
 void CameraView::draw(sf::RenderWindow &window) {
 
-    GameLogic::GameState state = logic.getState();
+    GameLogic::GameState state = this->logic->getState();
     switch (state) {
         case GameLogic::GameState::mainMenu:
             window.clear(sf::Color::Blue);
             break;
         case GameLogic::GameState::playing:
             window.clear(sf::Color::Green);
+            this->drawPlayers(window);
             break;
         case GameLogic::GameState::pauseMenu:
             window.clear(sf::Color::Yellow);
@@ -34,6 +35,24 @@ void CameraView::draw(sf::RenderWindow &window) {
     window.display();
 }
 
+void CameraView::drawPlayers(sf::RenderWindow &window) {
+
+    sf::CircleShape circle;
+
+    // draw ball
+    circle.setPosition(this->logic->walrus2->pos);
+    circle.setRadius(15);
+    circle.setFillColor(sf::Color::Magenta);
+    window.draw(circle);
+
+    // draw ball
+    circle.setPosition(this->logic->walrus1->pos);
+    circle.setRadius(10);
+    circle.setFillColor(sf::Color::White);
+    window.draw(circle);
+
+}
+
 
 void CameraView::switchScreen(int screen) {
 
@@ -43,10 +62,10 @@ void CameraView::switchScreen(int screen) {
 void CameraView::processInput(sf::RenderWindow &window, float dSec) {
 
 
-    if (logic.getState() == GameLogic::GameState::playing) {
+    if (this->logic->getState() == GameLogic::GameState::playing) {
         //ignore input here and instead handle input in instantiated player controllers
-        this->player1Controller->update(window, logic, dSec);
-        this->player2Controller->update(window, logic, dSec);
+        this->player1Controller->update(window, dSec, 1, this->logic);
+        this->player2Controller->update(window, dSec, 2, this->logic);
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
@@ -73,10 +92,10 @@ void CameraView::processInput(sf::RenderWindow &window, float dSec) {
                         std::cout << "menu down" << std::endl;
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
-                        logic.playGame();
-                    } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
+                        this->logic->playGame();
+                    } else if (Event.key.code == sf::Keyboard::P && this->logic->getState() == GameLogic::GameState::pauseMenu) {
                         std::cout << "toggle pause" << std::endl;
-                        logic.togglePause();
+                        this->logic->togglePause();
                     }
                     break;
             }
@@ -92,6 +111,6 @@ std::unique_ptr<Controller> CameraView::createController(bool player) {
     if (player) {
         return std::unique_ptr<Controller>(new PlayerController());
     } else {
-        //return BotController()
+        //return std::unique_ptr<Controller>(new BotController());
     }
 }

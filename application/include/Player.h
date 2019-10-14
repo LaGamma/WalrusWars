@@ -9,12 +9,15 @@ class Player {
     Player();
     void applyPassiveForce(sf::Vector2f);
     void applyActiveForce(sf::Vector2f);
+    void tickMovement(float);
     void handlePowerUp(int);
-  private:
-      sf::Vector2f pos;
-      sf::Vector2f vel;
-      float stamina;
-      float mass;
+
+    sf::Vector2f pos;
+    sf::Vector2f vel;
+    float mass;
+
+private:
+    float stamina;
 };
 
 #endif
