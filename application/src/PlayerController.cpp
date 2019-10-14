@@ -11,37 +11,37 @@ void PlayerController::update(sf::RenderWindow &window, float dSec, int playerNu
         //process keyboard input for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             std::cout << "1 Move Up\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(0, -0.0005));
+            logic->walrus1->applyActiveForce(sf::Vector2f(0, -0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             std::cout << "1 Move Down\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(0, 0.0005));
+            logic->walrus1->applyActiveForce(sf::Vector2f(0, 0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
             std::cout << "1 Move Left\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(-0.0005, 0));
+            logic->walrus1->applyActiveForce(sf::Vector2f(-0.5, 0));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             std::cout << "1 Move Right\n";
-            logic->walrus1->applyActiveForce(sf::Vector2f(0.0005, 0));
+            logic->walrus1->applyActiveForce(sf::Vector2f(0.5, 0));
         }
     } else {
         //process keyboard input for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             std::cout << "2 Move Up\n";
-            logic->walrus2->applyActiveForce(sf::Vector2f(0, -0.001));
+            logic->walrus2->applyActiveForce(sf::Vector2f(0, -0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             std::cout << "2 Move Down\n";
-            logic->walrus2->applyActiveForce(sf::Vector2f(0,0.001));
+            logic->walrus2->applyActiveForce(sf::Vector2f(0,0.5));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             std::cout << "2 Move Left\n";
-            logic->walrus2->applyActiveForce(sf::Vector2f(-0.001, 0));
+            logic->walrus2->applyActiveForce(sf::Vector2f(-0.5, 0));
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             std::cout << "2 Move Right\n";
-            logic->walrus2->applyActiveForce(sf::Vector2f(0.001, 0));
+            logic->walrus2->applyActiveForce(sf::Vector2f(0.5, 0));
         }
     }
 

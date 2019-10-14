@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
 
     sf::Time elapsed = clock.restart();
-    float dSec = elapsed.asSeconds() * 2000;
+    float dSec = elapsed.asSeconds();
 
     // debug clock
     //std::cout << dSec << "\n";
