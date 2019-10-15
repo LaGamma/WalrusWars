@@ -29,6 +29,7 @@ void Player::applyPassiveForce(float dSec) {
 
 void Player::applyActiveForce(sf::Vector2f force) {
     this->vel += force;
+
 }
 
 void Player::handlePowerUp(int powerup) {
