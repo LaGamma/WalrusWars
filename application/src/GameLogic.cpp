@@ -9,13 +9,16 @@ GameLogic::GameLogic() {
 
 void GameLogic::update(float dSec) {
 
-    // process movement
-    this->walrus1->tickMovement(dSec);
-    this->walrus2->tickMovement(dSec);
+    if (this->state == playing) {
+        // process movement
+        this->walrus1->tickMovement(dSec);
+        this->walrus2->tickMovement(dSec);
 
-    // apply deceleration
-    this->walrus1->applyPassiveForce(dSec);
-    this->walrus2->applyPassiveForce(dSec);
+        // apply deceleration
+        this->walrus1->applyPassiveForce(dSec);
+        this->walrus2->applyPassiveForce(dSec);
+
+    }
 
 
 }

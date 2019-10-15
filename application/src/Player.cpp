@@ -1,7 +1,7 @@
 #include "Player.h"
 
 Player::Player() {
-  this->mass = 1;
+  this->mass = 5;
   this->stamina = 100;
   this->pos = sf::Vector2f(1.0f, 1.0f);
   this->vel = sf::Vector2f(0.0f, 0.0f);
@@ -15,14 +15,14 @@ void Player::tickMovement(float dSec) {
 void Player::applyPassiveForce(float dSec) {
 
     if (this->vel.x > 0) {
-        this->vel.x -= 0.1f * dSec;
+        this->vel.x -= 1.0f * dSec;
     } else if (this->vel.x < 0) {
-        this->vel.x += 0.1f * dSec;
+        this->vel.x += 1.0f * dSec;
     }
     if (this->vel.y > 0) {
-        this->vel.y -= 0.01f * dSec;
+        this->vel.y -= 1.0f * dSec;
     } else if (this->vel.y < 0) {
-        this->vel.y += 0.1f * dSec;
+        this->vel.y += 1.0f * dSec;
     }
 
 }
