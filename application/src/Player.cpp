@@ -8,9 +8,7 @@ Player::Player() {
 }
 
 void Player::tickMovement(float dSec) {
-    if(this->pos.x > 0 && this->pos.y > 0){
-      this->pos += (this->vel) * dSec;
-    }
+    this->pos += (this->vel) * dSec;
 }
 
 
@@ -31,6 +29,7 @@ void Player::applyPassiveForce(float dSec) {
 
 void Player::applyActiveForce(sf::Vector2f force) {
     this->vel += force;
+
 }
 
 void Player::handlePowerUp(int powerup) {
