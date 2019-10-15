@@ -8,7 +8,9 @@ Player::Player() {
 }
 
 void Player::tickMovement(float dSec) {
-    this->pos += (this->vel) * dSec;
+    if(this->pos.x > 0 && this->pos.y > 0){
+      this->pos += (this->vel) * dSec;
+    }
 }
 
 
