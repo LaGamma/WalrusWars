@@ -12,11 +12,15 @@ class Player {
     void tickMovement(float);
     void handlePowerUp(int);
 
+    // getters
+    sf::Vector2f getPos();
+    sf::Vector2f getVel();
+    float getMass();
+
+private:
     sf::Vector2f pos;
     sf::Vector2f vel;
     float mass;
-
-private:
     float stamina;
 };
 

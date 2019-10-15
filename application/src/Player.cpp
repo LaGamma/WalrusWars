@@ -34,3 +34,14 @@ void Player::applyActiveForce(sf::Vector2f force) {
 void Player::handlePowerUp(int powerup) {
 
 }
+
+// getters
+sf::Vector2f Player::getPos() {
+    return this->pos;
+}
+sf::Vector2f Player::getVel() {
+    return this->vel;
+}
+float Player::getMass() {
+    return this->mass;
+}
