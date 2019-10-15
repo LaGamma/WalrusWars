@@ -17,44 +17,62 @@ void CameraView::draw(sf::RenderWindow &window) {
     GameLogic::GameState state = this->logic->getState();
     switch (state) {
         case GameLogic::GameState::mainMenu:
-            window.clear(sf::Color::Blue);
-            break;
-        case GameLogic::GameState::playing:
-            window.clear(sf::Color::Green);
-            this->drawPlayers(window);
+            drawMainMenu(window);
             break;
         case GameLogic::GameState::pauseMenu:
-            window.clear(sf::Color::Yellow);
+            drawGame(window);
+            drawPauseMenu(window);
+            break;
+        case GameLogic::GameState::playing:
+            drawGame(window);
             break;
         case GameLogic::GameState::gameOverMenu:
-            window.clear(sf::Color::Red);
+            drawGameOverMenu(window);
             break;
     }
-
     // display
     window.display();
 }
 
-void CameraView::drawPlayers(sf::RenderWindow &window) {
+void CameraView::drawMainMenu(sf::RenderWindow &window) {
 
-    sf::CircleShape circle;
-
-    // draw ball
-    circle.setPosition(this->logic->walrus2->getPos());
-    circle.setRadius(this->logic->walrus1->getMass()*10);
-    circle.setFillColor(sf::Color::Magenta);
-    window.draw(circle);
-
-    // draw ball
-    circle.setPosition(this->logic->walrus1->getPos());
-    circle.setRadius(this->logic->walrus1->getMass()*10);
-    circle.setFillColor(sf::Color::Cyan);
-    window.draw(circle);
+    window.clear(sf::Color::Blue);
 
 }
 
+void CameraView::drawPauseMenu(sf::RenderWindow &window) {
 
-void CameraView::switchScreen(int screen) {
+    // draw transparent screen
+    sf::RectangleShape rect;
+    rect.setPosition(0,0);
+    rect.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
+    rect.setFillColor(sf::Color(255,255,0,128));
+    window.draw(rect);
+
+}
+
+void CameraView::drawGameOverMenu(sf::RenderWindow &window) {
+
+    window.clear(sf::Color::Red);
+
+}
+
+void CameraView::drawGame(sf::RenderWindow &window) {
+
+    window.clear(sf::Color::Green);
+
+    sf::CircleShape circle;
+    // draw Player1
+    circle.setPosition(this->logic->walrus1->getPos());
+    circle.setRadius(this->logic->walrus1->getMass()*10);
+    circle.setFillColor(sf::Color(0, 255, 255, 255));
+    window.draw(circle);
+    // draw Player2
+    circle.setPosition(this->logic->walrus2->getPos());
+    circle.setRadius(this->logic->walrus1->getMass()*10);
+    circle.setFillColor(sf::Color(255, 0, 255, 255));
+    window.draw(circle);
+
 
 }
 

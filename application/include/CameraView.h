@@ -9,20 +9,24 @@ class CameraView {
   public:
     CameraView();
     void init(GameLogic* logic);
-    void draw(sf::RenderWindow &window);
-    void drawPlayers(sf::RenderWindow &window);
-    void switchScreen(int);
     void processInput(sf::RenderWindow &window, float dSec);
-    std::unique_ptr<Controller> createController(bool player);
+    void draw(sf::RenderWindow &window);
 
     GameLogic* logic;
+    
   private:
     sf::Font font;
+
+    std::unique_ptr<Controller> createController(bool player);
     // major update classes
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
-    //other drawable objects??
+    // draw functions
+    void drawGame(sf::RenderWindow &window);
+    void drawMainMenu(sf::RenderWindow &window);
+    void drawPauseMenu(sf::RenderWindow &window);
+    void drawGameOverMenu(sf::RenderWindow &window);
 
 
 };
