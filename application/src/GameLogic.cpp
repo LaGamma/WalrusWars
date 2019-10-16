@@ -17,7 +17,6 @@ void GameLogic::update(float dSec) {
         // apply deceleration
         this->walrus1->applyPassiveForce(dSec);
         this->walrus2->applyPassiveForce(dSec);
-
     }
 
 
@@ -42,6 +41,9 @@ void GameLogic::togglePause() {
 
 void GameLogic::playGame() {
     this->state = playing;
+    // hardcoded values should change to be relative to window dimension
+    this->walrus1->spawn(sf::Vector2f(1.0,1.0));
+    this->walrus2->spawn(sf::Vector2f(100.0,100.0));
 }
 
 GameLogic::GameState GameLogic::getState() {

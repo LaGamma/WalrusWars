@@ -1,10 +1,14 @@
 #include "Player.h"
 
 Player::Player() {
-  this->mass = 5;
-  this->stamina = 100;
-  this->pos = sf::Vector2f(1.0f, 1.0f);
-  this->vel = sf::Vector2f(0.0f, 0.0f);
+
+}
+
+void Player::spawn(sf::Vector2f pos) {
+    this->mass = 1;
+    this->stamina = 100;
+    this->pos = pos;
+    this->vel = sf::Vector2f(0.0f, 0.0f);
 }
 
 void Player::tickMovement(float dSec) {

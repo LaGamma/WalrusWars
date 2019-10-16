@@ -13,16 +13,16 @@ class CameraView {
     void draw(sf::RenderWindow &window);
 
     GameLogic* logic;
-    
+
   private:
     sf::Font font;
 
-    std::unique_ptr<Controller> createController(bool player);
     // major update classes
+    std::unique_ptr<Controller> createController(bool player);
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
-    // draw functions
+    // draw screen functions
     void drawGame(sf::RenderWindow &window);
     void drawMainMenu(sf::RenderWindow &window);
     void drawPauseMenu(sf::RenderWindow &window);
