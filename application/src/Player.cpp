@@ -19,7 +19,7 @@ void Player::tickMovement(float dSec) {
 
 void Player::applyPassiveForce(float dSec) {
 
-    float friction = 20.0f; //tunable
+    float friction = 10.0f; // tunable
 
     if (vel.x > 0) {
         vel.x -= friction * dSec;
