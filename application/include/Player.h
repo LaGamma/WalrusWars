@@ -7,14 +7,23 @@
 class Player {
   public:
     Player();
-    void applyPassiveForce(sf::Vector2f);
-    void applyActiveForce(sf::Vector2f);
+    void spawn(sf::Vector2f);
+
+    // getters
+    sf::Vector2f getPos();
+    sf::Vector2f getVel();
+    float getMass();
+
+    void applyPassiveForce(float);
+    void applyActiveForce(sf::Vector2f, float);
+    void tickMovement(float);
     void handlePowerUp(int);
-  private:
-      sf::Vector2f pos;
-      sf::Vector2f vel;
-      float stamina;
-      float mass;
+
+private:
+    sf::Vector2f pos;
+    sf::Vector2f vel;
+    float mass;
+    float stamina;
 };
 
 #endif

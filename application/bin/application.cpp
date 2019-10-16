@@ -13,7 +13,8 @@ int main(int argc, char** argv)
 
   CameraView view;
   GameLogic logic;
-  view.init(logic);
+
+  view.init();
 
   //create clock
   sf::Clock clock;
@@ -29,17 +30,17 @@ int main(int argc, char** argv)
 
 
     sf::Time elapsed = clock.restart();
-    float dSec = elapsed.asSeconds() * 2000;
+    float dSec = elapsed.asSeconds();
 
     // debug clock
     //std::cout << dSec << "\n";
 
     // process game input
-    view.processInput(App, dSec);
+    view.processInput(App, logic, dSec);
     // tick natural game logic
     logic.update(dSec);
     // draw window
-    view.draw(App);
+    view.draw(App, logic);
 
   }
 
