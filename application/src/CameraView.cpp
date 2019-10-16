@@ -1,46 +1,45 @@
 #include "CameraView.h"
+#include "PlayerController.h"
 #include <iostream>
-#include <PlayerController.h>
 
 CameraView::CameraView() {
 
 }
 
-void CameraView::init(GameLogic* gameLogic) {
-    this->logic = gameLogic;
-    this->player1Controller = createController(true);
-    this->player2Controller = createController(true);
+void CameraView::init() {
+    player1Controller = createController(true);
+    player2Controller = createController(true);
 }
 
-void CameraView::draw(sf::RenderWindow &window) {
+void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
 
-    GameLogic::GameState state = this->logic->getState();
+    const GameLogic::GameState state = logic.getState();
     switch (state) {
         case GameLogic::GameState::mainMenu:
-            drawMainMenu(window);
+            drawMainMenu(window, logic);
             break;
         case GameLogic::GameState::pauseMenu:
-            drawGame(window);
-            drawPauseMenu(window);
+            drawGame(window,logic);
+            drawPauseMenu(window, logic);
             break;
         case GameLogic::GameState::playing:
-            drawGame(window);
+            drawGame(window, logic);
             break;
         case GameLogic::GameState::gameOverMenu:
-            drawGameOverMenu(window);
+            drawGameOverMenu(window, logic);
             break;
     }
     // display
     window.display();
 }
 
-void CameraView::drawMainMenu(sf::RenderWindow &window) {
+void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
 
 }
 
-void CameraView::drawPauseMenu(sf::RenderWindow &window) {
+void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw transparent screen
     sf::RectangleShape rect;
@@ -51,25 +50,25 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window) {
 
 }
 
-void CameraView::drawGameOverMenu(sf::RenderWindow &window) {
+void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Red);
 
 }
 
-void CameraView::drawGame(sf::RenderWindow &window) {
+void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Green);
 
     sf::CircleShape circle;
     // draw Player1
-    circle.setPosition(this->logic->walrus1->getPos());
-    circle.setRadius(this->logic->walrus1->getMass()*10);
+    circle.setPosition(logic.walrus1.getPos());
+    circle.setRadius(logic.walrus1.getMass()*10);
     circle.setFillColor(sf::Color(0, 255, 255, 255));
     window.draw(circle);
     // draw Player2
-    circle.setPosition(this->logic->walrus2->getPos());
-    circle.setRadius(this->logic->walrus1->getMass()*10);
+    circle.setPosition(logic.walrus2.getPos());
+    circle.setRadius(logic.walrus1.getMass()*10);
     circle.setFillColor(sf::Color(255, 0, 255, 255));
     window.draw(circle);
 
@@ -77,13 +76,13 @@ void CameraView::drawGame(sf::RenderWindow &window) {
 }
 
 
-void CameraView::processInput(sf::RenderWindow &window, float dSec) {
+void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
 
-    if (this->logic->getState() == GameLogic::GameState::playing) {
+    if (logic.getState() == GameLogic::GameState::playing) {
         //ignore input here and instead handle input in instantiated player controllers
-        this->player1Controller->update(window, dSec, 1, this->logic);
-        this->player2Controller->update(window, dSec, 2, this->logic);
+        player1Controller->update(window, logic, dSec, 1);
+        player2Controller->update(window, logic, dSec, 2);
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
@@ -110,10 +109,10 @@ void CameraView::processInput(sf::RenderWindow &window, float dSec) {
                         std::cout << "menu down" << std::endl;
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
-                        this->logic->playGame();
-                    } else if (Event.key.code == sf::Keyboard::P && this->logic->getState() == GameLogic::GameState::pauseMenu) {
+                        logic.playGame();
+                    } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
                         std::cout << "toggle pause" << std::endl;
-                        this->logic->togglePause();
+                        logic.togglePause();
                     }
                     break;
             }

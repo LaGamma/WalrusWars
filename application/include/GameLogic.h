@@ -14,8 +14,8 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
 
-    std::unique_ptr<Player> walrus1;
-    std::unique_ptr<Player> walrus2;
+    Player walrus1;
+    Player walrus2;
     Stage stage;
 
 private:

@@ -15,7 +15,7 @@ class Player {
     float getMass();
 
     void applyPassiveForce(float);
-    void applyActiveForce(sf::Vector2f);
+    void applyActiveForce(sf::Vector2f, float);
     void tickMovement(float);
     void handlePowerUp(int);
 

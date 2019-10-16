@@ -1,4 +1,4 @@
-#ifndef _Controller_H
+#ifndef _Controller_H_
 #define _Controller_H_
 
 #include <SFML/Graphics.hpp>
@@ -7,7 +7,7 @@
 class Controller {
   public:
     Controller();
-    virtual void update(sf::RenderWindow &window, float dSec, int playerNum, GameLogic* logic) = 0;
+    virtual void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) = 0;
 };
 
 #endif

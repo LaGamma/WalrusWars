@@ -8,7 +8,7 @@ class PlayerController : public Controller {
 
 public:
     PlayerController();
-    void update(sf::RenderWindow &window, float dSec, int playerNum, GameLogic* logic);
+    void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum);
 private:
 
 };

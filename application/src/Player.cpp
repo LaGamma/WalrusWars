@@ -1,39 +1,50 @@
+#include <iostream>
 #include "Player.h"
 
 Player::Player() {
 
 }
 
-void Player::spawn(sf::Vector2f pos) {
-    this->mass = 1;
-    this->stamina = 100;
-    this->pos = pos;
-    this->vel = sf::Vector2f(0.0f, 0.0f);
+void Player::spawn(sf::Vector2f spawn_pos) {
+    mass = 1.0f;
+    stamina = 100.0f;
+    pos = spawn_pos;
+    vel = sf::Vector2f(0.0f, 0.0f);
 }
 
 void Player::tickMovement(float dSec) {
-    this->pos += (this->vel) * dSec;
+    pos += vel * dSec;
 }
 
 
 void Player::applyPassiveForce(float dSec) {
 
-    if (this->vel.x > 0) {
-        this->vel.x -= 1.0f * dSec;
-    } else if (this->vel.x < 0) {
-        this->vel.x += 1.0f * dSec;
+    float friction = 20.0f; //tunable
+
+    if (vel.x > 0) {
+        vel.x -= friction * dSec;
+    } else if (vel.x < 0) {
+        vel.x += friction * dSec;
     }
-    if (this->vel.y > 0) {
-        this->vel.y -= 1.0f * dSec;
-    } else if (this->vel.y < 0) {
-        this->vel.y += 1.0f * dSec;
+    if (vel.y > 0) {
+        vel.y -= friction * dSec;
+    } else if (vel.y < 0) {
+        vel.y += friction * dSec;
     }
 
 }
 
-void Player::applyActiveForce(sf::Vector2f force) {
-    this->vel += force;
+void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
+    float force_power = 1000.0f; // tunable
+
+    if (stamina > 0) {
+        stamina -= 0.001f;
+        vel += force_dir * force_power * dSec;
+    } else {
+        //std::cout << "exhausted! can't move!" << std::endl;
+        // set state to resting
+    }
 }
 
 void Player::handlePowerUp(int powerup) {
@@ -42,11 +53,11 @@ void Player::handlePowerUp(int powerup) {
 
 // getters
 sf::Vector2f Player::getPos() {
-    return this->pos;
+    return pos;
 }
 sf::Vector2f Player::getVel() {
-    return this->vel;
+    return vel;
 }
 float Player::getMass() {
-    return this->mass;
+    return mass;
 }

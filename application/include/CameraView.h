@@ -3,16 +3,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameLogic.h"
-#include "PlayerController.h"
+#include "Controller.h"
 
 class CameraView {
   public:
     CameraView();
-    void init(GameLogic* logic);
-    void processInput(sf::RenderWindow &window, float dSec);
-    void draw(sf::RenderWindow &window);
-
-    GameLogic* logic;
+    void init();
+    void processInput(sf::RenderWindow &window, GameLogic &logic, float dSec);
+    void draw(sf::RenderWindow &window, GameLogic &logic);
 
   private:
     sf::Font font;
@@ -23,11 +21,10 @@ class CameraView {
     std::unique_ptr<Controller> player2Controller;
 
     // draw screen functions
-    void drawGame(sf::RenderWindow &window);
-    void drawMainMenu(sf::RenderWindow &window);
-    void drawPauseMenu(sf::RenderWindow &window);
-    void drawGameOverMenu(sf::RenderWindow &window);
-
+    void drawGame(sf::RenderWindow &window, GameLogic &logic);
+    void drawMainMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
 
 };
 
