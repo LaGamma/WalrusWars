@@ -17,6 +17,13 @@ void GameLogic::update(float dSec) {
         // apply deceleration
         walrus1.applyPassiveForce(dSec);
         walrus2.applyPassiveForce(dSec);
+
+
+        // check collisions
+        
+        // if player has moved off the screen
+          // trigger their death and respawn both players
+
     }
 
 
