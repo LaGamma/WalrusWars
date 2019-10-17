@@ -7,6 +7,8 @@ GameLogic::GameLogic() {
     walrus2 = Player();
     sf::Vector2u dim;
     progression = 0;
+    stage = Stage();
+    stage.generateMap();
 }
 
 void GameLogic::update(float dSec) {
@@ -22,7 +24,7 @@ void GameLogic::update(float dSec) {
 
 
         // check collisions
-        
+
         // if player has moved off the screen
             // trigger their death and respawn both players
         if (walrus1.getPos().x > dim.x || walrus1.getPos().y > dim.y || walrus1.getPos().x < 0 || walrus1.getPos().y < 0)
@@ -89,7 +91,7 @@ void GameLogic::togglePause() {
 
 void GameLogic::playGame() {
     state = playing;
-    // hardcoded values should change to be relative to window dimension
+    // hardcoded values should change to be relative to window dimension or stage positions
     walrus1.spawn(sf::Vector2f(1.0,1.0));
     walrus2.spawn(sf::Vector2f(100.0,100.0));
 }
