@@ -78,8 +78,8 @@ void GameLogic::handlePlayerDeath(int x) {
         progression = 0;
 	}
 	// respawn
-    walrus1.spawn(sf::Vector2f(200.0f, 150.0f));
-    walrus2.spawn(sf::Vector2f(600.0f, 450.0f));
+    walrus1.spawn(sf::Vector2f(400.0f, 200.0f));
+    walrus2.spawn(sf::Vector2f(400.0f, 400.0f));
 }
 
 void GameLogic::togglePause() {
@@ -92,8 +92,8 @@ void GameLogic::togglePause() {
 
 void GameLogic::playGame() {
     state = playing;
-    walrus1.spawn(sf::Vector2f(200.0f, 150.0f));
-    walrus2.spawn(sf::Vector2f(600.0f, 450.0f));
+    walrus1.spawn(sf::Vector2f(400.0f, 200.0f));
+    walrus2.spawn(sf::Vector2f(400.0f, 400.0f));
 }
 
 GameLogic::GameState GameLogic::getState() {
