@@ -12,6 +12,7 @@ class GameLogic {
     void generateMap();
     void playGame();
     void dimensions(sf::Vector2u dim);
+    int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
 
@@ -23,6 +24,7 @@ private:
     GameState state;
     //window dimensions
     sf::Vector2u dim;
+    int progression;
 
 };
 

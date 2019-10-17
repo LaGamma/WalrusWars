@@ -6,6 +6,7 @@ GameLogic::GameLogic() {
     walrus1 = Player();
     walrus2 = Player();
     sf::Vector2u dim;
+    progression = 0;
 }
 
 void GameLogic::update(float dSec) {
@@ -48,9 +49,22 @@ void GameLogic::handlePlayerDeath(int x) {
     //will have more need for separate cases later on to adjust the screen transition
 	if (x == 1) {
 	    std::cout<<"walrus1 died";
+	    progression++;
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died";
+	    progression--;
+	}
+	if (progression >= 3) {
+	    std::cout<<"walrus1 won!";
+	    state = gameOverMenu;
+	    //reset progression
+	    progression = 0;
+	}
+	else if (progression <= -3) {
+	    std::cout<<"walrus2 won!";
+        state = gameOverMenu;
+        progression = 0;
 	}
     sf::Vector2f spawn_vector;
     //below fixes conversion warnings between between Vector2u and Vector2f
@@ -86,4 +100,8 @@ void GameLogic::dimensions(sf::Vector2u dim) {
 
 GameLogic::GameState GameLogic::getState() {
     return state;
+}
+
+int GameLogic::getStageProgression() {
+    return progression;
 }
