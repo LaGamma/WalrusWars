@@ -14,10 +14,13 @@ void Stage::generateMap(){
 			}
 			else{
 				stageTiles[i][j] = 0;
-			}
+			} //this is a hardcoded loop that should create an island of ice
 		}
 	}
 
+}
+int getTile(int x, int y){
+	return stageTiles[x][y];
 }
 
 

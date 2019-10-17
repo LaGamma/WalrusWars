@@ -6,6 +6,7 @@ class Stage {
     Stage();
     void generateMap();
     float getBlockDura(int,int);
+    int getTile(int,int);
     //not doing fish methods for now
   private:
     int stageTiles[40][30];

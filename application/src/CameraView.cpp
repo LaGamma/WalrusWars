@@ -56,7 +56,20 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
-    window.clear(sf::Color::Green);
+    window.clear(sf::Color::Blue);
+    sf::RectangleShape ice;
+    ice.setSize(sf::Vector2f(20,20));
+    ice.setFillColor(sf::Color(50,247,250,255));
+    int i;
+    int j;
+    for(i=0;i<40;i++){
+      for(j=0;j<30;j++){
+        if(logic.stage.getTile(i,j)==1){
+          ice.setPosition((i*20-20),(j*20-20));
+          window.draw(ice);
+        }
+      }
+    }
 
     sf::CircleShape circle;
     // draw Player1
