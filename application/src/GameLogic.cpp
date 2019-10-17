@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "GameLogic.h"
 
 GameLogic::GameLogic() {
@@ -24,10 +25,19 @@ void GameLogic::update(float dSec) {
         
         // if player has moved off the screen
             // trigger their death and respawn both players
-        if (walrus1.getPos().x > 800.0f || walrus1.getPos().y > 600.0f || walrus1.getPos().x < 0 || walrus1.getPos().y < 0)
+        sf::Vector2f w1_pos = walrus1.getPos();
+        sf::Vector2f w2_pos = walrus2.getPos();
+        if (w1_pos.x > 800.0f || w1_pos.y > 600.0f || w1_pos.x < 0 || w1_pos.y < 0)
             handlePlayerDeath(1);
-        if (walrus2.getPos().x > 800.0f || walrus2.getPos().y > 600.0f || walrus2.getPos().x < 0 || walrus2.getPos().y < 0)
+        if (w2_pos.x > 800.0f || w2_pos.y > 600.0f || w2_pos.x < 0 || w2_pos.y < 0)
             handlePlayerDeath(2);
+
+        double dist = sqrt((w1_pos.x - w2_pos.x)*(w1_pos.x - w2_pos.x) + (w1_pos.y - w2_pos.y)*(w1_pos.y - w2_pos.y));
+
+        if (dist < walrus1.getMass()*10 + walrus2.getMass()*10) {
+            std::cout << "walruses are colliding!\n";
+            //handle collision
+        }
 
 
     }
