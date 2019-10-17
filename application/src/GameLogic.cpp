@@ -5,7 +5,6 @@ GameLogic::GameLogic() {
     state = mainMenu;
     walrus1 = Player();
     walrus2 = Player();
-    sf::Vector2u dim;
     progression = 0;
 }
 
@@ -66,16 +65,11 @@ void GameLogic::handlePlayerDeath(int x) {
         state = gameOverMenu;
         progression = 0;
 	}
-    sf::Vector2f spawn_vector;
-    //below fixes conversion warnings between between Vector2u and Vector2f
-    unsigned int spawn_x = dim.x; unsigned int spawn_y = dim.y;
-    float x_float = (float) spawn_x / 2.0f; float y_float = (float) spawn_y / 2.0f;
-    spawn_vector.x = x_float; spawn_vector.y = y_float;
-
+    sf::Vector2f spawn_vector = sf::Vector2f(400.0f, 300.0f);
     walrus1.spawn(spawn_vector);
     //set walrus2 a tenth of the screen size to the right and a tenth of the screen size down
-    spawn_vector.x += dim.x / 10;
-    spawn_vector.y -= dim.y / 10;
+    spawn_vector.x += 80;
+    spawn_vector.y -= 60;
     walrus2.spawn(spawn_vector);
 }
 

@@ -42,9 +42,7 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw transparent screen
-    sf::RectangleShape rect;
-    rect.setPosition(0,0);
-    rect.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
+    sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(800,600));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
 
@@ -62,23 +60,20 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     sf::CircleShape circle;
     // draw Player1
-    circle.setPosition(logic.walrus1.getPos());
     circle.setRadius(logic.walrus1.getMass()*10);
+    circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
     circle.setFillColor(sf::Color(0, 255, 255, 255));
     window.draw(circle);
     // draw Player2
     circle.setPosition(logic.walrus2.getPos());
-    circle.setRadius(logic.walrus1.getMass()*10);
+    circle.setRadius(logic.walrus2.getMass()*10);
     circle.setFillColor(sf::Color(255, 0, 255, 255));
     window.draw(circle);
 
     //draw stage progression. For now display square progressing on bottom of screen
-    int progression = logic.getStageProgression();
-    float window_x = (float) window.getSize().x; float window_y = (float) window.getSize().y;
-    sf::RectangleShape rectangle;
-    rectangle.setSize(sf::Vector2f(20, 20));
+    sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
     rectangle.setOutlineColor(sf::Color(255, 255, 255, 255));
-    rectangle.setPosition(window_x / 2.0f + (progression * (window_x / 5.0f)), window_y - 25);
+    rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
 
 }
