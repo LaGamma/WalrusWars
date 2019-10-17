@@ -6,6 +6,8 @@ GameLogic::GameLogic() {
     walrus1 = Player();
     walrus2 = Player();
     progression = 0;
+    stage = Stage();
+    stage.generateMap();
 }
 
 void GameLogic::update(float dSec) {
@@ -21,7 +23,7 @@ void GameLogic::update(float dSec) {
 
 
         // check collisions
-        
+
         // if player has moved off the screen
             // trigger their death and respawn both players
         if (walrus1.getPos().x > 800.0f || walrus1.getPos().y > 600.0f || walrus1.getPos().x < 0 || walrus1.getPos().y < 0)
