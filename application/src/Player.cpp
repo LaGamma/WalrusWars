@@ -19,7 +19,7 @@ void Player::tickMovement(float dSec) {
 
 void Player::applyPassiveForce(float dSec) {
 
-    float friction = 10.0f; // tunable
+    float friction = 10.0f; // tunable (Should we make this a const variable for the player class?)
 
     if (vel.x > 0) {
         vel.x -= friction * dSec;
@@ -36,7 +36,7 @@ void Player::applyPassiveForce(float dSec) {
 
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
-    float force_power = 1000.0f; // tunable
+    float force_power = 1000.0f; // tunable (Should we make this a const variable for the player class?)
 
     if (stamina > 0) {
         stamina -= 0.001f;
