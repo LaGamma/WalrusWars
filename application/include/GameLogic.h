@@ -11,6 +11,7 @@ class GameLogic {
     void togglePause();
     void generateMap();
     void playGame();
+    void dimensions(sf::Vector2u dim);
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
 
@@ -20,6 +21,8 @@ class GameLogic {
 
 private:
     GameState state;
+    //window dimensions
+    sf::Vector2u dim;
 
 };
 
