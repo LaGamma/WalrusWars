@@ -14,9 +14,6 @@ int main(int argc, char** argv)
   CameraView view;
   GameLogic logic;
 
-  //added passing window dimensions:
-  logic.dimensions(dim);
-
   view.init();
 
   //create clock

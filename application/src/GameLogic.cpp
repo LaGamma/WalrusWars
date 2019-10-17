@@ -24,9 +24,9 @@ void GameLogic::update(float dSec) {
         
         // if player has moved off the screen
             // trigger their death and respawn both players
-        if (walrus1.getPos().x > dim.x || walrus1.getPos().y > dim.y || walrus1.getPos().x < 0 || walrus1.getPos().y < 0)
+        if (walrus1.getPos().x > 800.0f || walrus1.getPos().y > 600.0f || walrus1.getPos().x < 0 || walrus1.getPos().y < 0)
             handlePlayerDeath(1);
-        if (walrus2.getPos().x > dim.x || walrus2.getPos().y > dim.y || walrus2.getPos().x < 0 || walrus2.getPos().y < 0)
+        if (walrus2.getPos().x > 800.0f || walrus2.getPos().y > 600.0f || walrus2.getPos().x < 0 || walrus2.getPos().y < 0)
             handlePlayerDeath(2);
 
 
@@ -86,10 +86,6 @@ void GameLogic::playGame() {
     // hardcoded values should change to be relative to window dimension
     walrus1.spawn(sf::Vector2f(1.0,1.0));
     walrus2.spawn(sf::Vector2f(100.0,100.0));
-}
-
-void GameLogic::dimensions(sf::Vector2u dim) {
-    this->dim = dim;
 }
 
 GameLogic::GameState GameLogic::getState() {
