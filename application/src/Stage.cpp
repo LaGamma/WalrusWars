@@ -19,7 +19,7 @@ void Stage::generateMap(){
 	}
 
 }
-int getTile(int x, int y){
+int Stage::getTile(int x, int y){
 	return stageTiles[x][y];
 }
 
