@@ -26,9 +26,9 @@ void GameLogic::update(float dSec) {
 
         // if player has moved off the screen
             // trigger their death and respawn both players
-        if (walrus1.getPos().x > 800.0f || walrus1.getPos().y > 600.0f || walrus1.getPos().x < 0 || walrus1.getPos().y < 0)
+        if (stage.getTile((walrus1.getPos().x)/20, (walrus1.getPos().y)/20) == 0)
             handlePlayerDeath(1);
-        if (walrus2.getPos().x > 800.0f || walrus2.getPos().y > 600.0f || walrus2.getPos().x < 0 || walrus2.getPos().y < 0)
+        if (stage.getTile((walrus2.getPos().x)/20, (walrus2.getPos().y)/20) == 0)
             handlePlayerDeath(2);
 
 
@@ -68,8 +68,8 @@ void GameLogic::handlePlayerDeath(int x) {
         progression = 0;
 	}
 	// respawn
-    walrus1.spawn(sf::Vector2f(200.0f, 150.0f));
-    walrus2.spawn(sf::Vector2f(600.0f, 450.0f));
+    walrus1.spawn(sf::Vector2f(400.0f, 200.0f));
+    walrus2.spawn(sf::Vector2f(400.0f, 400.0f));
 }
 
 void GameLogic::togglePause() {
@@ -82,8 +82,8 @@ void GameLogic::togglePause() {
 
 void GameLogic::playGame() {
     state = playing;
-    walrus1.spawn(sf::Vector2f(200.0f, 150.0f));
-    walrus2.spawn(sf::Vector2f(600.0f, 450.0f));
+    walrus1.spawn(sf::Vector2f(400.0f, 200.0f));
+    walrus2.spawn(sf::Vector2f(400.0f, 400.0f));
 }
 
 GameLogic::GameState GameLogic::getState() {
