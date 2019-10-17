@@ -9,7 +9,7 @@ void Stage::generateMap(){
 	int j;
 	for(i = 0; i<40; i++){
 		for(j = 0; j<30; j++){
-			if((i>10 && i<30)&&(j>5 && j<25)){
+			if((i>10 && i<=30)&&(j>5 && j<=25)){
 				stageTiles[i][j] = 1;
 			}
 			else{

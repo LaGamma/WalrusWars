@@ -59,11 +59,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.clear(sf::Color::Blue);
     sf::RectangleShape ice;
     ice.setSize(sf::Vector2f(20,20));
-    ice.setFillColor(sf::Color(50,247,250,255));
-    int i;
-    int j;
-    for(i=0;i<40;i++){
-      for(j=0;j<30;j++){
+    ice.setFillColor(sf::Color(50,247,250,200));
+    ice.setOutlineColor(sf::Color(255,255,255));
+    ice.setOutlineThickness(2);
+
+    for(int i=0;i<40;i++){
+      for(int j=0;j<30;j++){
         if(logic.stage.getTile(i,j)==1){
           ice.setPosition((i*20-20),(j*20-20));
           window.draw(ice);
@@ -75,17 +76,17 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     // draw Player1
     circle.setRadius(logic.walrus1.getMass()*10);
     circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
-    circle.setFillColor(sf::Color(0, 255, 0, 255));
+    circle.setFillColor(sf::Color(180, 0, 255, 255));
     window.draw(circle);
     // draw Player2
     circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
     circle.setRadius(logic.walrus2.getMass()*10);
-    circle.setFillColor(sf::Color(255, 0, 255, 255));
+    circle.setFillColor(sf::Color(240, 0, 255, 255));
     window.draw(circle);
 
     //draw stage progression. For now display square progressing on bottom of screen
     sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
-    rectangle.setOutlineColor(sf::Color(255, 255, 255, 255));
+    rectangle.setFillColor(sf::Color(255, 0, 0, 255));
     rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
 
