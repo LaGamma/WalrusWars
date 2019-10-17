@@ -6,7 +6,7 @@ Player::Player() {
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
-    mass = 10.0f;
+    mass = 5.0f;
     stamina = 100.0f;
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);

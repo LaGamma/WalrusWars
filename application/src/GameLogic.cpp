@@ -47,30 +47,27 @@ void GameLogic::handlePlayerDeath(int x) {
 
     //will have more need for separate cases later on to adjust the screen transition
 	if (x == 1) {
-	    std::cout<<"walrus1 died";
+	    std::cout<<"walrus1 died\n";
 	    progression++;
 	}
 	else if (x == 2) {
-	    std::cout<<"walrus2 died";
+	    std::cout<<"walrus2 died\n";
 	    progression--;
 	}
 	if (progression >= 3) {
-	    std::cout<<"walrus1 won!";
+	    std::cout<<"walrus2 won!\n";
 	    state = gameOverMenu;
 	    //reset progression
 	    progression = 0;
 	}
 	else if (progression <= -3) {
-	    std::cout<<"walrus2 won!";
+	    std::cout<<"walrus1 won!\n";
         state = gameOverMenu;
         progression = 0;
 	}
-    sf::Vector2f spawn_vector = sf::Vector2f(400.0f, 300.0f);
-    walrus1.spawn(spawn_vector);
-    //set walrus2 a tenth of the screen size to the right and a tenth of the screen size down
-    spawn_vector.x += 80;
-    spawn_vector.y -= 60;
-    walrus2.spawn(spawn_vector);
+	// respawn
+    walrus1.spawn(sf::Vector2f(200.0f, 150.0f));
+    walrus2.spawn(sf::Vector2f(600.0f, 450.0f));
 }
 
 void GameLogic::togglePause() {
@@ -83,9 +80,8 @@ void GameLogic::togglePause() {
 
 void GameLogic::playGame() {
     state = playing;
-    // hardcoded values should change to be relative to window dimension
-    walrus1.spawn(sf::Vector2f(1.0,1.0));
-    walrus2.spawn(sf::Vector2f(100.0,100.0));
+    walrus1.spawn(sf::Vector2f(200.0f, 150.0f));
+    walrus2.spawn(sf::Vector2f(600.0f, 450.0f));
 }
 
 GameLogic::GameState GameLogic::getState() {

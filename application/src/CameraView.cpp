@@ -65,7 +65,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     circle.setFillColor(sf::Color(0, 255, 255, 255));
     window.draw(circle);
     // draw Player2
-    circle.setPosition(logic.walrus2.getPos());
+    circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
     circle.setRadius(logic.walrus2.getMass()*10);
     circle.setFillColor(sf::Color(255, 0, 255, 255));
     window.draw(circle);
