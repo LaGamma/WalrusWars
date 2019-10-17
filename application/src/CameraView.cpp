@@ -72,6 +72,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     circle.setFillColor(sf::Color(255, 0, 255, 255));
     window.draw(circle);
 
+    //draw stage progression. For now display square progressing on bottom of screen
+    int progression = logic.getStageProgression();
+    float window_x = (float) window.getSize().x; float window_y = (float) window.getSize().y;
+    sf::RectangleShape rectangle;
+    rectangle.setSize(sf::Vector2f(20, 20));
+    rectangle.setOutlineColor(sf::Color(255, 255, 255, 255));
+    rectangle.setPosition(window_x / 2.0f + (progression * (window_x / 5.0f)), window_y - 25);
+    window.draw(rectangle);
 
 }
 
