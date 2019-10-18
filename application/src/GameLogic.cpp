@@ -41,7 +41,7 @@ void GameLogic::update(float dSec) {
 
         if (dist < walrus1.getMass()*10 + walrus2.getMass()*10) {
             std::cout << "walruses are colliding!\n";
-            //handle collision
+            handlePlayerCollision();
         }
 
 
@@ -50,8 +50,22 @@ void GameLogic::update(float dSec) {
 
 }
 
-void GameLogic::generateMap() {
-  stage.generateMap();
+void GameLogic::handlePlayerCollision(){
+  //find the velocity of collision along the line of collision
+  sf::Vector2f newVel1;
+  sf::Vector2f newVel2;
+  sf::Vector2f velDiff;
+  sf::Vector2f posDiff;
+  velDiff = walrus1.getVel() - walrus2.getVel();
+  posDiff = walrus1.getPos() - walrus2.getPos();
+  float dotProduct = (velDiff.x*posDiff.x)+(velDiff.y*posDiff.y);
+  newVel1 = walrus1.getVel() - (((2*walrus2.getMass())/(walrus1.getMass()+walrus2.getMass())) * (dotProduct/(float(sqrt((posDiff.x*posDiff.x)+(posDiff.y*posDiff.y)))))*posDiff);
+  velDiff = walrus2.getVel() - walrus1.getVel();
+  posDiff = walrus2.getPos() - walrus1.getPos();
+  dotProduct = (velDiff.x*posDiff.x)+(velDiff.y*posDiff.y);
+  newVel2 = walrus2.getVel() - (((2*walrus1.getMass())/(walrus1.getMass()+walrus2.getMass())) * (dotProduct/(float(sqrt((posDiff.x*posDiff.x)+(posDiff.y*posDiff.y)))))*posDiff);
+  walrus1.setVel(newVel1);
+  walrus2.setVel(newVel2);
 }
 
 /*

@@ -46,6 +46,9 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
         // set state to resting
     }
 }
+void Player::setVel(sf::Vector2f newVel){
+  vel = newVel;
+}
 
 void Player::handlePowerUp(int powerup) {
 
