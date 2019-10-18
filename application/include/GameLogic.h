@@ -8,8 +8,8 @@ class GameLogic {
     GameLogic();
     void update(float);
     void handlePlayerDeath(int);
+    void handlePlayerCollision();
     void togglePause();
-    void generateMap();
     void playGame();
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};

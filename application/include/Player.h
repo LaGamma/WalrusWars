@@ -13,6 +13,7 @@ class Player {
     sf::Vector2f getPos();
     sf::Vector2f getVel();
     float getMass();
+    void setVel(sf::Vector2f);
 
     void applyPassiveForce(float);
     void applyActiveForce(sf::Vector2f, float);
