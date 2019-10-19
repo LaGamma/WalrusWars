@@ -8,7 +8,9 @@ class GameLogic {
     GameLogic();
     void update(float);
     void handlePlayerDeath(int);
-    void handlePlayerCollision();
+    void handlePlayerCollision(
+
+            );
     void togglePause();
     void playGame();
     int getStageProgression();
@@ -18,6 +20,8 @@ class GameLogic {
     Player walrus1;
     Player walrus2;
     Stage stage;
+
+    sf::Vector2f playerCollisionPoint;
 
 private:
     GameState state;
