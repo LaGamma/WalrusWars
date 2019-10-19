@@ -19,7 +19,7 @@ void Stage::generateMap(){
 			    if (r > 6) {
 			        stageTiles[i][j] = 1;
 			    } else {
-                    stageTiles[i][j] = 0;
+                                stageTiles[i][j] = 0;
 			    }
 			    if (i == 31 || j == 26 || i == 10 || j == 5) {
 			        stageTiles[i][j] = 0;
