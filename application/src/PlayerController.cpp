@@ -42,10 +42,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             logic.walrus2.applyActiveForce(sf::Vector2f(1, 0), dSec);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad1)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
             logic.walrus2.setMass(logic.walrus2.getMass()+0.001);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Numpad2)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) {
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
     }

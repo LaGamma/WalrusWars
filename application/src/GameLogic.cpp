@@ -36,9 +36,10 @@ void GameLogic::update(float dSec) {
         if (stage.getTile((w2_pos.x)/20, (w2_pos.y)/20) == 0)
             handlePlayerDeath(2);
 
-        double dist = sqrt((w1_pos.x - w2_pos.x)*(w1_pos.x - w2_pos.x) + (w1_pos.y - w2_pos.y)*(w1_pos.y - w2_pos.y));
+        sf::Vector2f posDiff = w1_pos - w2_pos;
+        float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
 
-        if (dist < walrus1.getMass()*10 + walrus2.getMass()*10) {
+        if (dist < 10*(walrus1.getMass() + walrus2.getMass())) {
             std::cout << "walruses are colliding!\n";
             handlePlayerCollision();
         }
