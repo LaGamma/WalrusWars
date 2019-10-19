@@ -75,6 +75,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //load in textures
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;
+    //sprite map must be in root dir
     spriteMapP1.loadFromFile("WWP1.png");
     spriteMapP2.loadFromFile("WWP1.png");
     /*
