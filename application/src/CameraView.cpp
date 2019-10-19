@@ -71,17 +71,32 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
       }
     }
-
     sf::CircleShape circle;
+    //load in textures
+    sf::Texture spriteMapP1;
+    sf::Texture spriteMapP2;
+    spriteMapP1.loadFromFile("WWP1.png");
+    spriteMapP2.loadFromFile("WWP1.png");
+    /*
+    divide the image up in to its individual sprites by using dimensions of
+    the image and dividing by the number of images in the rows and columns
+    */
+    sf::Vector2u textureSize = spriteMapP1.getSize();
+    textureSize.x /= 3;
+    textureSize.y /= 10;
+    circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
+
     // draw Player1
     circle.setRadius(logic.walrus1.getMass()*10);
     circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
-    circle.setFillColor(sf::Color(180, 0, 255, 255));
+    //circle.setFillColor(sf::Color(180, 0, 255, 255));
+    circle.setTexture(&spriteMapP1);
     window.draw(circle);
     // draw Player2
     circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
     circle.setRadius(logic.walrus2.getMass()*10);
-    circle.setFillColor(sf::Color(240, 0, 255, 255));
+    //circle.setFillColor(sf::Color(240, 0, 255, 255));
+    circle.setTexture(&spriteMapP2);
     window.draw(circle);
 
     //draw stage progression. For now display square progressing on bottom of screen
@@ -89,6 +104,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     rectangle.setFillColor(sf::Color(255, 0, 0, 255));
     rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
+
 
 }
 
