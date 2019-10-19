@@ -1,9 +1,13 @@
-#pragma once
+#ifndef _Animation_H_
+#define _Animation_H_
+
 #include <SFML/Graphics.hpp>
 
-class animation
+class Animation
 {
 public:
-  animation();
+  Animation();
   void Update();
 };
+
+#endif
