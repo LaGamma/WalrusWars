@@ -39,7 +39,7 @@ void GameLogic::update(float dSec) {
         sf::Vector2f posDiff = w1_pos - w2_pos;
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
 
-        if (dist < 10*(walrus1.getMass() + walrus2.getMass())) {
+        if (dist < 9.5*(walrus1.getMass() + walrus2.getMass())) {
             std::cout << "walruses are colliding!\n";
             handlePlayerCollision();
         }
@@ -88,6 +88,9 @@ void GameLogic::handlePlayerCollision() {
 
   walrus1.setVel(walrus1NewVecTan + walrus1NewVecNorm);
   walrus2.setVel(walrus2NewVecTan + walrus2NewVecNorm);
+  // avoid walrus sticking together occasionally
+  walrus1.tickMovement(0.001);
+  walrus2.tickMovement(0.001);
 }
 
 /*
