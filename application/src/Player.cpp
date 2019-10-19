@@ -19,28 +19,24 @@ void Player::tickMovement(float dSec) {
 
 void Player::applyPassiveForce(float dSec) {
 
-    float friction = 10.0f; // tunable (Should we make this a const variable for the player class?)
-
     if (vel.x > 0) {
-        vel.x -= friction * dSec;
+        vel.x -= decelerate_strength * dSec;
     } else if (vel.x < 0) {
-        vel.x += friction * dSec;
+        vel.x += decelerate_strength * dSec;
     }
     if (vel.y > 0) {
-        vel.y -= friction * dSec;
+        vel.y -= decelerate_strength * dSec;
     } else if (vel.y < 0) {
-        vel.y += friction * dSec;
+        vel.y += decelerate_strength * dSec;
     }
 
 }
 
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
-    float force_power = 1000.0f; // tunable (Should we make this a const variable for the player class?)
-
     if (stamina > 0) {
         stamina -= 0.001f;
-        vel += force_dir * force_power * dSec;
+        vel += force_dir * accelerate_strength * dSec;
     } else {
         //std::cout << "exhausted! can't move!" << std::endl;
         // set state to resting

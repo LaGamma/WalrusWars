@@ -26,6 +26,8 @@ private:
     sf::Vector2f vel;
     float mass;
     float stamina;
+    constexpr static const float decelerate_strength = 20.0f;
+    constexpr static const float accelerate_strength = 300.0f;
 };
 
 #endif
