@@ -61,7 +61,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     ice.setSize(sf::Vector2f(20,20));
     ice.setFillColor(sf::Color(50,247,250,200));
     ice.setOutlineColor(sf::Color(255,255,255));
-    ice.setOutlineThickness(2);
+    ice.setOutlineThickness(4);
 
     for(int i=0;i<40;i++){
       for(int j=0;j<30;j++){
