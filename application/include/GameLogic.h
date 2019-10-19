@@ -8,9 +8,7 @@ class GameLogic {
     GameLogic();
     void update(float);
     void handlePlayerDeath(int);
-    void handlePlayerCollision(
-
-            );
+    void handlePlayerCollision();
     void togglePause();
     void playGame();
     int getStageProgression();

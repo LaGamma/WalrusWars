@@ -2,11 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-animation::animation()
+Animation::Animation()
 {
 
 }
-void animation::Update()
+void Animation::Update()
 {
   
 }
