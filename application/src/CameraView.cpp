@@ -84,6 +84,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     circle.setFillColor(sf::Color(240, 0, 255, 255));
     window.draw(circle);
 
+    // draw collision point
     circle.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
     circle.setRadius(5);
     circle.setFillColor(sf::Color::Red);
