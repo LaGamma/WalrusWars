@@ -19,6 +19,8 @@ class GameLogic {
     Player walrus2;
     Stage stage;
 
+    sf::Vector2f playerCollisionPoint;
+
 private:
     GameState state;
     int progression;

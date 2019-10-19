@@ -79,9 +79,15 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     circle.setFillColor(sf::Color(180, 0, 255, 255));
     window.draw(circle);
     // draw Player2
-    circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
     circle.setRadius(logic.walrus2.getMass()*10);
+    circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
     circle.setFillColor(sf::Color(240, 0, 255, 255));
+    window.draw(circle);
+
+    // draw collision point
+    circle.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
+    circle.setRadius(5);
+    circle.setFillColor(sf::Color::Red);
     window.draw(circle);
 
     //draw stage progression. For now display square progressing on bottom of screen

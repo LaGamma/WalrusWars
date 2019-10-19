@@ -9,11 +9,12 @@ class Player {
     Player();
     void spawn(sf::Vector2f);
 
-    // getters
+    // getters and setters
     sf::Vector2f getPos();
     sf::Vector2f getVel();
     float getMass();
     void setVel(sf::Vector2f);
+    void setMass(float);
 
     void applyPassiveForce(float);
     void applyActiveForce(sf::Vector2f, float);
@@ -25,6 +26,8 @@ private:
     sf::Vector2f vel;
     float mass;
     float stamina;
+    constexpr static const float decelerate_strength = 20.0f;
+    constexpr static const float accelerate_strength = 300.0f;
 };
 
 #endif
