@@ -1,9 +1,12 @@
-#pragma once
+#ifndef _Animation_H_
+#define _Animation_H_
+
 #include <SFML/Graphics.hpp>
 
-class animation
+class Animation
 {
 public:
+<<<<<<< HEAD
   animation(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
   void Update(int row, float dSec);
   int getSpriteRow();
@@ -17,4 +20,10 @@ private:
 
   float totalTime; //time since last change in sprite
   float switchTime; //time it takes before switching to new image
+=======
+  Animation();
+  void Update();
+>>>>>>> 7ef964d01003f9424ee4906d4b481106b9016621
 };
+
+#endif
