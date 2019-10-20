@@ -2,8 +2,7 @@
 #define _Animation_H_
 #include <SFML/Graphics.hpp>
 
-class Animation
-{
+class Animation {
 public:
   Animation(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
   void update(int row, float dSec);
@@ -19,4 +18,5 @@ private:
   float totalTime; //time since last change in sprite
   float switchTime; //time it takes before switching to new image
 };
+
 #endif

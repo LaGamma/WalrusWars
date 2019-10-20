@@ -1,5 +1,5 @@
 #include "CameraView.h"
-#include "animation.h"
+#include "Animation.h"
 #include "PlayerController.h"
 #include <iostream>
 
@@ -78,8 +78,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, float dSec
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;
     //sprite map must be in root dir
-    spriteMapP1.loadFromFile("WWP1.png");
-    spriteMapP2.loadFromFile("WWP1.png");
+    spriteMapP1.loadFromFile("../images/WWP1.png");
+    spriteMapP2.loadFromFile("../images/WWP1.png");
 
     Animation animation(&spriteMapP1, sf::Vector2u(3,10), 0.3);
     animation.update(animation.getSpriteRow(), dSec);
@@ -102,14 +102,16 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, float dSec
     // draw Player2
     circle.setRadius(logic.walrus2.getMass()*10);
     circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
-    circle.setFillColor(sf::Color(240, 0, 255, 255));
+    circle.setFillColor(sf::Color(150, 0, 200, 255));
+    circle.setTexture(&spriteMapP2);
     window.draw(circle);
 
     // draw collision point
-    circle.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
-    circle.setRadius(5);
-    circle.setFillColor(sf::Color::Red);
-    window.draw(circle);
+    sf::CircleShape pt;
+    pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
+    pt.setRadius(5);
+    pt.setFillColor(sf::Color::Red);
+    window.draw(pt);
 
     //draw stage progression. For now display square progressing on bottom of screen
     sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));

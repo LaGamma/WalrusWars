@@ -1,4 +1,4 @@
-#include "animation.h"
+#include "Animation.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -12,6 +12,7 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u spriteCount, float switc
   uvRect.width = texture->getSize().x / float(spriteCount.x);
   uvRect.height = texture->getSize().y / float(spriteCount.y);
 }
+
 void Animation::update(int row, float dSec)
 {
   currentSprite.y = row;
@@ -59,6 +60,7 @@ void Animation::update(int row, float dSec)
   }
   uvRect.top = currentSprite.y * uvRect.height;
   }
+
 int Animation::getSpriteRow()
 {
   return currentSprite.y;
