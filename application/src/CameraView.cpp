@@ -78,7 +78,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, Animation
     }
 
     sf::CircleShape circle;
-
     animation.update(dSec);
     /*
     divide the image up in to its individual sprites by using dimensions of
@@ -105,10 +104,11 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, Animation
     window.draw(circle);
 
     // draw collision point
-    circle.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
-    circle.setRadius(5);
-    circle.setFillColor(sf::Color::Red);
-    window.draw(circle);
+    sf::CircleShape pt;
+    pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
+    pt.setRadius(5);
+    pt.setFillColor(sf::Color::Red);
+    window.draw(pt);
 
     //draw stage progression. For now display square progressing on bottom of screen
     sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));

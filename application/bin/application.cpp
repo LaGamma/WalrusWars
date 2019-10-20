@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <GameLogic.h>
 #include <CameraView.h>
-#include <animation.h>
+#include <Animation.h>
 #include <iostream>
 
 

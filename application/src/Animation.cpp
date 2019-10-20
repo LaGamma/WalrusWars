@@ -19,6 +19,7 @@ void Animation::init(sf::Texture* texture, sf::Vector2u spriteCount, float switc
   uvRectP1.height = texture->getSize().y / float(spriteCount.y);
 }
 
+
 void Animation::update(float dSec)
 {
   totalTime += dSec;
@@ -97,3 +98,8 @@ void Animation::update(float dSec)
   uvRectP2.top = currentSpriteP2.y * uvRectP2.height;
   uvRectP1.top = currentSpriteP1.y * uvRectP1.height;
   }
+
+int Animation::getSpriteRow()
+{
+  return currentSprite.y;
+}
