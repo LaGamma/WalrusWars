@@ -10,11 +10,15 @@ CameraView::CameraView() {
 void CameraView::init() {
     player1Controller = createController(true);
     player2Controller = createController(true);
+    //load in textures
+    spriteMapP1.loadFromFile("../images/WWP1.png");
+    spriteMapP2.loadFromFile("../images/WWP1.png");
+    walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.2);
+    walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.2);
+
 }
 
-void CameraView::draw(sf::RenderWindow &window, GameLogic &logic, Animation
-                          &animation, sf::Texture &spriteMapP1,
-                          sf::Texture &spriteMapP2, float dSec) {
+void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
 
     const GameLogic::GameState state = logic.getState();
     switch (state) {
@@ -22,11 +26,11 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic, Animation
             drawMainMenu(window, logic);
             break;
         case GameLogic::GameState::pauseMenu:
-            drawGame(window,logic, animation, spriteMapP1, spriteMapP2, dSec);
+            drawGame(window,logic);
             drawPauseMenu(window, logic);
             break;
         case GameLogic::GameState::playing:
-            drawGame(window, logic, animation, spriteMapP1, spriteMapP2, dSec);
+            drawGame(window, logic);
             break;
         case GameLogic::GameState::gameOverMenu:
             drawGameOverMenu(window, logic);
@@ -57,9 +61,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 
 }
 
-void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, Animation
-                          &animation, sf::Texture &spriteMapP1,
-                          sf::Texture &spriteMapP2, float dSec) {
+void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
     sf::RectangleShape ice;
@@ -78,7 +80,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, Animation
     }
 
     sf::CircleShape circle;
-    animation.update(dSec);
+
     /*
     divide the image up in to its individual sprites by using dimensions of
     the image and dividing by the number of images in the rows and columns
@@ -87,20 +89,20 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, Animation
     textureSize.x /= 3;
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
-
+    //circle.setOutlineThickness(4);
     // draw Player1
     circle.setRadius(logic.walrus1.getMass()*10);
     circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
     //circle.setFillColor(sf::Color(180, 0, 255, 255));
     circle.setTexture(&spriteMapP1);
-    circle.setTextureRect(animation.uvRectP1);
+    circle.setTextureRect(walrus1_animation.uvRectP1);
     window.draw(circle);
     // draw Player2
     circle.setRadius(logic.walrus2.getMass()*10);
     circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
-    //circle.setFillColor(sf::Color(240, 0, 255, 255));
+    circle.setFillColor(sf::Color(150, 150, 255, 255));
     circle.setTexture(&spriteMapP2);
-    circle.setTextureRect(animation.uvRectP2);
+    circle.setTextureRect(walrus2_animation.uvRectP2);
     window.draw(circle);
 
     // draw collision point
@@ -127,6 +129,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
         //ignore input here and instead handle input in instantiated player controllers
         player1Controller->update(window, logic, dSec, 1);
         player2Controller->update(window, logic, dSec, 2);
+        walrus1_animation.update(dSec);
+        walrus2_animation.update(dSec);
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)

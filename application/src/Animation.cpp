@@ -6,10 +6,10 @@ Animation::Animation()
 {
 }
 
-void Animation::init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime)
+void Animation::init(sf::Texture* texture, sf::Vector2u sprite_count, float switch_time)
 {
-  this->spriteCount = spriteCount;
-  this->switchTime = switchTime;
+  spriteCount = sprite_count;
+  switchTime = switch_time;
   totalTime = 0;
   currentSpriteP1.x = 0;
   currentSpriteP2.x = 0;
