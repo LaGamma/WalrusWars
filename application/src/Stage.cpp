@@ -1,4 +1,6 @@
 #include "Stage.h"
+#include <random>
+#include <iostream>
 
 Stage::Stage(){
 
@@ -11,9 +13,16 @@ void Stage::generateMap(){
 		for(j = 0; j<30; j++){
 			if((i>10 && i<=30)&&(j>5 && j<=25)){
 				stageTiles[i][j] = 1;
-			}
-			else{
-				stageTiles[i][j] = 0;
+			} else {
+			    long r = rand() % 10 + 1;
+			    if (r > 6) {
+			        stageTiles[i][j] = 1;
+			    } else {
+			        stageTiles[i][j] = 0;
+			    }
+			    if (i == 31 || j == 26 || i == 10 || j == 5) {
+			        stageTiles[i][j] = 0;
+			    }
 			} //this is a hardcoded loop that should create an island of ice
 		}
 	}
