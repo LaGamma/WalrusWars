@@ -5,9 +5,9 @@
 class Animation
 {
 public:
-  Animation(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
-  void update(int row, float dSec);
-  int getSpriteRow();
+  Animation();
+  void update(float dSec);
+  void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
 
 public:
   sf::IntRect uvRect;

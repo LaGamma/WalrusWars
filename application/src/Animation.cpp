@@ -2,7 +2,11 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-Animation::Animation(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime)
+Animation::Animation()
+{
+}
+
+void Animation::init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime)
 {
   this->spriteCount = spriteCount;
   this->switchTime = switchTime;
@@ -12,9 +16,9 @@ Animation::Animation(sf::Texture* texture, sf::Vector2u spriteCount, float switc
   uvRect.width = texture->getSize().x / float(spriteCount.x);
   uvRect.height = texture->getSize().y / float(spriteCount.y);
 }
-void Animation::update(int row, float dSec)
+
+void Animation::update(float dSec)
 {
-  currentSprite.y = row;
   totalTime += dSec;
 
   if (totalTime >= switchTime)
@@ -41,7 +45,6 @@ void Animation::update(int row, float dSec)
     currentSprite.y = 2;
     uvRect.left = (currentSprite.x+1) * abs(uvRect.width);
     uvRect.width = -abs(uvRect.width);
-
   }
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -59,7 +62,3 @@ void Animation::update(int row, float dSec)
   }
   uvRect.top = currentSprite.y * uvRect.height;
   }
-int Animation::getSpriteRow()
-{
-  return currentSprite.y;
-}
