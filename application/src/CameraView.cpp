@@ -78,8 +78,10 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
       }
     }
 
-    sf::CircleShape circle;
+    sf::CircleShape player1;
+    sf::CircleShape player2;
     sf::CircleShape hitbox;
+
     /*
     divide the image up in to its individual sprites by using dimensions of
     the image and dividing by the number of images in the rows and columns
@@ -88,28 +90,38 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     textureSize.x /= 3;
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
+
+    // draw Player1
+    player1.setRadius(logic.walrus1.getMass()*10);
+    player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
+    //player1.setFillColor(sf::Color(180, 0, 255, 255));
+    player1.setTexture(&spriteMapP1);
+    player1.setTextureRect(walrus1_animation.uvRectP1);
+
+    // draw Player2
+    player2.setRadius(logic.walrus2.getMass()*10);
+    player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
+    player2.setFillColor(sf::Color(150, 150, 255, 255));
+    player2.setTexture(&spriteMapP2);
+    player2.setTextureRect(walrus2_animation.uvRectP2);
+
     //hitbox.setOutlineThickness(4);
     hitbox.setRadius(logic.walrus1.getMass()*6.5);
     hitbox.setPosition(logic.walrus1.getPos().x - hitbox.getRadius(), logic.walrus1.getPos().y - hitbox.getRadius());
     hitbox.setFillColor(sf::Color(0,0,0,0));
-    // draw Player1
-    circle.setRadius(logic.walrus1.getMass()*10);
-    circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
-    //circle.setFillColor(sf::Color(180, 0, 255, 255));
-    circle.setTexture(&spriteMapP1);
-    circle.setTextureRect(walrus1_animation.uvRectP1);
-    window.draw(circle);
     window.draw(hitbox);
-    // draw Player2
     hitbox.setRadius(logic.walrus2.getMass()*6.5);
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
-    circle.setRadius(logic.walrus2.getMass()*10);
-    circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
-    circle.setFillColor(sf::Color(150, 150, 255, 255));
-    circle.setTexture(&spriteMapP2);
-    circle.setTextureRect(walrus2_animation.uvRectP2);
-    window.draw(circle);
     window.draw(hitbox);
+
+    // draw in order of depth
+    if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
+        window.draw(player2);
+        window.draw(player1);
+    } else {
+        window.draw(player1);
+        window.draw(player2);
+    }
 
     // draw collision point
     sf::CircleShape pt;
