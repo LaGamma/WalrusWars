@@ -13,9 +13,8 @@ void CameraView::init() {
     //load in textures
     spriteMapP1.loadFromFile("../images/WWP1.png");
     spriteMapP2.loadFromFile("../images/WWP1.png");
-    walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.2);
-    walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.2);
-
+    walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
+    walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -80,7 +79,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
 
     sf::CircleShape circle;
-
+    sf::CircleShape hitbox;
     /*
     divide the image up in to its individual sprites by using dimensions of
     the image and dividing by the number of images in the rows and columns
@@ -89,7 +88,10 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     textureSize.x /= 3;
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
-    //circle.setOutlineThickness(4);
+    //hitbox.setOutlineThickness(4);
+    hitbox.setRadius(logic.walrus1.getMass()*6.5);
+    hitbox.setPosition(logic.walrus1.getPos().x - hitbox.getRadius(), logic.walrus1.getPos().y - hitbox.getRadius());
+    hitbox.setFillColor(sf::Color(0,0,0,0));
     // draw Player1
     circle.setRadius(logic.walrus1.getMass()*10);
     circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
@@ -97,13 +99,17 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     circle.setTexture(&spriteMapP1);
     circle.setTextureRect(walrus1_animation.uvRectP1);
     window.draw(circle);
+    window.draw(hitbox);
     // draw Player2
+    hitbox.setRadius(logic.walrus2.getMass()*6.5);
+    hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     circle.setRadius(logic.walrus2.getMass()*10);
     circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
     circle.setFillColor(sf::Color(150, 150, 255, 255));
     circle.setTexture(&spriteMapP2);
     circle.setTextureRect(walrus2_animation.uvRectP2);
     window.draw(circle);
+    window.draw(hitbox);
 
     // draw collision point
     sf::CircleShape pt;
