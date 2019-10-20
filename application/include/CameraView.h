@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "GameLogic.h"
 #include "Controller.h"
+#include "Animation.h"
 
 class CameraView {
   public:
@@ -14,11 +15,17 @@ class CameraView {
 
   private:
     sf::Font font;
+    bool temp = true;
 
     // major update classes
     std::unique_ptr<Controller> createController(bool player);
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
+
+    Animation walrus1_animation;
+    Animation walrus2_animation;
+    sf::Texture spriteMapP1;
+    sf::Texture spriteMapP2;
 
     // draw screen functions
     void drawGame(sf::RenderWindow &window, GameLogic &logic);

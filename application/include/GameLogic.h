@@ -8,10 +8,9 @@ class GameLogic {
     GameLogic();
     void update(float);
     void handlePlayerDeath(int);
+    void handlePlayerCollision();
     void togglePause();
-    void generateMap();
     void playGame();
-    void dimensions(sf::Vector2u dim);
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
@@ -20,10 +19,10 @@ class GameLogic {
     Player walrus2;
     Stage stage;
 
+    sf::Vector2f playerCollisionPoint;
+
 private:
     GameState state;
-    //window dimensions
-    sf::Vector2u dim;
     int progression;
 
 };

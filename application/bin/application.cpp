@@ -8,14 +8,9 @@ int main(int argc, char** argv)
 {
   // create main window
   sf::RenderWindow App(sf::VideoMode(800,600,32), "Walrus Wars");
-  // get window dimensions
-  sf::Vector2u dim = App.getSize();
 
   CameraView view;
   GameLogic logic;
-
-  //added passing window dimensions:
-  logic.dimensions(dim);
 
   view.init();
 
@@ -25,12 +20,6 @@ int main(int argc, char** argv)
   // start main loop
   while(App.isOpen())
   {
-
-    // clear screen and fill with blue
-    App.clear(sf::Color::Blue);
-    App.clear(sf::Color::Green);
-    App.clear(sf::Color::Yellow);
-
 
     sf::Time elapsed = clock.restart();
     float dSec = elapsed.asSeconds();
