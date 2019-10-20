@@ -1,4 +1,4 @@
-#include "animation.h"
+#include "Animation.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -11,10 +11,12 @@ void Animation::init(sf::Texture* texture, sf::Vector2u spriteCount, float switc
   this->spriteCount = spriteCount;
   this->switchTime = switchTime;
   totalTime = 0;
-  currentSprite.x = 0;
-
-  uvRect.width = texture->getSize().x / float(spriteCount.x);
-  uvRect.height = texture->getSize().y / float(spriteCount.y);
+  currentSpriteP1.x = 0;
+  currentSpriteP2.x = 0;
+  uvRectP2.width = texture->getSize().x / float(spriteCount.x);
+  uvRectP2.height = texture->getSize().y / float(spriteCount.y);
+  uvRectP1.width = texture->getSize().x / float(spriteCount.x);
+  uvRectP1.height = texture->getSize().y / float(spriteCount.y);
 }
 
 void Animation::update(float dSec)
@@ -24,41 +26,74 @@ void Animation::update(float dSec)
   if (totalTime >= switchTime)
   {
     totalTime -= switchTime;
-    currentSprite.x++;
-
+    currentSpriteP1.x++;
+    currentSpriteP2.x++;
     //make the animation loop through row
-    if (currentSprite.x >= spriteCount.x)
+    if (currentSpriteP1.x >= spriteCount.x)
     {
-        currentSprite.x = 0;
+        currentSpriteP1.x = 0;
+    }
+    if (currentSpriteP2.x >= spriteCount.x)
+    {
+        currentSpriteP2.x = 0;
     }
   }
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
   {
-    currentSprite.y = 2;
-    uvRect.left = currentSprite.x * uvRect.width;
-    uvRect.width = abs(uvRect.width);
+    currentSpriteP2.y = 2;
+    uvRectP2.left = currentSpriteP2.x * uvRectP2.width;
+    uvRectP2.width = abs(uvRectP2.width);
   }
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
   {
-    currentSprite.y = 2;
-    uvRect.left = (currentSprite.x+1) * abs(uvRect.width);
-    uvRect.width = -abs(uvRect.width);
+    currentSpriteP2.y = 2;
+    uvRectP2.left = (currentSpriteP2.x+1) * abs(uvRectP2.width);
+    uvRectP2.width = -abs(uvRectP2.width);
   }
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
   {
-    currentSprite.y = 1;
-    uvRect.left = currentSprite.x * uvRect.width;
-    uvRect.width = abs(uvRect.width);
+    currentSpriteP2.y = 1;
+    uvRectP2.left = currentSpriteP2.x * uvRectP2.width;
+    uvRectP2.width = abs(uvRectP2.width);
   }
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
   {
-    currentSprite.y = 0;
-    uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-    uvRect.width = -abs(uvRect.width);
+    currentSpriteP2.y = 0;
+    uvRectP2.left = (currentSpriteP2.x + 1) * abs(uvRectP2.width);
+    uvRectP2.width = -abs(uvRectP2.width);
   }
-  uvRect.top = currentSprite.y * uvRect.height;
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+  {
+    currentSpriteP1.y = 2;
+    uvRectP1.left = currentSpriteP1.x * uvRectP1.width;
+    uvRectP1.width = abs(uvRectP1.width);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+  {
+    currentSpriteP1.y = 2;
+    uvRectP1.left = (currentSpriteP1.x+1) * abs(uvRectP1.width);
+    uvRectP1.width = -abs(uvRectP1.width);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+  {
+    currentSpriteP1.y = 1;
+    uvRectP1.left = currentSpriteP1.x * uvRectP1.width;
+    uvRectP1.width = abs(uvRectP1.width);
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+  {
+    currentSpriteP1.y = 0;
+    uvRectP1.left = (currentSpriteP1.x + 1) * abs(uvRectP1.width);
+    uvRectP1.width = -abs(uvRectP1.width);
+  }
+  uvRectP2.top = currentSpriteP2.y * uvRectP2.height;
+  uvRectP1.top = currentSpriteP1.y * uvRectP1.height;
   }

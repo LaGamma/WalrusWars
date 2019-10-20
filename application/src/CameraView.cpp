@@ -88,18 +88,20 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, Animation
     textureSize.x /= 3;
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
-    circle.setTextureRect(animation.uvRect);
 
     // draw Player1
     circle.setRadius(logic.walrus1.getMass()*10);
     circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
     //circle.setFillColor(sf::Color(180, 0, 255, 255));
     circle.setTexture(&spriteMapP1);
+    circle.setTextureRect(animation.uvRectP1);
     window.draw(circle);
     // draw Player2
     circle.setRadius(logic.walrus2.getMass()*10);
     circle.setPosition(logic.walrus2.getPos().x - circle.getRadius(), logic.walrus2.getPos().y - circle.getRadius());
-    circle.setFillColor(sf::Color(240, 0, 255, 255));
+    //circle.setFillColor(sf::Color(240, 0, 255, 255));
+    circle.setTexture(&spriteMapP2);
+    circle.setTextureRect(animation.uvRectP2);
     window.draw(circle);
 
     // draw collision point
