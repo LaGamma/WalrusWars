@@ -6,7 +6,7 @@ class Animation
 {
 public:
   Animation(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
-  void Update(int row, float dSec);
+  void update(int row, float dSec);
   int getSpriteRow();
 
 public:

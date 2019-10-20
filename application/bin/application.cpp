@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <GameLogic.h>
 #include <CameraView.h>
+#include <animation.h>
 #include <iostream>
 
 
@@ -27,6 +28,7 @@ int main(int argc, char** argv)
     App.clear(sf::Color::Blue);
     App.clear(sf::Color::Green);
     App.clear(sf::Color::Yellow);
+    App.clear(sf::Color::Red);
 
 
     sf::Time elapsed = clock.restart();
@@ -40,7 +42,7 @@ int main(int argc, char** argv)
     // tick natural game logic
     logic.update(dSec);
     // draw window
-    view.draw(App, logic);
+    view.draw(App, logic, dSec);
 
   }
 

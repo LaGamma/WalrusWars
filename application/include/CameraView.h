@@ -10,7 +10,7 @@ class CameraView {
     CameraView();
     void init();
     void processInput(sf::RenderWindow &window, GameLogic &logic, float dSec);
-    void draw(sf::RenderWindow &window, GameLogic &logic);
+    void draw(sf::RenderWindow &window, GameLogic &logic, float dSec);
 
   private:
     sf::Font font;
@@ -21,7 +21,7 @@ class CameraView {
     std::unique_ptr<Controller> player2Controller;
 
     // draw screen functions
-    void drawGame(sf::RenderWindow &window, GameLogic &logic);
+    void drawGame(sf::RenderWindow &window, GameLogic &logic, float dSec);
     void drawMainMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
