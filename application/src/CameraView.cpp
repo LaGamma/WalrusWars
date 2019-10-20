@@ -1,4 +1,5 @@
 #include "CameraView.h"
+#include "animation.h"
 #include "PlayerController.h"
 #include <iostream>
 
@@ -11,7 +12,7 @@ void CameraView::init() {
     player2Controller = createController(true);
 }
 
-void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
+void CameraView::draw(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
     const GameLogic::GameState state = logic.getState();
     switch (state) {
@@ -19,11 +20,11 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
             drawMainMenu(window, logic);
             break;
         case GameLogic::GameState::pauseMenu:
-            drawGame(window,logic);
+            drawGame(window,logic, dSec);
             drawPauseMenu(window, logic);
             break;
         case GameLogic::GameState::playing:
-            drawGame(window, logic);
+            drawGame(window, logic, dSec);
             break;
         case GameLogic::GameState::gameOverMenu:
             drawGameOverMenu(window, logic);
@@ -54,7 +55,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 
 }
 
-void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
+void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
     window.clear(sf::Color::Blue);
     sf::RectangleShape ice;
@@ -73,10 +74,30 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
 
     sf::CircleShape circle;
+    //load in textures
+    sf::Texture spriteMapP1;
+    sf::Texture spriteMapP2;
+    //sprite map must be in root dir
+    spriteMapP1.loadFromFile("WWP1.png");
+    spriteMapP2.loadFromFile("WWP1.png");
+
+    Animation animation(&spriteMapP1, sf::Vector2u(3,10), 0.3);
+    animation.update(animation.getSpriteRow(), dSec);
+    /*
+    divide the image up in to its individual sprites by using dimensions of
+    the image and dividing by the number of images in the rows and columns
+    */
+    sf::Vector2u textureSize = spriteMapP1.getSize();
+    textureSize.x /= 3;
+    textureSize.y /= 10;
+    //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
+    circle.setTextureRect(animation.uvRect);
+
     // draw Player1
     circle.setRadius(logic.walrus1.getMass()*10);
     circle.setPosition(logic.walrus1.getPos().x - circle.getRadius(), logic.walrus1.getPos().y - circle.getRadius());
-    circle.setFillColor(sf::Color(180, 0, 255, 255));
+    //circle.setFillColor(sf::Color(180, 0, 255, 255));
+    circle.setTexture(&spriteMapP1);
     window.draw(circle);
     // draw Player2
     circle.setRadius(logic.walrus2.getMass()*10);
@@ -95,6 +116,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     rectangle.setFillColor(sf::Color(255, 0, 0, 255));
     rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
+
 
 }
 
