@@ -27,6 +27,9 @@ class CameraView {
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;
 
+    Animation end_walrus1_animation;
+    Animation end_walrus2_animation;
+
     // draw screen functions
     void drawGame(sf::RenderWindow &window, GameLogic &logic);
     void drawMainMenu(sf::RenderWindow &window, GameLogic &logic);

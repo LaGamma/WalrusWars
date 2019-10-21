@@ -14,7 +14,7 @@ class GameLogic {
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
-
+    bool winner1;
     Player walrus1;
     Player walrus2;
     Stage stage;
@@ -24,7 +24,6 @@ class GameLogic {
 private:
     GameState state;
     int progression;
-
 };
 
 #endif /* _GameLogic_H_ */

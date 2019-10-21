@@ -15,6 +15,9 @@ void CameraView::init() {
     spriteMapP2.loadFromFile("../images/WWP1.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
+    end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
+    end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
+    font.loadFromFile("../menuFont.ttf");
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -57,7 +60,42 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Red);
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(100);
+    text.setFillColor(sf::Color(255,255,255,255));
+    text.setPosition(window.getSize().x / 4.0, 50);
 
+
+    if (logic.winner1)
+    {
+        //walrus1 won
+        sf::CircleShape player1;
+
+        player1.setRadius(logic.walrus1.getMass()*10);
+        player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
+        //player1.setFillColor(sf::Color(180, 0, 255, 255));
+        player1.setTexture(&spriteMapP1);
+        player1.setTextureRect(end_walrus1_animation.uvRectP1);
+        window.draw(player1);
+        text.setString("Walrus 1 Won!");
+    }
+
+    else
+    {
+        //walrus2 won
+        sf::CircleShape player2;
+
+        player2.setRadius(logic.walrus2.getMass()*10);
+        player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
+        player2.setFillColor(sf::Color(150, 150, 255, 255));
+        player2.setTexture(&spriteMapP2);
+        player2.setTextureRect(end_walrus2_animation.uvRectP2);
+        window.draw(player2);
+        text.setString("Walrus 2 Won!");
+    }
+
+    window.draw(text);
 }
 
 void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
