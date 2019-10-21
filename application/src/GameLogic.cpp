@@ -14,6 +14,8 @@ GameLogic::GameLogic() {
 void GameLogic::update(float dSec) {
 
     if (state == playing) {
+       // if (progression >= 3 || progression <= -3)
+         //   progression = 0;
         // process movement
         walrus1.tickMovement(dSec);
         walrus2.tickMovement(dSec);
@@ -110,11 +112,14 @@ void GameLogic::handlePlayerDeath(int x) {
 	}
 	if (progression >= 3) {
 	    std::cout<<"walrus2 won!\n";
+	    winner1 = false;
 	    state = gameOverMenu;
 	    //reset progression
 	    progression = 0;
 	}
 	else if (progression <= -3) {
+	    //add boolean for winner
+        winner1 = true;
 	    std::cout<<"walrus1 won!\n";
         state = gameOverMenu;
         progression = 0;

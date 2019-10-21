@@ -47,49 +47,49 @@ void Animation::update(float dSec)
     uvRectP2.width = abs(uvRectP2.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
   {
     currentSpriteP2.y = 2;
     uvRectP2.left = (currentSpriteP2.x+1) * abs(uvRectP2.width);
     uvRectP2.width = -abs(uvRectP2.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
   {
     currentSpriteP2.y = 1;
     uvRectP2.left = currentSpriteP2.x * uvRectP2.width;
     uvRectP2.width = abs(uvRectP2.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
   {
     currentSpriteP2.y = 0;
     uvRectP2.left = (currentSpriteP2.x + 1) * abs(uvRectP2.width);
     uvRectP2.width = -abs(uvRectP2.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
   {
     currentSpriteP1.y = 2;
     uvRectP1.left = currentSpriteP1.x * uvRectP1.width;
     uvRectP1.width = abs(uvRectP1.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
   {
     currentSpriteP1.y = 2;
     uvRectP1.left = (currentSpriteP1.x+1) * abs(uvRectP1.width);
     uvRectP1.width = -abs(uvRectP1.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
   {
     currentSpriteP1.y = 1;
     uvRectP1.left = currentSpriteP1.x * uvRectP1.width;
     uvRectP1.width = abs(uvRectP1.width);
   }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
   {
     currentSpriteP1.y = 0;
     uvRectP1.left = (currentSpriteP1.x + 1) * abs(uvRectP1.width);
