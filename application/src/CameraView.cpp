@@ -76,7 +76,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
         player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
         //player1.setFillColor(sf::Color(180, 0, 255, 255));
         player1.setTexture(&spriteMapP1);
-        player1.setTextureRect(end_walrus1_animation.uvRectP1);
+        player1.setTextureRect(end_walrus1_animation.uvRect);
         window.draw(player1);
         text.setString("Walrus 1 Won!");
     }
@@ -90,7 +90,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
         player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
         player2.setFillColor(sf::Color(150, 150, 255, 255));
         player2.setTexture(&spriteMapP2);
-        player2.setTextureRect(end_walrus2_animation.uvRectP2);
+        player2.setTextureRect(end_walrus2_animation.uvRect);
         window.draw(player2);
         text.setString("Walrus 2 Won!");
     }
@@ -134,14 +134,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
     //player1.setFillColor(sf::Color(180, 0, 255, 255));
     player1.setTexture(&spriteMapP1);
-    player1.setTextureRect(walrus1_animation.uvRectP1);
+    player1.setTextureRect(walrus1_animation.uvRect);
 
     // draw Player2
     player2.setRadius(logic.walrus2.getMass()*10);
     player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
     player2.setFillColor(sf::Color(150, 150, 255, 255));
     player2.setTexture(&spriteMapP2);
-    player2.setTextureRect(walrus2_animation.uvRectP2);
+    player2.setTextureRect(walrus2_animation.uvRect);
 
     //hitbox.setOutlineThickness(4);
     hitbox.setRadius(logic.walrus1.getMass()*6.5);
@@ -183,10 +183,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
     if (logic.getState() == GameLogic::GameState::playing) {
         //ignore input here and instead handle input in instantiated player controllers
-        player1Controller->update(window, logic, dSec, 1);
-        player2Controller->update(window, logic, dSec, 2);
-        walrus1_animation.update(dSec);
-        walrus2_animation.update(dSec);
+        player1Controller->update(window, logic, dSec, 1, walrus1_animation);
+        player2Controller->update(window, logic, dSec, 2, walrus2_animation);
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)

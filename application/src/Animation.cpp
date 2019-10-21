@@ -11,90 +11,69 @@ void Animation::init(sf::Texture* texture, sf::Vector2u sprite_count, float swit
   spriteCount = sprite_count;
   switchTime = switch_time;
   totalTime = 0;
-  currentSpriteP1.x = 0;
-  currentSpriteP2.x = 0;
-  uvRectP2.width = texture->getSize().x / float(spriteCount.x);
-  uvRectP2.height = texture->getSize().y / float(spriteCount.y);
-  uvRectP1.width = texture->getSize().x / float(spriteCount.x);
-  uvRectP1.height = texture->getSize().y / float(spriteCount.y);
+  currentSprite.x = 0;
+  uvRect.width = texture->getSize().x / float(spriteCount.x);
+  uvRect.height = texture->getSize().y / float(spriteCount.y);
 }
 
 
-void Animation::update(float dSec)
-{
-  totalTime += dSec;
+void Animation::update(sf::Vector2f dir, float dSec) {
+    totalTime += dSec;
 
-  if (totalTime >= switchTime)
-  {
-    totalTime -= switchTime;
-    currentSpriteP1.x++;
-    currentSpriteP2.x++;
-    //make the animation loop through row
-    if (currentSpriteP1.x >= spriteCount.x)
-    {
-        currentSpriteP1.x = 0;
+    if (totalTime >= switchTime) {
+        totalTime -= switchTime;
+        currentSprite.x++;
+        //make the animation loop through row
+        if (currentSprite.x >= spriteCount.x) {
+            currentSprite.x = 0;
+        }
     }
-    if (currentSpriteP2.x >= spriteCount.x)
-    {
-        currentSpriteP2.x = 0;
+
+    // this is the quickest way I could think of converting a unit vector into integers representing all of its component cases, may be a better solution
+    int hash = dir.x * 17 + dir.y * 7;
+    switch (hash) {
+        case 17 + 7: //right down
+            currentSprite.y = 4;
+            uvRect.left = currentSprite.x * uvRect.width;
+            uvRect.width = abs(uvRect.width);
+            break;
+        case 17 - 7: //right up
+            currentSprite.y = 3;
+            uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
+            uvRect.width = -abs(uvRect.width);
+            break;
+        case -17 + 7: //left down
+            currentSprite.y = 4;
+            uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
+            uvRect.width = -abs(uvRect.width);
+            break;
+        case -17 - 7: //left up
+            currentSprite.y = 3;
+            uvRect.left = currentSprite.x * uvRect.width;
+            uvRect.width = abs(uvRect.width);
+            break;
+        case 17: //right
+            currentSprite.y = 2;
+            uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
+            uvRect.width = -abs(uvRect.width);
+            break;
+        case 7: //down
+            currentSprite.y = 0;
+            uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
+            uvRect.width = -abs(uvRect.width);
+            break;
+        case -17: //left
+            currentSprite.y = 2;
+            uvRect.left = currentSprite.x * uvRect.width;
+            uvRect.width = abs(uvRect.width);
+            break;
+        case -7: //up
+            currentSprite.y = 1;
+            uvRect.left = currentSprite.x * uvRect.width;
+            uvRect.width = abs(uvRect.width);
+            break;
+        case 0:
+            break;
     }
-  }
-
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-  {
-    currentSpriteP2.y = 2;
-    uvRectP2.left = currentSpriteP2.x * uvRectP2.width;
-    uvRectP2.width = abs(uvRectP2.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-  {
-    currentSpriteP2.y = 2;
-    uvRectP2.left = (currentSpriteP2.x+1) * abs(uvRectP2.width);
-    uvRectP2.width = -abs(uvRectP2.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-  {
-    currentSpriteP2.y = 1;
-    uvRectP2.left = currentSpriteP2.x * uvRectP2.width;
-    uvRectP2.width = abs(uvRectP2.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-  {
-    currentSpriteP2.y = 0;
-    uvRectP2.left = (currentSpriteP2.x + 1) * abs(uvRectP2.width);
-    uvRectP2.width = -abs(uvRectP2.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-  {
-    currentSpriteP1.y = 2;
-    uvRectP1.left = currentSpriteP1.x * uvRectP1.width;
-    uvRectP1.width = abs(uvRectP1.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-  {
-    currentSpriteP1.y = 2;
-    uvRectP1.left = (currentSpriteP1.x+1) * abs(uvRectP1.width);
-    uvRectP1.width = -abs(uvRectP1.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-  {
-    currentSpriteP1.y = 1;
-    uvRectP1.left = currentSpriteP1.x * uvRectP1.width;
-    uvRectP1.width = abs(uvRectP1.width);
-  }
-
-  else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-  {
-    currentSpriteP1.y = 0;
-    uvRectP1.left = (currentSpriteP1.x + 1) * abs(uvRectP1.width);
-    uvRectP1.width = -abs(uvRectP1.width);
-  }
-  uvRectP2.top = currentSpriteP2.y * uvRectP2.height;
-  uvRectP1.top = currentSpriteP1.y * uvRectP1.height;
-  }
+    uvRect.top = currentSprite.y * uvRect.height;
+}

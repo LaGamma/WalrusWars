@@ -5,21 +5,23 @@ PlayerController::PlayerController() {
 
 };
 
-void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
+void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
+
+    sf::Vector2f dir = sf::Vector2f(0,0);
 
     if (playerNum == 1) {
         //process keyboard input for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-            logic.walrus1.applyActiveForce(sf::Vector2f(0, -1), dSec);
+            dir.y -= 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            logic.walrus1.applyActiveForce(sf::Vector2f(0, 1), dSec);
+            dir.y += 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-            logic.walrus1.applyActiveForce(sf::Vector2f(-1, 0), dSec);
+            dir.x -= 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            logic.walrus1.applyActiveForce(sf::Vector2f(1, 0), dSec);
+            dir.x += 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
             logic.walrus1.setMass(logic.walrus1.getMass()+0.001);
@@ -27,23 +29,21 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
             logic.walrus1.setMass(logic.walrus1.getMass()-0.001);
         }
-
-        //update animation
+        logic.walrus1.applyActiveForce(dir, dSec);
 
     } else {
         //process keyboard input for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-            logic.walrus2.applyActiveForce(sf::Vector2f(0, -1), dSec);
+            dir.y -= 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-            logic.walrus2.applyActiveForce(sf::Vector2f(0, 1), dSec);
+            dir.y += 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-            logic.walrus2.applyActiveForce(sf::Vector2f(-1,
-                    0), dSec);
+            dir.x -= 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-            logic.walrus2.applyActiveForce(sf::Vector2f(1, 0), dSec);
+            dir.x += 1;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
             logic.walrus2.setMass(logic.walrus2.getMass()+0.001);
@@ -51,9 +51,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) {
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
+        logic.walrus2.applyActiveForce(dir, dSec);
 
-        // update animation
     }
+    anim.update(dir, dSec);
 
 
     // process events

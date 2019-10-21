@@ -12,6 +12,8 @@ class CameraView {
     void init();
     void processInput(sf::RenderWindow &window, GameLogic &logic, float dSec);
     void draw(sf::RenderWindow &window, GameLogic &logic);
+    Animation walrus1_animation;
+    Animation walrus2_animation;
 
   private:
     sf::Font font;
@@ -22,8 +24,6 @@ class CameraView {
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
-    Animation walrus1_animation;
-    Animation walrus2_animation;
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;
 
