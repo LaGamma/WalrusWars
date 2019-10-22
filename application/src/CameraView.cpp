@@ -198,7 +198,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     rectangle.setFillColor(sf::Color(255, 0, 0, 255));
     rectangle.setOutlineColor(sf::Color(255,0,0));
     rectangle.setOutlineThickness(3);
-    rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
+    //rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
+    rectangle.setPosition(390.0f + (logic.getStageProgression() * (480 / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
 
     //draw minimap
@@ -206,6 +207,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     minimap.setTexture(&stage_progression);
     minimap.setPosition(175, 500);
     window.draw(minimap);
+
+    //make the rectangle a single stage
 }
 
 
