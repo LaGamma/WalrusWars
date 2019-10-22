@@ -186,6 +186,13 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     pt.setFillColor(sf::Color::Red);
     window.draw(pt);
 
+    //draw minimap background
+    sf::RectangleShape minimapbg;
+    minimapbg.setSize(sf::Vector2f(440,70));
+    minimapbg.setPosition(180,515);
+    minimapbg.setFillColor(sf::Color::Blue);
+    window.draw(minimapbg);
+
     //draw stage progression. For now display square progressing on bottom of screen
     sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
     rectangle.setFillColor(sf::Color(255, 0, 0, 255));
@@ -194,11 +201,11 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
 
+    //draw minimap
     minimap.setSize(sf::Vector2f(450,80));
     minimap.setTexture(&stage_progression);
     minimap.setPosition(175, 500);
     window.draw(minimap);
-
 }
 
 
