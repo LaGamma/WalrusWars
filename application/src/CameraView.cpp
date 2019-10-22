@@ -193,22 +193,32 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     minimapbg.setFillColor(sf::Color::Blue);
     window.draw(minimapbg);
 
-    //draw stage progression. For now display square progressing on bottom of screen
-    sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
-    rectangle.setFillColor(sf::Color(255, 0, 0, 255));
-    rectangle.setOutlineColor(sf::Color(255,0,0));
-    rectangle.setOutlineThickness(3);
-    //rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
-    rectangle.setPosition(390.0f + (logic.getStageProgression() * (480 / 5.0f)), 600.0f - 25);
-    window.draw(rectangle);
-
     //draw minimap
     minimap.setSize(sf::Vector2f(450,80));
+    //minimap.setFillColor(sf::Color(50,247,250,100));
     minimap.setTexture(&stage_progression);
     minimap.setPosition(175, 500);
     window.draw(minimap);
 
-    //make the rectangle a single stage
+    //draw stage indicator veil
+    sf::CircleShape stage_veil;
+    stage_veil.setRadius(55);
+    stage_veil.setFillColor(sf::Color(0, 0, 255, 100));
+    stage_veil.setPosition(348.0f + (logic.getStageProgression() * (470 / 5.0f)), 600.0f - 95);
+    window.draw(stage_veil);
+
+    /*
+    //draw stage progression. For now display square progressing on bottom of screen
+    sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
+    rectangle.setFillColor(sf::Color(255, 0, 0, 255));
+    //rectangle.setOutlineColor(sf::Color(255,0,0));
+    //rectangle.setOutlineThickness(3);
+    rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
+    window.draw(rectangle);
+    */
+
+
+    //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
 }
 
 
