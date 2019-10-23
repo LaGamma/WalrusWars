@@ -33,9 +33,9 @@ void GameLogic::update(float dSec) {
         //if (w1_pos.x > 800.0f || w1_pos.y > 600.0f || w1_pos.x < 0 || w1_pos.y < 0)
         //    handlePlayerDeath(1);
         //if (w2_pos.x > 800.0f || w2_pos.y > 600.0f || w2_pos.x < 0 || w2_pos.y < 0)
-        if (stage.getTile((w1_pos.x)/20, (w1_pos.y)/20) == 0)
+        if (stage.getTile((w1_pos.x)/20, (w1_pos.y)/20, progression) == 0)
             handlePlayerDeath(1);
-        if (stage.getTile((w2_pos.x)/20, (w2_pos.y)/20) == 0)
+        if (stage.getTile((w2_pos.x)/20, (w2_pos.y)/20, progression) == 0)
             handlePlayerDeath(2);
 
         sf::Vector2f posDiff = w1_pos - w2_pos;
@@ -125,8 +125,8 @@ void GameLogic::handlePlayerDeath(int x) {
         progression = 0;
 	}
 	// respawn
-    walrus1.spawn(sf::Vector2f(400.0f, 200.0f));
-    walrus2.spawn(sf::Vector2f(400.0f, 400.0f));
+    walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+    walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
 }
 
 void GameLogic::togglePause() {
