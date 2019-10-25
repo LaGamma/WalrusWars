@@ -150,8 +150,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
       }
     }
     //should these be in the header file?
-    sf::CircleShape player1;
-    sf::CircleShape player2;
+    sf::RectangleShape player1;
+    sf::RectangleShape player2;
     sf::CircleShape hitbox;
     sf::RectangleShape minimap;
 
@@ -165,15 +165,15 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
 
     // draw Player1
-    player1.setRadius(logic.walrus1.getMass()*10);
-    player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
+    player1.setSize(sf::Vector2f(logic.walrus1.getMass()*20, logic.walrus1.getMass()*20));
+    player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x, logic.walrus1.getPos().y - player1.getSize().y);
     //player1.setFillColor(sf::Color(180, 0, 255, 255));
     player1.setTexture(&spriteMapP1);
     player1.setTextureRect(walrus1_animation.uvRect);
 
     // draw Player2
-    player2.setRadius(logic.walrus2.getMass()*10);
-    player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
+    player2.setSize(sf::Vector2f(logic.walrus2.getMass()*20, logic.walrus2.getMass()*20));
+    player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x, logic.walrus2.getPos().y - player2.getSize().y);
     player2.setFillColor(sf::Color(150, 150, 255, 255));
     player2.setTexture(&spriteMapP2);
     player2.setTextureRect(walrus2_animation.uvRect);
