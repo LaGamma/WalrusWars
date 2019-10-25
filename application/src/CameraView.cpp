@@ -13,7 +13,7 @@ void CameraView::init() {
     //load in textures
     spriteMapP1.loadFromFile("../images/WalrusMovementSS.png");
     spriteMapP2.loadFromFile("../images/WalrusMovementSS.png");
-    menu_background.loadFromFile("../images/menubg.png");
+    menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/minimap3.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
@@ -51,17 +51,19 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     bg.setSize(sf::Vector2f(800,600));
     bg.setTexture(&menu_background);
     window.draw(bg);
-    /*
-    sf::Text Play("Play", font, 100);
-    sf::Text Stats("Stats", font, 100);
-    sf::Text Controls("Controls", font, 100);
-    Play.setPosition(250, 100);
-    Stats.setPosition(250, 230);
-    Controls.setPosition(250, 360);
+
+
+    sf::Text Play("Play", font, 75);
+    sf::Text Stats("Stats", font, 75);
+    sf::Text Settings("Settings", font, 75);
+    Play.setPosition(360, 350);
+    Stats.setPosition(355, 425);
+    Settings.setPosition(330, 500);
     window.draw(Play);
     window.draw(Stats);
-    window.draw(Controls);
-    */
+    window.draw(Settings);
+//settings could contain controls, difficulty, toggle music on off, toggle sound effects, ect.
+
 
 }
 
