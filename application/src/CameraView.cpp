@@ -109,8 +109,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     for(int i=0;i<40;i++){
       for(int j=0;j<30;j++){
-        if(logic.stage.getTile(i,j)==1){
-          ice.setPosition((i*20-20),(j*20-20));
+        if(logic.stage.getTile(i,j,logic.getStageProgression())==1){
+          ice.setPosition((i*20),(j*20));
           window.draw(ice);
         }
       }
