@@ -11,27 +11,16 @@ void Stage::generateMap(){
 	int j;
 	for(i = 0; i<40; i++){
 		for(j = 0; j<30; j++){
-			if((i>10 && i<=30)&&(j>5 && j<=25)){
+			if((i>8 && i<=32)&&(j>2 && j<=28)){
 				centerStage[i][j] = 1;
-			}
-			else if((i>14 && i<=26)&&(j>9&&j<=21)){
-				leftStage1[i][j] = 1;
-				rightStage1[i][j] = 1;
-			}
-			else if((i>16 && i<=24)&&(j>11&&j<=19)){
-				leftStage2[i][j] = 1;
-				rightStage2[i][j] = 1;
-			}
-			else if((j>13&&j<=17)){
-				centerStage[i][j] = 1;
-				leftStage1[i][j] = 1;
-				rightStage1[i][j] = 1;
-			}
-			else if((j>13&&j<=17)&&(i>20)){
-				leftStage2[i][j] = 1;
-			}
-			else if((j>13&&j<=17)&&(i<20)){
-				rightStage2[i][j] = 1;
+				if((i>12 && i<=28)&&(j>6&&j<=24)){
+					leftStage1[i][j] = 1;
+					rightStage1[i][j] = 1;
+					if((i>14 && i<=26)&&(j>9&&j<=21)){
+						leftStage2[i][j] = 1;
+						rightStage2[i][j] = 1;
+					}
+				}
 			}
 			else {
 			    long r = rand() % 10 + 1;
@@ -52,8 +41,19 @@ void Stage::generateMap(){
 			        centerStage[i][j] = 0;
 			    }
 
+
 			}
-		std::cout<<centerStage[i][j]; //this is a hardcoded loop that should create an island of ice
+			if(j>13&&j<=17){
+				centerStage[i][j] = 1;
+				leftStage1[i][j] = 1;
+				rightStage1[i][j] = 1;
+				if(i>20){
+					leftStage2[i][j] = 1;
+				}
+				if(i<20){
+					rightStage2[i][j] = 1;
+				}
+			} //this is a hardcoded loop that should create an island of ice
 		}
 	}
 
