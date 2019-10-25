@@ -11,13 +11,15 @@ void CameraView::init() {
     player1Controller = createController(true);
     player2Controller = createController(true);
     //load in textures
-    spriteMapP1.loadFromFile("../images/WWP1.png");
-    spriteMapP2.loadFromFile("../images/WWP1.png");
+    spriteMapP1.loadFromFile("../images/WalrusMovementSS.png");
+    spriteMapP2.loadFromFile("../images/WalrusMovementSS.png");
+    menu_background.loadFromFile("../images/menu_title.png");
+    stage_progression.loadFromFile("../images/minimap3.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
     end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
     end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
-    font.loadFromFile("../menuFont.ttf");
+    font.loadFromFile("../fonts/menuFont.ttf");
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -44,7 +46,39 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
-    window.clear(sf::Color::Blue);
+    window.clear(sf::Color(150, 150, 150));
+    sf::RectangleShape bg;
+    bg.setSize(sf::Vector2f(800,600));
+    bg.setTexture(&menu_background);
+    window.draw(bg);
+
+
+    sf::Text Play("Play", font, 75);
+    sf::Text Stats("Stats", font, 75);
+    sf::Text Options("Options", font, 75);
+    Play.setPosition(360, 325);
+    Stats.setPosition(355, 400);
+    Options.setPosition(330, 475);
+    //handle coloring of selection
+    if (main_menu_selection == 'P'){
+        Stats.setFillColor(sf::Color::White);
+        Play.setFillColor(sf::Color::Black);
+    }
+    if (main_menu_selection == 'S'){
+        Play.setFillColor(sf::Color::White);
+        Options.setFillColor(sf::Color::White);
+        Stats.setFillColor(sf::Color::Black);
+    }
+    if (main_menu_selection == 'O'){
+        Stats.setFillColor(sf::Color::White);
+        Options.setFillColor(sf::Color::Black);
+    }
+
+    window.draw(Play);
+    window.draw(Stats);
+    window.draw(Options);
+//settings could contain controls, difficulty, toggle music on off, toggle sound effects, ect.
+
 
 }
 
@@ -115,10 +149,11 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
       }
     }
-
+    //should these be in the header file?
     sf::CircleShape player1;
     sf::CircleShape player2;
     sf::CircleShape hitbox;
+    sf::RectangleShape minimap;
 
     /*
     divide the image up in to its individual sprites by using dimensions of
@@ -168,13 +203,39 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     pt.setFillColor(sf::Color::Red);
     window.draw(pt);
 
+    //draw minimap background
+    sf::RectangleShape minimapbg;
+    minimapbg.setSize(sf::Vector2f(440,70));
+    minimapbg.setPosition(180,515);
+    minimapbg.setFillColor(sf::Color::Blue);
+    window.draw(minimapbg);
+
+    //draw minimap
+    minimap.setSize(sf::Vector2f(450,80));
+    //minimap.setFillColor(sf::Color(50,247,250,100));
+    minimap.setTexture(&stage_progression);
+    minimap.setPosition(175, 500);
+    window.draw(minimap);
+
+    //draw stage indicator veil
+    sf::CircleShape stage_veil;
+    stage_veil.setRadius(55);
+    stage_veil.setFillColor(sf::Color(0, 0, 255, 100));
+    stage_veil.setPosition(348.0f + (logic.getStageProgression() * (470 / 5.0f)), 600.0f - 95);
+    window.draw(stage_veil);
+
+    /*
     //draw stage progression. For now display square progressing on bottom of screen
     sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
     rectangle.setFillColor(sf::Color(255, 0, 0, 255));
+    //rectangle.setOutlineColor(sf::Color(255,0,0));
+    //rectangle.setOutlineThickness(3);
     rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
     window.draw(rectangle);
+    */
 
 
+    //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
 }
 
 
@@ -207,8 +268,18 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                 case sf::Event::KeyPressed:
                     if (Event.key.code == sf::Keyboard::Up) {
                         std::cout << "menu up" << std::endl;
+                        //track which menu option the player is on
+                        if (main_menu_selection == 'P' || main_menu_selection == 'S')
+                            main_menu_selection = 'P';
+                        else if (main_menu_selection == 'O')
+                            main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Down) {
                         std::cout << "menu down" << std::endl;
+                        //track which menu option the player is on
+                        if (main_menu_selection == 'O' || main_menu_selection == 'S')
+                            main_menu_selection = 'O';
+                        else if (main_menu_selection == 'P')
+                            main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
                         logic.playGame();
