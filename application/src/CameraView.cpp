@@ -55,13 +55,28 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     sf::Text Play("Play", font, 75);
     sf::Text Stats("Stats", font, 75);
-    sf::Text Settings("Settings", font, 75);
-    Play.setPosition(360, 350);
-    Stats.setPosition(355, 425);
-    Settings.setPosition(330, 500);
+    sf::Text Options("Options", font, 75);
+    Play.setPosition(360, 325);
+    Stats.setPosition(355, 400);
+    Options.setPosition(330, 475);
+    //handle coloring of selection
+    if (main_menu_selection == 'P'){
+        Stats.setFillColor(sf::Color::White);
+        Play.setFillColor(sf::Color::Black);
+    }
+    if (main_menu_selection == 'S'){
+        Play.setFillColor(sf::Color::White);
+        Options.setFillColor(sf::Color::White);
+        Stats.setFillColor(sf::Color::Black);
+    }
+    if (main_menu_selection == 'O'){
+        Stats.setFillColor(sf::Color::White);
+        Options.setFillColor(sf::Color::Black);
+    }
+
     window.draw(Play);
     window.draw(Stats);
-    window.draw(Settings);
+    window.draw(Options);
 //settings could contain controls, difficulty, toggle music on off, toggle sound effects, ect.
 
 
@@ -253,8 +268,18 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                 case sf::Event::KeyPressed:
                     if (Event.key.code == sf::Keyboard::Up) {
                         std::cout << "menu up" << std::endl;
+                        //track which menu option the player is on
+                        if (main_menu_selection == 'P' || main_menu_selection == 'S')
+                            main_menu_selection = 'P';
+                        else if (main_menu_selection == 'O')
+                            main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Down) {
                         std::cout << "menu down" << std::endl;
+                        //track which menu option the player is on
+                        if (main_menu_selection == 'O' || main_menu_selection == 'S')
+                            main_menu_selection = 'O';
+                        else if (main_menu_selection == 'P')
+                            main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
                         logic.playGame();

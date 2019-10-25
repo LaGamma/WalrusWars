@@ -16,12 +16,14 @@ class CameraView {
   private:
     sf::Font font;
     bool temp = true;
+    char main_menu_selection = 'P';
 
     // major update classes
     std::unique_ptr<Controller> createController(bool player);
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
+    //animations and art
     Animation walrus1_animation;
     Animation walrus2_animation;
     Animation end_walrus1_animation;
