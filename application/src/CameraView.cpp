@@ -135,18 +135,21 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
     
-    ice.setSize(sf::Vector2f(20,20));
-    ice.setFillColor(sf::Color(50,247,250,200));
-    ice.setOutlineColor(sf::Color(255,255,255));
-    ice.setOutlineThickness(4);
+    
 
     for(int i=0;i<40;i++){
-      for(int j=0;j<30;j++){
-        if(logic.stage.getTile(i,j,logic.getStageProgression())==1){
-          ice.setPosition((i*20),(j*20));
-          window.draw(ice);
+        for(int j=0;j<30;j++){
+            float dura = logic.stage.getTileDura(i,j,logic.getStageProgression());
+            if(dura >= 0){
+                // draw ice graphics based on melt
+                ice.setSize(sf::Vector2f(20*dura,20*dura));
+                ice.setPosition((i*20+(20-ice.getSize().x/2)),(j*20+(20-ice.getSize().y/2)));
+                ice.setFillColor(sf::Color(50,247,250,200));
+                ice.setOutlineColor(sf::Color(255,255,255,255));
+                ice.setOutlineThickness(4*dura);
+                window.draw(ice);
+            }
         }
-      }
     }
 
     /*

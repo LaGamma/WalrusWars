@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include <random>
 #include <iostream>
+#include <memory>
 
 Stage::Stage(){
 
@@ -74,27 +75,64 @@ void Stage::generateMap(){
 	}
 
 }
-int Stage::getTile(int x, int y, int stage){
-	if(stage == 0){
-		return centerStage[x][y];
+
+void Stage::tickMelt(float dSec, int stage) {
+	// melt the correct stage
+	typedef float stage_map[40][30];
+	stage_map *melting_stage;
+	switch (stage) {
+		case -2:
+		    melting_stage = &leftStage2;
+		    break;
+		case -1:
+		    melting_stage = &leftStage1;
+		    break; 
+		case 0:
+		    melting_stage = &centerStage;
+		    break;
+		case 1:
+		    melting_stage = &rightStage1;
+		    break;
+		case 2:
+		    melting_stage = &rightStage2;
+		    break;
 	}
-	else if(stage == -1){
-		return leftStage1[x][y];
+
+    int r;
+	for(int i = 0; i<40; i++) {
+		for(int j = 0; j<30; j++) {
+			if ((*melting_stage)[i][j] > 0) {
+				r = rand() % 100 + 1;
+				// only melt 1% of the time to blocks that are not the bridge
+				if (r > 99 && (j<=13 || j>17)) {
+					// TODO - change uniform melting to melting partially based on neighbors durabilities
+					(*melting_stage)[i][j] -= 0.001;
+				}
+				
+			}
+		}
 	}
-	if(stage == -2){
-		return leftStage2[x][y];
-	}
-	if(stage == 1){
-		return rightStage1[x][y];
-	}
-	if(stage == 2){
-		return rightStage2[x][y];
-	}
+
+
 
 }
 
-
-
-float Stage::getBlockDura(int x, int y){
-	return 0.0f;
+float Stage::getTileDura(int x, int y, int stage) {
+	switch (stage) {
+		case -2:
+		    return leftStage2[x][y];
+		    break;
+		case -1:
+		    return leftStage1[x][y];
+		    break; 
+		case 0:
+		    return centerStage[x][y];
+		    break;
+		case 1:
+		    return rightStage1[x][y];
+		    break;
+		case 2:
+		    return rightStage2[x][y];
+		    break;
+	}
 }
