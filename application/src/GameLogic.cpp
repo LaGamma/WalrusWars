@@ -65,7 +65,7 @@ void GameLogic::handlePlayerCollision() {
   float w2_mass = walrus2.getMass();
 
   // calculate point of collision for potentially adding a collision animation later
-  playerCollisionPoint = sf::Vector2f(((w1_pos.x * w2_mass*10) + (w2_pos.x * w1_mass*10)) / (w1_mass*10 + w2_mass*10), ((w1_pos.y * w2_mass*10) + (w2_pos.y * w1_mass*10)) / (w1_mass*10 + w2_mass*10));
+  playerCollisionPoint = sf::Vector2f(((w1_pos.x * w2_mass*20) + (w2_pos.x * w1_mass*20)) / (w1_mass*20 + w2_mass*20), ((w1_pos.y * w2_mass*20) + (w2_pos.y * w1_mass*20)) / (w1_mass*20 + w2_mass*20));
 
   // Elastic Collision handling algorithm implemented from:
   // http://cobweb.cs.uga.edu/~maria/classes/4070-Spring-2017/Adam%20Brookes%20Elastic%20collision%20Code.pdf
