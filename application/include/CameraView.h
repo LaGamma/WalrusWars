@@ -15,7 +15,6 @@ class CameraView {
 
   private:
     sf::Font font;
-    bool temp = true;
     char main_menu_selection = 'P';
 
     // major update classes
@@ -32,6 +31,15 @@ class CameraView {
     sf::Texture spriteMapP2;
     sf::Texture menu_background;
     sf::Texture stage_progression;
+
+    sf::RectangleShape ice;
+    sf::RectangleShape player1;
+    sf::RectangleShape player2;
+    sf::CircleShape hitbox;
+    sf::RectangleShape minimap;
+    sf::CircleShape collision_pt;
+    sf::RectangleShape minimapbg;
+    sf::CircleShape stage_veil;
 
     // draw screen functions
     void drawGame(sf::RenderWindow &window, GameLogic &logic);

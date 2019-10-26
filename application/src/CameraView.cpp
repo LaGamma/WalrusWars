@@ -135,7 +135,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
-    sf::RectangleShape ice;
+    
     ice.setSize(sf::Vector2f(20,20));
     ice.setFillColor(sf::Color(50,247,250,200));
     ice.setOutlineColor(sf::Color(255,255,255));
@@ -149,11 +149,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
       }
     }
-    //should these be in the header file?
-    sf::RectangleShape player1;
-    sf::RectangleShape player2;
-    sf::CircleShape hitbox;
-    sf::RectangleShape minimap;
 
     /*
     divide the image up in to its individual sprites by using dimensions of
@@ -179,14 +174,15 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     player2.setTextureRect(walrus2_animation.uvRect);
 
     //hitbox.setOutlineThickness(4);
-    hitbox.setRadius(logic.walrus1.getMass()*6.5);
+    hitbox.setRadius(logic.walrus1.getMass()*6);
     hitbox.setPosition(logic.walrus1.getPos().x - hitbox.getRadius(), logic.walrus1.getPos().y - hitbox.getRadius());
     hitbox.setFillColor(sf::Color(0,0,0,0));
     window.draw(hitbox);
-    hitbox.setRadius(logic.walrus2.getMass()*6.5);
+    hitbox.setRadius(logic.walrus2.getMass()*6);
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
 
+    
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
         window.draw(player2);
@@ -197,14 +193,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
 
     // draw collision point
-    sf::CircleShape pt;
-    pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
-    pt.setRadius(5);
-    pt.setFillColor(sf::Color::Red);
-    window.draw(pt);
+    collision_pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
+    collision_pt.setRadius(5);
+    collision_pt.setFillColor(sf::Color::Red);
+    window.draw(collision_pt);
 
     //draw minimap background
-    sf::RectangleShape minimapbg;
     minimapbg.setSize(sf::Vector2f(440,70));
     minimapbg.setPosition(180,515);
     minimapbg.setFillColor(sf::Color::Blue);
@@ -218,7 +212,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(minimap);
 
     //draw stage indicator veil
-    sf::CircleShape stage_veil;
     stage_veil.setRadius(55);
     stage_veil.setFillColor(sf::Color(0, 0, 255, 100));
     stage_veil.setPosition(348.0f + (logic.getStageProgression() * (470 / 5.0f)), 600.0f - 95);
