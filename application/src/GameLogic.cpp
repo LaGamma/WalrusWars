@@ -53,6 +53,9 @@ void GameLogic::update(float dSec) {
 }
 
 void GameLogic::handlePlayerCollision() {
+  
+  float knockback = 0.04; // tunable
+
   //find the velocity of collision along the line of collision
   sf::Vector2f w1_vel = walrus1.getVel();
   sf::Vector2f w2_vel = walrus2.getVel();
@@ -91,8 +94,8 @@ void GameLogic::handlePlayerCollision() {
   walrus1.setVel(walrus1NewVecTan + walrus1NewVecNorm);
   walrus2.setVel(walrus2NewVecTan + walrus2NewVecNorm);
   // avoid walrus sticking together occasionally
-  walrus1.tickMovement(0.001);
-  walrus2.tickMovement(0.001);
+  walrus1.tickMovement(knockback);
+  walrus2.tickMovement(knockback);
 }
 
 /*
@@ -101,7 +104,7 @@ void GameLogic::handlePlayerCollision() {
  * */
 void GameLogic::handlePlayerDeath(int x) {
 
-    //will have more need for separate cases later on to adjust the screen transition
+  //will have more need for separate cases later on to adjust the screen transition
 	if (x == 1) {
 	    std::cout<<"walrus1 died\n";
 	    progression++;
