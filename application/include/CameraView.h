@@ -14,11 +14,18 @@ class CameraView {
     void draw(sf::RenderWindow &window, GameLogic &logic);
 
   private:
+    void createControllers(int players);
+
+    // draw screen functions
+    void drawGame(sf::RenderWindow &window, GameLogic &logic);
+    void drawMainMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
+    
     sf::Font font;
     char main_menu_selection = 'P';
 
     // major update classes
-    std::unique_ptr<Controller> createController(bool player);
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
@@ -40,12 +47,6 @@ class CameraView {
     sf::CircleShape collision_pt;
     sf::RectangleShape minimapbg;
     sf::CircleShape stage_veil;
-
-    // draw screen functions
-    void drawGame(sf::RenderWindow &window, GameLogic &logic);
-    void drawMainMenu(sf::RenderWindow &window, GameLogic &logic);
-    void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
-    void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
 
 };
 

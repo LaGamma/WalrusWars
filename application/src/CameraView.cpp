@@ -1,6 +1,7 @@
 #include "CameraView.h"
 #include "Animation.h"
 #include "PlayerController.h"
+#include "BotController.h"
 #include <iostream>
 
 CameraView::CameraView() {
@@ -8,8 +9,6 @@ CameraView::CameraView() {
 }
 
 void CameraView::init() {
-    player1Controller = createController(true);
-    player2Controller = createController(true);
     //load in textures
     spriteMapP1.loadFromFile("../images/WalrusMovementSS.png");
     spriteMapP2.loadFromFile("../images/WalrusMovementSS.png");
@@ -236,7 +235,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
 
     if (logic.getState() == GameLogic::GameState::playing) {
-        //ignore input here and instead handle input in instantiated player controllers
+        // handle input in instantiated player controllers
         player1Controller->update(window, logic, dSec, 1, walrus1_animation);
         player2Controller->update(window, logic, dSec, 2, walrus2_animation);
 
@@ -275,6 +274,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
+                        createControllers(2);
                         logic.playGame();
                     } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
                         std::cout << "toggle pause" << std::endl;
@@ -290,10 +290,19 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
 }
 
-std::unique_ptr<Controller> CameraView::createController(bool player) {
-    if (player) {
-        return std::unique_ptr<Controller>(new PlayerController());
-    } else {
-        //return std::unique_ptr<Controller>(new BotController());
+void CameraView::createControllers(int players) {
+    switch (players) {
+        case 0:
+            player1Controller = std::unique_ptr<Controller>(new BotController());
+            player2Controller = std::unique_ptr<Controller>(new BotController());
+            break;
+        case 1:
+            player1Controller = std::unique_ptr<Controller>(new PlayerController());
+            player2Controller = std::unique_ptr<Controller>(new BotController());
+            break;
+        case 2:
+            player1Controller = std::unique_ptr<Controller>(new PlayerController());
+            player2Controller = std::unique_ptr<Controller>(new PlayerController());
+            break;
     }
 }
