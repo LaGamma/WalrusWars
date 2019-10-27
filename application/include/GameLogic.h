@@ -11,6 +11,7 @@ class GameLogic {
     void handlePlayerCollision();
     void togglePause();
     void playGame();
+    void returnToMenu();
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
