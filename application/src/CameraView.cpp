@@ -257,7 +257,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300, 25));
     stamina_bar1.setFillColor(sf::Color(255, 0, 0, 255));
     stamina_bar2.setFillColor(sf::Color(255, 0, 0, 255));
-    stamina_bar1.setPosition(window.getSize().x / 10.0, 50);
+    stamina_bar1.setPosition(80, 50);
     stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 50, 50);
     window.draw(stamina_bar1);
     window.draw(stamina_bar2);
