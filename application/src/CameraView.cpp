@@ -187,13 +187,33 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
+      if(!logic.walrus2.isDead()){
         window.draw(player2);
+      }
+      if(!logic.walrus1.isDead()){
         window.draw(player1);
+      }
     } else {
-        window.draw(player1);
-        window.draw(player2);
+        if(!logic.walrus1.isDead()){
+          window.draw(player1);
+        }
+        if(!logic.walrus2.isDead()){
+          window.draw(player2);
+        }
     }
-
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(100);
+    text.setFillColor(sf::Color(255,0,0,255));
+    text.setPosition(400, 250);
+    if(logic.walrus1.isDead()){
+      text.setString("GO ->");
+      window.draw(text);
+    }
+    else if(logic.walrus2.isDead()){
+      text.setString("<-GO");
+      window.draw(text);
+    }
     // draw collision point
     collision_pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
     collision_pt.setRadius(5);

@@ -44,6 +44,34 @@ void GameLogic::update(float dSec) {
 		    } else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0) {
             handlePlayerDeath(2);
         }
+        if(walrus1.isDead()){
+          if(w2_pos.x>800){
+            progression++;
+            walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+            walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+          }
+          if (progression == 2 && walrus1.isDead()) {
+        	  std::cout<<"walrus2 won!\n";
+        	  winner1 = false;
+        	  state = gameOverMenu;
+        	  //reset progression
+        	  progression = 0;
+        	}
+        }
+        if(walrus2.isDead()){
+          if(w1_pos.x<0){
+            progression--;
+            walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+            walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+          }
+          if (progression == -2 && walrus2.isDead()) {
+          	//add boolean for winner
+            winner1 = true;
+          	std::cout<<"walrus1 won!\n";
+            state = gameOverMenu;
+            progression = 0;
+          }
+        }
         sf::Vector2f posDiff = w1_pos - w2_pos;
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
 
@@ -111,29 +139,12 @@ void GameLogic::handlePlayerDeath(int x) {
   //will have more need for separate cases later on to adjust the screen transition
 	if (x == 1) {
 	    std::cout<<"walrus1 died\n";
-	    progression++;
+      walrus1.kill();
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died\n";
-	    progression--;
+      walrus2.kill();
 	}
-	if (progression >= 3) {
-	    std::cout<<"walrus2 won!\n";
-	    winner1 = false;
-	    state = gameOverMenu;
-	    //reset progression
-	    progression = 0;
-	}
-	else if (progression <= -3) {
-	    //add boolean for winner
-        winner1 = true;
-	    std::cout<<"walrus1 won!\n";
-        state = gameOverMenu;
-        progression = 0;
-	}
-	// respawn
-    walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
-    walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
 }
 
 void GameLogic::returnToMenu() {
