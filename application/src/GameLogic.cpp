@@ -136,6 +136,11 @@ void GameLogic::handlePlayerDeath(int x) {
     walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
 }
 
+void GameLogic::returnToMenu() {
+  state = mainMenu;
+  stage.generateMap();
+}
+
 void GameLogic::togglePause() {
   if (state == pauseMenu) {
       state = playing;
