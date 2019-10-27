@@ -35,7 +35,7 @@ void Player::applyPassiveForce(float dSec) {
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
     if (stamina > 0) {
-        stamina -= 0.001f;
+        stamina -= dSec * (abs(force_dir.x) + abs(force_dir.y));
         vel += force_dir * accelerate_strength * dSec;
     } else {
         //std::cout << "exhausted! can't move!" << std::endl;
@@ -47,6 +47,9 @@ void Player::setVel(sf::Vector2f newVel) {
 }
 void Player::setMass(float newMass) {
     mass = newMass;
+}
+void Player::setStamina(float newStamina) {
+    stamina = newStamina;
 }
 
 void Player::handlePowerUp(int powerup) {
@@ -67,3 +70,5 @@ float Player::getMass() {
 float Player::getStamina() {
     return stamina;
 }
+
+

@@ -30,6 +30,11 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus1.setMass(logic.walrus1.getMass()-0.001);
         }
         logic.walrus1.applyActiveForce(dir, dSec);
+        // idle state
+        if (logic.walrus1.getStamina() > 99.99 && logic.walrus1.getVel().x < 0.01 && logic.walrus1.getVel().y < 0.01) {
+            dir = sf::Vector2f(0,1);
+            logic.walrus1.setStamina(99.99);
+        }
 
     } else {
         //process keyboard input for player 2
@@ -52,9 +57,15 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
         logic.walrus2.applyActiveForce(dir, dSec);
+        // idle state
+        if (logic.walrus2.getStamina() > 99.99 && logic.walrus2.getVel().x < 0.01 && logic.walrus2.getVel().y < 0.01) {
+            dir = sf::Vector2f(0,1);
+            logic.walrus2.setStamina(99.99);
+        }
 
     }
     anim.update(dir, dSec);
+
 
 
     // process events
