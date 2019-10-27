@@ -13,14 +13,18 @@ class Player {
     sf::Vector2f getPos();
     sf::Vector2f getVel();
     float getMass();
+    float getStamina();
     void setVel(sf::Vector2f);
     void setMass(float);
+    void setStamina(float);
+    
+
 
     void applyPassiveForce(float);
     void applyActiveForce(sf::Vector2f, float);
     void tickMovement(float);
     void handlePowerUp(int);
-	float getStamina();
+	
 
 	void applyStaminaChange(bool moving, bool resting);
 
