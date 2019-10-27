@@ -97,7 +97,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     text.setFont(font);
     text.setCharacterSize(100);
     text.setFillColor(sf::Color(255,255,255,255));
-    text.setPosition(window.getSize().x / 4.0, 50);
+    text.setPosition(200, 50);
 
 
     if (logic.winner1)
