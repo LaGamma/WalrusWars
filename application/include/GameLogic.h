@@ -11,11 +11,11 @@ class GameLogic {
     void handlePlayerCollision();
     void togglePause();
     void playGame();
-    void returnToMenu();
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
     bool winner1;
+	bool reset_sprite;
     Player walrus1;
     Player walrus2;
     Stage stage;
