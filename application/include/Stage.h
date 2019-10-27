@@ -5,7 +5,7 @@ class Stage {
   public:
     Stage();
     void generateMap();
-    void tickMelt(float, int);
+    void tickMelt(int);
     float getTileDura(int,int,int);
     //not doing fish methods for now
   private:

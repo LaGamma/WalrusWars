@@ -9,6 +9,7 @@ GameLogic::GameLogic() {
     progression = 0;
     stage = Stage();
     stage.generateMap();
+    accumulator = 0;
 }
 
 void GameLogic::update(float dSec) {
@@ -19,7 +20,11 @@ void GameLogic::update(float dSec) {
         // process movement
         walrus1.tickMovement(dSec);
         walrus2.tickMovement(dSec);
-        stage.tickMelt(dSec, progression);
+        accumulator += dSec;
+        if(accumulator >= 1){
+          stage.tickMelt(progression);
+          accumulator -= 1;
+        }
 
         // apply deceleration
         walrus1.applyPassiveForce(dSec);
@@ -55,7 +60,7 @@ void GameLogic::update(float dSec) {
 }
 
 void GameLogic::handlePlayerCollision() {
-  
+
   float knockback = 0.04; // tunable
 
   //find the velocity of collision along the line of collision

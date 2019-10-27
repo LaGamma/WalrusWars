@@ -134,17 +134,17 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
-    
-    
+
+
 
     for(int i=0;i<40;i++){
         for(int j=0;j<30;j++){
             float dura = logic.stage.getTileDura(i,j,logic.getStageProgression());
-            if(dura >= 0){
+            if(dura > 0){
                 // draw ice graphics based on melt
                 ice.setSize(sf::Vector2f(20*dura,20*dura));
                 ice.setPosition((i*20+(20-ice.getSize().x/2)),(j*20+(20-ice.getSize().y/2)));
-                ice.setFillColor(sf::Color(50,247,250,200));
+                ice.setFillColor(sf::Color(50,247,250,200*dura));
                 ice.setOutlineColor(sf::Color(255,255,255,255));
                 ice.setOutlineThickness(4*dura);
                 window.draw(ice);
@@ -184,7 +184,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
 
-    
+
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
         window.draw(player2);

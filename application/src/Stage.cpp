@@ -76,7 +76,7 @@ void Stage::generateMap(){
 
 }
 
-void Stage::tickMelt(float dSec, int stage) {
+void Stage::tickMelt(int stage) {
 	// melt the correct stage
 	typedef float stage_map[40][30];
 	stage_map *melting_stage;
@@ -86,7 +86,7 @@ void Stage::tickMelt(float dSec, int stage) {
 		    break;
 		case -1:
 		    melting_stage = &leftStage1;
-		    break; 
+		    break;
 		case 0:
 		    melting_stage = &centerStage;
 		    break;
@@ -97,18 +97,37 @@ void Stage::tickMelt(float dSec, int stage) {
 		    melting_stage = &rightStage2;
 		    break;
 	}
-
-    int r;
+	float sum;
+	int r;
 	for(int i = 0; i<40; i++) {
 		for(int j = 0; j<30; j++) {
 			if ((*melting_stage)[i][j] > 0) {
 				r = rand() % 100 + 1;
-				// only melt 1% of the time to blocks that are not the bridge
-				if (r > 99 && (j<=13 || j>17)) {
-					// TODO - change uniform melting to melting partially based on neighbors durabilities
-					(*melting_stage)[i][j] -= 0.001;
+				sum = (*melting_stage)[i-1][j] + (*melting_stage)[i+1][j] + (*melting_stage)[i-1][j-1] + (*melting_stage)[i-1][j+1] + (*melting_stage)[i+1][j-1] + (*melting_stage)[i+1][j+1] + (*melting_stage)[i][j+1]+ (*melting_stage)[i][j-1];
+				if(sum>=6){
+					if(r > 99 && (j<=13 || j>17)){
+						(*melting_stage)[i][j] -= .05;
+					}
 				}
-				
+				else if(sum<6&&sum>=4){
+					if(r > 60 && (j<=13 || j>17)){
+						(*melting_stage)[i][j] -= .05;
+					}
+				}
+				else if(sum<4&&sum>=2){
+					if(r > 30 && (j<=13 || j>17)){
+						(*melting_stage)[i][j] -= .05;
+					}
+				}
+				else{
+					if(r > 10 && (j<=13 || j>17)){
+						(*melting_stage)[i][j] -= .05;
+					}
+				}
+				// now melts based off a sum of neighbor values
+				//for example, an iceblock with neighbor iceblocks that haven't melted as much is less likely to melt
+				// an ice block whose neighbors have all melted away is more likely to melt
+
 			}
 		}
 	}
@@ -124,7 +143,7 @@ float Stage::getTileDura(int x, int y, int stage) {
 		    break;
 		case -1:
 		    return leftStage1[x][y];
-		    break; 
+		    break;
 		case 0:
 		    return centerStage[x][y];
 		    break;
