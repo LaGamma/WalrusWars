@@ -15,6 +15,7 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
     bool winner1;
+	bool reset_sprite;
     Player walrus1;
     Player walrus2;
     Stage stage;

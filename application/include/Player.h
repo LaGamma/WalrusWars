@@ -20,6 +20,7 @@ class Player {
     void applyActiveForce(sf::Vector2f, float);
     void tickMovement(float);
     void handlePowerUp(int);
+	float getStamina();
 
 private:
     sf::Vector2f pos;
