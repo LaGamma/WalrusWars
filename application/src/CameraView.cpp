@@ -161,6 +161,13 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
 
+    // if sprites need to be reset
+    if(logic.reset_sprite)
+    {
+        std::cout<<"reset sprite";
+        walrus1_animation.setCurrentSprite(0 , 0);
+        walrus2_animation.setCurrentSprite(0, 0);
+    }
     // draw Player1
     player1.setSize(sf::Vector2f(logic.walrus1.getMass()*20, logic.walrus1.getMass()*20));
     player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x/2, logic.walrus1.getPos().y - player1.getSize().y/2);
@@ -298,15 +305,9 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                         else if (main_menu_selection == 'P')
                             main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Return) {
-                        if(logic.getState() == GameLogic::GameState::gameOverMenu){
-                          logic.returnToMenu();
-                        }
-                        else{
-                          std::cout << "start game!" << std::endl;
-                          createControllers(2);
-                          logic.playGame();
-                        }
-
+                        std::cout << "start game!" << std::endl;
+                        createControllers(2);
+                        logic.playGame();
                     } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
                         std::cout << "toggle pause" << std::endl;
                         logic.togglePause();
