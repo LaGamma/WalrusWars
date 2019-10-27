@@ -1,6 +1,7 @@
 #include "CameraView.h"
 #include "Animation.h"
 #include "PlayerController.h"
+#include "BotController.h"
 #include <iostream>
 
 CameraView::CameraView() {
@@ -8,8 +9,6 @@ CameraView::CameraView() {
 }
 
 void CameraView::init() {
-    player1Controller = createController(true);
-    player2Controller = createController(true);
     //load in textures
     spriteMapP1.loadFromFile("../images/WalrusMovementSS.png");
     spriteMapP2.loadFromFile("../images/WalrusMovementSS.png");
@@ -135,19 +134,22 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
-    
-    ice.setSize(sf::Vector2f(20,20));
-    ice.setFillColor(sf::Color(50,247,250,200));
-    ice.setOutlineColor(sf::Color(255,255,255));
-    ice.setOutlineThickness(4);
+
+
 
     for(int i=0;i<40;i++){
-      for(int j=0;j<30;j++){
-        if(logic.stage.getTile(i,j,logic.getStageProgression())==1){
-          ice.setPosition((i*20),(j*20));
-          window.draw(ice);
+        for(int j=0;j<30;j++){
+            float dura = logic.stage.getTileDura(i,j,logic.getStageProgression());
+            if(dura > 0){
+                // draw ice graphics based on melt
+                ice.setSize(sf::Vector2f(20*dura,20*dura));
+                ice.setPosition((i*20+(20-ice.getSize().x/2)),(j*20+(20-ice.getSize().y/2)));
+                ice.setFillColor(sf::Color(50,247,250,200*dura));
+                ice.setOutlineColor(sf::Color(255,255,255,255));
+                ice.setOutlineThickness(4*dura);
+                window.draw(ice);
+            }
         }
-      }
     }
 
     /*
@@ -182,7 +184,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
 
-    
+
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
         window.draw(player2);
@@ -236,7 +238,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
 
     if (logic.getState() == GameLogic::GameState::playing) {
-        //ignore input here and instead handle input in instantiated player controllers
+        // handle input in instantiated player controllers
         player1Controller->update(window, logic, dSec, 1, walrus1_animation);
         player2Controller->update(window, logic, dSec, 2, walrus2_animation);
 
@@ -275,6 +277,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Return) {
                         std::cout << "start game!" << std::endl;
+                        createControllers(2);
                         logic.playGame();
                     } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
                         std::cout << "toggle pause" << std::endl;
@@ -290,10 +293,19 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
 }
 
-std::unique_ptr<Controller> CameraView::createController(bool player) {
-    if (player) {
-        return std::unique_ptr<Controller>(new PlayerController());
-    } else {
-        //return std::unique_ptr<Controller>(new BotController());
+void CameraView::createControllers(int players) {
+    switch (players) {
+        case 0:
+            player1Controller = std::unique_ptr<Controller>(new BotController());
+            player2Controller = std::unique_ptr<Controller>(new BotController());
+            break;
+        case 1:
+            player1Controller = std::unique_ptr<Controller>(new PlayerController());
+            player2Controller = std::unique_ptr<Controller>(new BotController());
+            break;
+        case 2:
+            player1Controller = std::unique_ptr<Controller>(new PlayerController());
+            player2Controller = std::unique_ptr<Controller>(new PlayerController());
+            break;
     }
 }

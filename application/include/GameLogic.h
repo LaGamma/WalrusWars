@@ -24,6 +24,7 @@ class GameLogic {
 private:
     GameState state;
     int progression;
+    float accumulator;
 };
 
 #endif /* _GameLogic_H_ */

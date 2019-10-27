@@ -1,12 +1,12 @@
-#ifndef _PlayerController_H_
-#define _PlayerController_H_
+#ifndef _BotController_H_
+#define _BotController_H_
 
 #include "Controller.h"
 
-class PlayerController : public Controller {
+class BotController : public Controller {
 
 public:
-    PlayerController();
+    BotController();
     void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim);
 };
 
