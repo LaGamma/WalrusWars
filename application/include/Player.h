@@ -17,6 +17,8 @@ public:
     void setVel(sf::Vector2f);
     void setMass(float);
     void setStamina(float);
+    void kill();
+    bool isDead();
 
 
 
@@ -24,13 +26,14 @@ public:
     void applyActiveForce(sf::Vector2f, float);
     void tickMovement(float);
     void handlePowerUp(int);
-
+	  void applyStaminaChange(bool moving, bool resting);
 
 private:
     sf::Vector2f pos;
     sf::Vector2f vel;
     float mass;
     float stamina;
+    bool dead;
     bool resting;
     void applyStaminaChange(bool moving);
     constexpr static const float decelerate_strength = 20.0f;

@@ -10,6 +10,7 @@ void Player::spawn(sf::Vector2f spawn_pos) {
     stamina = 100.0f;
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);
+    dead = false;
     resting = false;
 }
 
@@ -33,6 +34,14 @@ void Player::applyPassiveForce(float dSec) {
 
 
 
+}
+
+bool Player::isDead(){
+  return dead;
+}
+
+void Player::kill(){
+  dead = true;
 }
 
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
