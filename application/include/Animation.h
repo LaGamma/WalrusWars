@@ -9,7 +9,9 @@ public:
   void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
 
   sf::IntRect uvRect;
-
+  
+  //reset current sprite when player dies
+  void setCurrentSprite(int x, int y);
 private:
   sf::Vector2u spriteCount; //stores number of rows and columns of sprites
   sf::Vector2u currentSprite; //stores the row and column of current sprites

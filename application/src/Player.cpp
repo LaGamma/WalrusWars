@@ -63,3 +63,7 @@ sf::Vector2f Player::getVel() {
 float Player::getMass() {
     return mass;
 }
+
+float Player::getStamina() {
+    return stamina;
+}

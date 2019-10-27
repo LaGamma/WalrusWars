@@ -77,3 +77,8 @@ void Animation::update(sf::Vector2f dir, float dSec) {
     }
     uvRect.top = currentSprite.y * uvRect.height;
 }
+
+void Animation::setCurrentSprite(int x, int y){
+    currentSprite.x = x;
+    currentSprite.y = y;
+}
