@@ -132,6 +132,11 @@ void GameLogic::handlePlayerCollision() {
   walrus2.tickMovement(knockback);
 }
 
+void GameLogic::returnToMenu() {
+  state = mainMenu;
+  stage.generateMap();
+}
+
 /*
  *1 param: walrus1 died
  * 2 param: walrus2 died

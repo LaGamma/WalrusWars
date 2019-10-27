@@ -10,6 +10,7 @@ class GameLogic {
     void handlePlayerDeath(int);
     void handlePlayerCollision();
     void togglePause();
+    void returnToMenu();
     void playGame();
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
