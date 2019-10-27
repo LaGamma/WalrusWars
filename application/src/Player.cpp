@@ -76,6 +76,9 @@ void Player::setVel(sf::Vector2f newVel) {
 void Player::setMass(float newMass) {
     mass = newMass;
 }
+void Player::setStamina(float newStamina) {
+    stamina = newStamina;
+}
 
 void Player::handlePowerUp(int powerup) {
 
