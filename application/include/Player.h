@@ -22,6 +22,8 @@ class Player {
     void handlePowerUp(int);
 	float getStamina();
 
+	void applyStaminaChange(bool moving, bool resting);
+
 private:
     sf::Vector2f pos;
     sf::Vector2f vel;

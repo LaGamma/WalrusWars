@@ -238,6 +238,28 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 
     //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
+
+    //draw stamina boxes: these don't change
+    sf::RectangleShape stamina_bar1 = sf::RectangleShape(sf::Vector2f(300, 25));
+    sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300, 25));
+    stamina_bar1.setFillColor(sf::Color(255, 0, 0, 255));
+    stamina_bar2.setFillColor(sf::Color(255, 0, 0, 255));
+    stamina_bar1.setPosition(window.getSize().x / 10.0, 50);
+    stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 50, 50);
+    window.draw(stamina_bar1);
+    window.draw(stamina_bar2);
+
+    //draw stamina gauges, these change
+    //need to adjust dimensions to be based on walrus staminas
+    //bar length is 300. Max stamina is 100
+    sf::RectangleShape stamina_left1 = sf::RectangleShape(sf::Vector2f(logic.walrus1.getStamina() * 3, stamina_bar1.getSize().y));
+    sf::RectangleShape stamina_left2 = sf::RectangleShape(sf::Vector2f(logic.walrus2.getStamina() * 3, stamina_bar2.getSize().y));
+    stamina_left1.setFillColor(sf::Color(255, 255, 0, 255));
+    stamina_left2.setFillColor(sf::Color(255, 255, 0, 255));
+    stamina_left1.setPosition(stamina_bar1.getPosition());
+    stamina_left2.setPosition(stamina_bar2.getPosition());
+    window.draw(stamina_left1);
+    window.draw(stamina_left2);
 }
 
 
