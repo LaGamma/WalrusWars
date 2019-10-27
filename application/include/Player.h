@@ -5,7 +5,7 @@
 
 
 class Player {
-  public:
+public:
     Player();
     void spawn(sf::Vector2f);
 
@@ -26,8 +26,6 @@ class Player {
     void applyActiveForce(sf::Vector2f, float);
     void tickMovement(float);
     void handlePowerUp(int);
-
-
 	  void applyStaminaChange(bool moving, bool resting);
 
 private:
@@ -36,8 +34,11 @@ private:
     float mass;
     float stamina;
     bool dead;
+    bool resting;
+    void applyStaminaChange(bool moving);
     constexpr static const float decelerate_strength = 20.0f;
     constexpr static const float accelerate_strength = 500.0f;
 };
 
 #endif
+

@@ -11,6 +11,7 @@ void Player::spawn(sf::Vector2f spawn_pos) {
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);
     dead = false;
+    resting = false;
 }
 
 void Player::tickMovement(float dSec) {
@@ -45,18 +46,29 @@ void Player::kill(){
 
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
-    if (stamina > 0) {
-        stamina -= dSec * (abs(force_dir.x) + abs(force_dir.y));
-        vel += force_dir * accelerate_strength * dSec;
-    } else {
-        std::cout << "exhausted! can't move!" << std::endl;
-        // set state to resting
+    //don't move
+    if (resting) {
+        force_dir.x = 0.0;
+        force_dir.y = 0.0;
     }
 
-    if (force_dir.x == 0.0f && force_dir.y == 0.0f)
-        applyStaminaChange(false, false);
+    if (stamina > 0) {
+        //stamina -= 0.001f;
+        //stamina -= 0.01f;
+        vel += force_dir * accelerate_strength * dSec;
+        //only make resting no longer false once 25% of stamina has been recovered
+        if (resting && stamina >= 25.0f)
+            resting = false;
+    } else {
+        //std::cout << "exhausted! can't move!" << std::endl;
+        resting = true;
+    }
+
+    if (force_dir.x == 0.0f && force_dir.y == 0.0f) {
+        applyStaminaChange(false);
+    }
     else
-        applyStaminaChange(true, false);
+        applyStaminaChange(true);
 }
 void Player::setVel(sf::Vector2f newVel) {
     vel = newVel;
@@ -64,30 +76,33 @@ void Player::setVel(sf::Vector2f newVel) {
 void Player::setMass(float newMass) {
     mass = newMass;
 }
-void Player::setStamina(float newStamina) {
-    stamina = newStamina;
-}
 
 void Player::handlePowerUp(int powerup) {
 
 }
 
-void Player::applyStaminaChange(bool moving, bool resting) {
+void Player::applyStaminaChange(bool moving) {
     //if moving, decrease stamina
     //if not moving, increase stamina
     //if resting is true, recover stamina faster
     //moving and resting should never both be true
     if (moving)
     {
-        stamina -= 0.01f;
+        if (stamina > 0)
+            stamina -= 0.1f;
     }
-    else if (resting && stamina < 100.0f)
-    {
-        stamina += 0.1f;
-    }
-    else if (stamina < 100.0f)
+    else if (stamina < 100.0f && !resting)
         stamina += 0.01f;
+    else
+    {
+        if (stamina <= 25.0f)
+            stamina += 0.2f;
+    }
 }
+
+//void resting() {
+//
+//}
 
 // getters
 sf::Vector2f Player::getPos() {

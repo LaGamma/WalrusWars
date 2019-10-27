@@ -10,6 +10,7 @@ GameLogic::GameLogic() {
     stage = Stage();
     stage.generateMap();
     accumulator = 0;
+	reset_sprite = false;
 }
 
 void GameLogic::update(float dSec) {
@@ -21,11 +22,10 @@ void GameLogic::update(float dSec) {
         walrus1.tickMovement(dSec);
         walrus2.tickMovement(dSec);
         accumulator += dSec;
-        if(accumulator >= 1) {
+        if(accumulator >= 1){
           stage.tickMelt(progression);
           accumulator -= 1;
         }
-
         // apply deceleration
         walrus1.applyPassiveForce(dSec);
         walrus2.applyPassiveForce(dSec);
@@ -39,9 +39,12 @@ void GameLogic::update(float dSec) {
         //if (w1_pos.x > 800.0f || w1_pos.y > 600.0f || w1_pos.x < 0 || w1_pos.y < 0)
         //    handlePlayerDeath(1);
         //if (w2_pos.x > 800.0f || w2_pos.y > 600.0f || w2_pos.x < 0 || w2_pos.y < 0)
-        if (stage.getTileDura((w1_pos.x)/20, (w1_pos.y)/20, progression) <= 0) {
+        if (stage.getTileDura((w1_pos.x)/20, (w1_pos.y)/20, progression) <= 0){
+			reset_sprite = true;
             handlePlayerDeath(1);
-		    } else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0) {
+		}
+        else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0){
+			reset_sprite = true;
             handlePlayerDeath(2);
         }
         if(walrus1.isDead()){
@@ -79,6 +82,8 @@ void GameLogic::update(float dSec) {
             std::cout << "walruses are colliding!\n";
             handlePlayerCollision();
         }
+
+
 
     }
 
@@ -136,6 +141,7 @@ void GameLogic::handlePlayerCollision() {
  * 2 param: walrus2 died
  * */
 void GameLogic::handlePlayerDeath(int x) {
+
   //will have more need for separate cases later on to adjust the screen transition
 	if (x == 1) {
 	    std::cout<<"walrus1 died\n";
@@ -145,11 +151,6 @@ void GameLogic::handlePlayerDeath(int x) {
 	    std::cout<<"walrus2 died\n";
       walrus2.kill();
 	}
-}
-
-void GameLogic::returnToMenu() {
-  state = mainMenu;
-  stage.generateMap();
 }
 
 void GameLogic::togglePause() {
