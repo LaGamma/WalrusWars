@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <GameLogic.h>
 #include <CameraView.h>
+#include <Player.h>
 #include <iostream>
 
 
@@ -11,6 +12,7 @@ int main(int argc, char** argv)
 
   CameraView view;
   GameLogic logic;
+  Player player;
 
   view.init();
 
@@ -32,7 +34,7 @@ int main(int argc, char** argv)
     // tick natural game logic
     logic.update(dSec);
     // draw window
-    view.draw(App, logic);
+    view.draw(App, logic, player);
 
   }
 
