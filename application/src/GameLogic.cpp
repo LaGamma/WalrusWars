@@ -147,10 +147,18 @@ void GameLogic::handlePlayerDeath(int x) {
 	if (x == 1) {
 	    std::cout<<"walrus1 died\n";
       walrus1.kill();
+      if(walrus2.isDead()){
+        walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+        walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+      }
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died\n";
       walrus2.kill();
+      if(walrus1.isDead()){
+        walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+        walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+      }
 	}
 }
 
