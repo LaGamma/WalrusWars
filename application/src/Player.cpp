@@ -62,13 +62,16 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
     } else {
         //std::cout << "exhausted! can't move!" << std::endl;
         resting = true;
+        vel.x *= 0.8f;
+        vel.y *= 0.8f;
     }
 
     if (force_dir.x == 0.0f && force_dir.y == 0.0f) {
         applyStaminaChange(false);
     }
-    else
+    else {
         applyStaminaChange(true);
+    }
 }
 void Player::setVel(sf::Vector2f newVel) {
     vel = newVel;
@@ -87,7 +90,6 @@ void Player::handlePowerUp(int powerup) {
 void Player::applyStaminaChange(bool moving) {
     //if moving, decrease stamina
     //if not moving, increase stamina
-    //if resting is true, recover stamina faster
     //moving and resting should never both be true
     if (moving)
     {
@@ -96,6 +98,9 @@ void Player::applyStaminaChange(bool moving) {
     }
     else if (stamina < 100.0f && !resting)
         stamina += 0.01f;
+
+    //if resting is true, recover stamina faster
+    //reduce friction so that you don't slide off stage while being unable to move easily
     else
     {
         if (stamina <= 25.0f)
