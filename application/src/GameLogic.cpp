@@ -43,11 +43,12 @@ void GameLogic::update(float dSec) {
 		    } else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0) {
             handlePlayerDeath(2);
         }
+        sf::Vector2f newVel;
         if(walrus1.isDead()){
           if(w2_pos.x>800){
             progression++;
             walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
-            walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+            walrus2.spawn(sf::Vector2f(0.0f, 300.0f));
           }
           if (progression == 2 && walrus1.isDead()) {
         	  std::cout<<"walrus2 won!\n";
@@ -57,10 +58,22 @@ void GameLogic::update(float dSec) {
         	  progression = 0;
         	}
         }
+        else{
+          if(w2_pos.x>=800){
+            newVel = walrus2.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus2.setVel(newVel);
+          }
+          else if(w2_pos.x<=0){
+            newVel = walrus2.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus2.setVel(newVel);
+          }
+        }
         if(walrus2.isDead()){
           if(w1_pos.x<0){
             progression--;
-            walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+            walrus1.spawn(sf::Vector2f(750.0f, 300.0f));
             walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
           }
           if (progression == -2 && walrus2.isDead()) {
@@ -69,6 +82,18 @@ void GameLogic::update(float dSec) {
           	std::cout<<"walrus1 won!\n";
             state = gameOverMenu;
             progression = 0;
+          }
+        }
+        else{
+          if(w1_pos.x>=800){
+            newVel = walrus1.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus1.setVel(newVel);
+          }
+          else if(w1_pos.x<=0){
+            newVel = walrus1.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus1.setVel(newVel);
           }
         }
         sf::Vector2f posDiff = w1_pos - w2_pos;
@@ -147,10 +172,18 @@ void GameLogic::handlePlayerDeath(int x) {
 	if (x == 1) {
 	    std::cout<<"walrus1 died\n";
       walrus1.kill();
+      if(walrus2.isDead()){
+        walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+        walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+      }
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died\n";
       walrus2.kill();
+      if(walrus1.isDead()){
+        walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+        walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+      }
 	}
 }
 
