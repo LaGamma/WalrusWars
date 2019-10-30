@@ -10,7 +10,6 @@ GameLogic::GameLogic() {
     stage = Stage();
     stage.generateMap();
     accumulator = 0;
-	reset_sprite = false;
 }
 
 void GameLogic::update(float dSec) {
@@ -39,16 +38,64 @@ void GameLogic::update(float dSec) {
         //if (w1_pos.x > 800.0f || w1_pos.y > 600.0f || w1_pos.x < 0 || w1_pos.y < 0)
         //    handlePlayerDeath(1);
         //if (w2_pos.x > 800.0f || w2_pos.y > 600.0f || w2_pos.x < 0 || w2_pos.y < 0)
-        if (stage.getTileDura((w1_pos.x)/20, (w1_pos.y)/20, progression) <= 0){
-			reset_sprite = true;
+        if (stage.getTileDura((w1_pos.x)/20, (w1_pos.y)/20, progression) <= 0) {
             handlePlayerDeath(1);
-		}
-        else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0){
-			reset_sprite = true;
+		    } else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0) {
             handlePlayerDeath(2);
-		}
-		else 
-			reset_sprite = false;
+        }
+        sf::Vector2f newVel;
+        if(walrus1.isDead()){
+          if(w2_pos.x>800){
+            progression++;
+            walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+            walrus2.spawn(sf::Vector2f(0.0f, 300.0f));
+          }
+          if (progression == 2 && walrus1.isDead()) {
+        	  std::cout<<"walrus2 won!\n";
+        	  winner1 = false;
+        	  state = gameOverMenu;
+        	  //reset progression
+        	  progression = 0;
+        	}
+        }
+        else{
+          if(w2_pos.x>=800){
+            newVel = walrus2.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus2.setVel(newVel);
+          }
+          else if(w2_pos.x<=0){
+            newVel = walrus2.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus2.setVel(newVel);
+          }
+        }
+        if(walrus2.isDead()){
+          if(w1_pos.x<0){
+            progression--;
+            walrus1.spawn(sf::Vector2f(750.0f, 300.0f));
+            walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+          }
+          if (progression == -2 && walrus2.isDead()) {
+          	//add boolean for winner
+            winner1 = true;
+          	std::cout<<"walrus1 won!\n";
+            state = gameOverMenu;
+            progression = 0;
+          }
+        }
+        else{
+          if(w1_pos.x>=800){
+            newVel = walrus1.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus1.setVel(newVel);
+          }
+          else if(w1_pos.x<=0){
+            newVel = walrus1.getVel();
+            newVel.x = (-newVel.x)*.7;
+            walrus1.setVel(newVel);
+          }
+        }
         sf::Vector2f posDiff = w1_pos - w2_pos;
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
 
@@ -110,6 +157,11 @@ void GameLogic::handlePlayerCollision() {
   walrus2.tickMovement(knockback);
 }
 
+void GameLogic::returnToMenu() {
+  state = mainMenu;
+  stage.generateMap();
+}
+
 /*
  *1 param: walrus1 died
  * 2 param: walrus2 died
@@ -119,29 +171,20 @@ void GameLogic::handlePlayerDeath(int x) {
   //will have more need for separate cases later on to adjust the screen transition
 	if (x == 1) {
 	    std::cout<<"walrus1 died\n";
-	    progression++;
+      walrus1.kill();
+      if(walrus2.isDead()){
+        walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+        walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+      }
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died\n";
-	    progression--;
+      walrus2.kill();
+      if(walrus1.isDead()){
+        walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
+        walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
+      }
 	}
-	if (progression >= 3) {
-	    std::cout<<"walrus2 won!\n";
-	    winner1 = false;
-	    state = gameOverMenu;
-	    //reset progression
-	    progression = 0;
-	}
-	else if (progression <= -3) {
-	    //add boolean for winner
-        winner1 = true;
-	    std::cout<<"walrus1 won!\n";
-        state = gameOverMenu;
-        progression = 0;
-	}
-	// respawn
-    walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
-    walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
 }
 
 void GameLogic::togglePause() {

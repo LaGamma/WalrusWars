@@ -10,12 +10,12 @@ class GameLogic {
     void handlePlayerDeath(int);
     void handlePlayerCollision();
     void togglePause();
+    void returnToMenu();
     void playGame();
     int getStageProgression();
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
     bool winner1;
-	bool reset_sprite;
     Player walrus1;
     Player walrus2;
     Stage stage;

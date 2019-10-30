@@ -97,7 +97,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     text.setFont(font);
     text.setCharacterSize(100);
     text.setFillColor(sf::Color(255,255,255,255));
-    text.setPosition(window.getSize().x / 4.0, 50);
+    text.setPosition(200, 50);
 
 
     if (logic.winner1)
@@ -161,13 +161,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
 
-    // if sprites need to be reset
-    if(logic.reset_sprite)
-    {
-        std::cout<<"reset sprite";
-        walrus1_animation.setCurrentSprite(0 , 0);
-        walrus2_animation.setCurrentSprite(0, 0);
-    }
     // draw Player1
     player1.setSize(sf::Vector2f(logic.walrus1.getMass()*20, logic.walrus1.getMass()*20));
     player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x/2, logic.walrus1.getPos().y - player1.getSize().y/2);
@@ -194,13 +187,33 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
+      if(!logic.walrus2.isDead()){
         window.draw(player2);
+      }
+      if(!logic.walrus1.isDead()){
         window.draw(player1);
+      }
     } else {
-        window.draw(player1);
-        window.draw(player2);
+        if(!logic.walrus1.isDead()){
+          window.draw(player1);
+        }
+        if(!logic.walrus2.isDead()){
+          window.draw(player2);
+        }
     }
-
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(100);
+    text.setFillColor(sf::Color(255,0,0,255));
+    text.setPosition(400, 250);
+    if(logic.walrus1.isDead()){
+      text.setString("GO ->");
+      window.draw(text);
+    }
+    else if(logic.walrus2.isDead()){
+      text.setString("<-GO");
+      window.draw(text);
+    }
     // draw collision point
     collision_pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5,5));
     collision_pt.setRadius(5);
@@ -244,7 +257,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300, 25));
     stamina_bar1.setFillColor(sf::Color(255, 0, 0, 255));
     stamina_bar2.setFillColor(sf::Color(255, 0, 0, 255));
-    stamina_bar1.setPosition(window.getSize().x / 10.0, 50);
+    stamina_bar1.setPosition(80, 50);
     stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 50, 50);
     window.draw(stamina_bar1);
     window.draw(stamina_bar2);
@@ -305,9 +318,15 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                         else if (main_menu_selection == 'P')
                             main_menu_selection = 'S';
                     } else if (Event.key.code == sf::Keyboard::Return) {
+                      if(logic.getState() == GameLogic::GameState::gameOverMenu){
+                        logic.returnToMenu();
+                      }
+                      else{
                         std::cout << "start game!" << std::endl;
                         createControllers(2);
                         logic.playGame();
+                      }
+
                     } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
                         std::cout << "toggle pause" << std::endl;
                         logic.togglePause();
