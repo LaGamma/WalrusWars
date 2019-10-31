@@ -71,14 +71,21 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus2.getVel().x * logic.walrus2.getVel().x) + (logic.walrus2.getVel().y * logic.walrus2.getVel().y)) < 0.001));
 
     }
+    //play animations
     if (idle) {
         anim.setCurrentSprite(0,0);
     }
-    if (attacking) {
+    if (attackAnimTimer > 0) {
         anim.updateAttack(dir, dSec);
-        attacking = false;
-    }else {
+        attackAnimTimer -= dSec;
+        std::cout << attackAnimTimer << std::endl;
+    }
+    else{
+        //reset attack animation variables
+        attackAnimTimer = 0;
+        //update movement
         anim.update(dir, dSec);
+        //std::cout << "MOVING" << std::endl;
     }
 
 
