@@ -28,6 +28,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             dir.x += 1;
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+            attacking = true;
+            logic.handlePlayerAttack(1);
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
             logic.walrus1.setMass(logic.walrus1.getMass()+0.001);
         }
@@ -37,7 +41,6 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         logic.walrus1.applyActiveForce(dir, dSec);
         // idle state
         idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus1.getVel().x * logic.walrus1.getVel().x) + (logic.walrus1.getVel().y * logic.walrus1.getVel().y)) < 0.001));
-        
 
     } else {
         //process keyboard input for player 2
@@ -59,17 +62,24 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) {
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
+            attacking = true;
+            logic.handlePlayerAttack(2);
+        }
         logic.walrus2.applyActiveForce(dir, dSec);
         // idle state
         idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus2.getVel().x * logic.walrus2.getVel().x) + (logic.walrus2.getVel().y * logic.walrus2.getVel().y)) < 0.001));
-    }
 
+    }
     if (idle) {
         anim.setCurrentSprite(0,0);
-    } else {
+    }
+    if (attacking) {
+        anim.updateAttack(dir, dSec);
+        attacking = false;
+    }else {
         anim.update(dir, dSec);
     }
-    
 
 
 

@@ -53,7 +53,7 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     bg.setTexture(&menu_background);
     window.draw(bg);
 
-
+    //main menu items
     sf::Text Play("Play", font, 75);
     sf::Text Stats("Stats", font, 75);
     sf::Text Options("Options", font, 75);
@@ -187,17 +187,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(hitbox);
 
     //this is the place where the bump sound is called.
-
-
     if (logic.bump) {
         soundManager.playSound(SoundManager::SFX::bump, logic.bump);
         logic.bump = 0;
     } // doesn't work, need to fix
     if (logic.splash){
-      //play splash sound
-      logic.splash = 0;
+        //play splash sound
+        logic.splash = 0;
     }
-
 
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {

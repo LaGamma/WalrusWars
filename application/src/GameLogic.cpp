@@ -165,6 +165,12 @@ void GameLogic::handlePlayerCollision() {
   //std::cout<<bump<<"\n";
 }
 
+void GameLogic::handlePlayerAttack(int playerNum) {
+    if (playerNum = 1){
+
+    }
+}
+
 void GameLogic::returnToMenu() {
   state = mainMenu;
   stage.generateMap();
