@@ -90,7 +90,6 @@ void Animation::updateAttack(sf::Vector2f dir, float dSec){
         }
     }
 
-    // this is the quickest way I could think of converting a unit vector into integers representing all of its component cases, may be a better solution
     int hash = dir.x * 17 + dir.y * 7;
     switch (hash) {
         case 17 + 7: //right down

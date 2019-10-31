@@ -159,7 +159,6 @@ void GameLogic::handlePlayerCollision() {
 
 void GameLogic::handlePlayerAttack(int playerNum) {
     if (playerNum = 1){
-
     }
 }
 

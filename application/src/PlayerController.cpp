@@ -12,6 +12,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
 
     sf::Vector2f dir = sf::Vector2f(0,0);
 
+
     if (playerNum == 1) {
         //process keyboard input for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
@@ -25,10 +26,6 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             dir.x += 1;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
-            attacking = true;
-            logic.handlePlayerAttack(1);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
             logic.walrus1.setMass(logic.walrus1.getMass()+0.001);
@@ -63,9 +60,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) {
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
-            attacking = true;
-            logic.handlePlayerAttack(2);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && logic.walrus2.getStamina() >= 30) {
+            attackAnimTimer = 0.30;//make get switch time * 3, so its consistent if switch time changes
+            logic.handlePlayerAttack(1);
+            std::cout << "INITIATE ATTACK" << std::endl;
         }
         logic.walrus2.applyActiveForce(dir, dSec);
         // idle state
@@ -75,12 +73,21 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
 
     }
-    if (attacking) {
+
+    //play animations
+    if (attackAnimTimer > 0) {
         anim.updateAttack(dir, dSec);
-        attacking = false;
+        attackAnimTimer -= dSec;
+        std::cout << attackAnimTimer << std::endl;
     }
-    else
+    else{
+        //reset attack animation variables
+        attackAnimTimer = 0;
+        //update movement
         anim.update(dir, dSec);
+        //std::cout << "MOVING" << std::endl;
+    }
+
 
 
 
