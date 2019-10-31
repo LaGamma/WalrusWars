@@ -45,19 +45,21 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
+    //main menu background
     window.clear(sf::Color(150, 150, 150));
     sf::RectangleShape bg;
     bg.setSize(sf::Vector2f(800,600));
     bg.setTexture(&menu_background);
     window.draw(bg);
 
-
+    //main menu items
     sf::Text Play("Play", font, 75);
     sf::Text Stats("Stats", font, 75);
     sf::Text Options("Options", font, 75);
     Play.setPosition(360, 325);
     Stats.setPosition(355, 400);
     Options.setPosition(330, 475);
+
     //handle coloring of selection
     if (main_menu_selection == 'P'){
         Stats.setFillColor(sf::Color::White);
@@ -183,6 +185,9 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     hitbox.setRadius(logic.walrus2.getMass()*6);
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
+
+    //attack hitbox
+    //if()
 
 
     // draw in order of depth

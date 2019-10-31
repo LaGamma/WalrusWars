@@ -34,7 +34,7 @@ int main(int argc, char** argv)
     // tick natural game logic
     logic.update(dSec);
     // draw window
-    view.draw(App, logic, player);
+    view.draw(App, logic);
 
   }
 

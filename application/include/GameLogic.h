@@ -13,6 +13,7 @@ class GameLogic {
     void returnToMenu();
     void playGame();
     int getStageProgression();
+    void handlePlayerAttack(int playerNum);
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
     bool winner1;

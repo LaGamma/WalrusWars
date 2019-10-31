@@ -157,6 +157,12 @@ void GameLogic::handlePlayerCollision() {
   walrus2.tickMovement(knockback);
 }
 
+void GameLogic::handlePlayerAttack(int playerNum) {
+    if (playerNum = 1){
+
+    }
+}
+
 void GameLogic::returnToMenu() {
   state = mainMenu;
   stage.generateMap();

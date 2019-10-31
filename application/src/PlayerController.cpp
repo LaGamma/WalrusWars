@@ -26,6 +26,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             dir.x += 1;
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) {
+            attacking = true;
+            logic.handlePlayerAttack(1);
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
             logic.walrus1.setMass(logic.walrus1.getMass()+0.001);
         }
@@ -59,6 +63,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num9)) {
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) {
+            attacking = true;
+            logic.handlePlayerAttack(2);
+        }
         logic.walrus2.applyActiveForce(dir, dSec);
         // idle state
         if (logic.walrus2.getStamina() > 99.99 && logic.walrus2.getVel().x < 0.01 && logic.walrus2.getVel().y < 0.01) {
@@ -67,7 +75,12 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
 
     }
-    anim.update(dir, dSec);
+    if (attacking) {
+        anim.updateAttack(dir, dSec);
+        attacking = false;
+    }
+    else
+        anim.update(dir, dSec);
 
 
 
