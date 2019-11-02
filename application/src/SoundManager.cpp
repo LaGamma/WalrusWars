@@ -6,20 +6,22 @@ SoundManager::SoundManager(){
 
 
 
-void SoundManager::playSound(SoundManager::SFX sound){
-  if(sound == SoundManager::SFX::bump){
+void SoundManager::playSound(SoundManager::SFX sfx){
+  if(sfx == SoundManager::SFX::bump){
+    buffer.loadFromFile("../audio/bump.wav");
+    sound.setBuffer(buffer);
+    sound.play();
+  };
+  if(sfx == SoundManager::SFX::splash){
     //load and play sound
   };
-  if(track == SoundManager::SFX::splash){
+  if(sfx == SoundManager::SFX::menuSelect){
     //load and play sound
   };
-  if(track == SoundManager::SFX::menuSelect){
+  if(sfx == SoundManager::SFX::menuMove){
     //load and play sound
   };
-  if(track == SoundManager::SFX::menuMove){
-    //load and play sound
-  };
-  if(track == SoundManager::SFX::fish){
+  if(sfx == SoundManager::SFX::fish){
     //load and play sound
   };
 };

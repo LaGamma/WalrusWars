@@ -100,7 +100,7 @@ void GameLogic::update(float dSec) {
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
 
         if (dist < 6.5*(walrus1.getMass() + walrus2.getMass())) {
-            std::cout << "walruses are colliding!\n";
+            
             handlePlayerCollision();
         }
 
