@@ -19,6 +19,7 @@ void CameraView::init() {
     end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
     end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
     font.loadFromFile("../fonts/menuFont.ttf");
+    soundManager = soundManager();
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
