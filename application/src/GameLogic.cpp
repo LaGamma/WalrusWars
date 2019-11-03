@@ -20,8 +20,8 @@ void GameLogic::update(float dSec) {
        // if (progression >= 3 || progression <= -3)
          //   progression = 0;
         // process movement
-        walrus1.tickMovement(dSec);
-        walrus2.tickMovement(dSec);
+        walrus1.tickUpdate(dSec);
+        walrus2.tickUpdate(dSec);
         accumulator += dSec;
         if(accumulator >= 1){
           stage.tickMelt(progression);
@@ -155,8 +155,8 @@ void GameLogic::handlePlayerCollision() {
   walrus1.setVel(walrus1NewVecTan + walrus1NewVecNorm);
   walrus2.setVel(walrus2NewVecTan + walrus2NewVecNorm);
   // avoid walrus sticking together occasionally
-  walrus1.tickMovement(knockback);
-  walrus2.tickMovement(knockback);
+  walrus1.tickUpdate(knockback);
+  walrus2.tickUpdate(knockback);
   bump = true;
 }
 
