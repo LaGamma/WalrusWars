@@ -5,6 +5,7 @@
 #include "GameLogic.h"
 #include "Controller.h"
 #include "Animation.h"
+#include "SoundManager.h"
 
 class CameraView {
   public:
@@ -21,7 +22,7 @@ class CameraView {
     void drawMainMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
-    
+
     sf::Font font;
     char main_menu_selection = 'P';
 
@@ -30,6 +31,7 @@ class CameraView {
     std::unique_ptr<Controller> player2Controller;
 
     //animations and art
+    SoundManager soundManager;
     Animation walrus1_animation;
     Animation walrus2_animation;
     Animation end_walrus1_animation;
