@@ -1,16 +1,21 @@
 #include "SoundManager.h"
+#include <iostream>
 
 SoundManager::SoundManager(){
 
 };
 
-
+void SoundManager::load() {
+  if(!bumpBuffer.loadFromFile("../audio/bump.wav")) {
+    std::cout << "Could not load audio\n";
+  }
+  bumpSound.setBuffer(bumpBuffer);
+  bumpSound.setVolume(100.0f);
+}
 
 void SoundManager::playSound(SoundManager::SFX sfx){
   if(sfx == SoundManager::SFX::bump){
-    buffer.loadFromFile("../audio/bump.wav");
-    sound.setBuffer(buffer);
-    sound.play();
+    bumpSound.play();
   };
   if(sfx == SoundManager::SFX::splash){
     //load and play sound
