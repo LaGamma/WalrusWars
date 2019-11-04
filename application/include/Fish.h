@@ -13,6 +13,7 @@ public:
 
 private:
     sf::Vector2f pos;
+
 };
 
 

@@ -24,6 +24,7 @@ class GameLogic {
     Stage stage;
 
     sf::Vector2f playerCollisionPoint;
+    std::list<std::shared_ptr<Fish>> fish_list;
 
 private:
     GameState state;
