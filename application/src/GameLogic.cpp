@@ -10,6 +10,8 @@ GameLogic::GameLogic() {
     stage = Stage();
     stage.generateMap();
     accumulator = 0;
+    bump = 0;
+    splash = 0;
 }
 
 void GameLogic::update(float dSec) {
@@ -18,8 +20,8 @@ void GameLogic::update(float dSec) {
        // if (progression >= 3 || progression <= -3)
          //   progression = 0;
         // process movement
-        walrus1.tickMovement(dSec);
-        walrus2.tickMovement(dSec);
+        walrus1.tickUpdate(dSec);
+        walrus2.tickUpdate(dSec);
         accumulator += dSec;
         if(accumulator >= 1){
           stage.tickMelt(progression);
@@ -100,8 +102,8 @@ void GameLogic::update(float dSec) {
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
 
         if (dist < 6.5*(walrus1.getMass() + walrus2.getMass())) {
-            std::cout << "walruses are colliding!\n";
-            handlePlayerCollision();
+          std::cout << "walruses are colliding!\n";
+          handlePlayerCollision();
         }
 
 
@@ -153,8 +155,14 @@ void GameLogic::handlePlayerCollision() {
   walrus1.setVel(walrus1NewVecTan + walrus1NewVecNorm);
   walrus2.setVel(walrus2NewVecTan + walrus2NewVecNorm);
   // avoid walrus sticking together occasionally
-  walrus1.tickMovement(knockback);
-  walrus2.tickMovement(knockback);
+  walrus1.tickUpdate(knockback);
+  walrus2.tickUpdate(knockback);
+
+  // power of collision
+  sf::Vector2f velDiff = walrus1.getVel() - walrus2.getVel();
+  float magnitude = sqrt((velDiff.x * velDiff.x) + (velDiff.y * velDiff.y));
+  bump = (int) (magnitude*0.2);
+  //std::cout<<bump<<"\n";
 }
 
 void GameLogic::returnToMenu() {
@@ -176,6 +184,7 @@ void GameLogic::handlePlayerDeath(int x) {
         walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
         walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
       }
+      splash = 1;
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died\n";
@@ -184,6 +193,7 @@ void GameLogic::handlePlayerDeath(int x) {
         walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
         walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
       }
+      splash = 1;
 	}
 }
 

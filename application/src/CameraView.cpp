@@ -3,6 +3,7 @@
 #include "PlayerController.h"
 #include "BotController.h"
 #include <iostream>
+#include <cmath>
 
 CameraView::CameraView() {
 
@@ -19,6 +20,7 @@ void CameraView::init() {
     end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
     end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
     font.loadFromFile("../fonts/menuFont.ttf");
+    soundManager.load();
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -183,6 +185,18 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     hitbox.setRadius(logic.walrus2.getMass()*6);
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
+
+    //this is the place where the bump sound is called.
+
+
+    if (logic.bump) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.bump);
+        logic.bump = 0;
+    } // doesn't work, need to fix
+    if (logic.splash){
+      //play splash sound
+      logic.splash = 0;
+    }
 
 
     // draw in order of depth
