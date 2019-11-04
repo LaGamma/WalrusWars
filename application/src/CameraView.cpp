@@ -338,7 +338,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                       else{
                         std::cout << "start game!" << std::endl;
                         createControllers(2);
-                        logic.playGame();
+                        logic.resetGame();
                       }
 
                     } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
