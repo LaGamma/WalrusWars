@@ -170,6 +170,11 @@ void GameLogic::handlePlayerAttack(int playerNum) {
     }
 }
 
+void GameLogic::handlePlayerAttack(int playerNum) {
+    if (playerNum = 1){
+    }
+}
+
 void GameLogic::returnToMenu() {
   state = mainMenu;
   stage.generateMap();
