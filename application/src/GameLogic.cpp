@@ -10,8 +10,8 @@ GameLogic::GameLogic() {
     stage = Stage();
     stage.generateMap();
     accumulator = 0;
-    bump = false;
-    splash = false;
+    bump = 0;
+    splash = 0;
 }
 
 void GameLogic::update(float dSec) {
@@ -157,7 +157,12 @@ void GameLogic::handlePlayerCollision() {
   // avoid walrus sticking together occasionally
   walrus1.tickUpdate(knockback);
   walrus2.tickUpdate(knockback);
-  bump = true;
+
+  // power of collision
+  sf::Vector2f velDiff = walrus1.getVel() - walrus2.getVel();
+  float magnitude = sqrt((velDiff.x * velDiff.x) + (velDiff.y * velDiff.y));
+  bump = (int) (magnitude*0.2);
+  //std::cout<<bump<<"\n";
 }
 
 void GameLogic::returnToMenu() {
@@ -179,7 +184,7 @@ void GameLogic::handlePlayerDeath(int x) {
         walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
         walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
       }
-      splash = true;
+      splash = 1;
 	}
 	else if (x == 2) {
 	    std::cout<<"walrus2 died\n";
@@ -188,7 +193,7 @@ void GameLogic::handlePlayerDeath(int x) {
         walrus1.spawn(sf::Vector2f(400.0f, 250.0f));
         walrus2.spawn(sf::Vector2f(400.0f, 350.0f));
       }
-      splash = true;
+      splash = 1;
 	}
 }
 
