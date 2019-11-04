@@ -189,13 +189,13 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //this is the place where the bump sound is called.
 
 
-    if (logic.bump==true) {
-        soundManager.playSound(SoundManager::SFX::bump);
-        logic.bump = false;
+    if (logic.bump) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.bump);
+        logic.bump = 0;
     } // doesn't work, need to fix
-    if (logic.splash==true){
+    if (logic.splash){
       //play splash sound
-      logic.splash = false;
+      logic.splash = 0;
     }
 
 
