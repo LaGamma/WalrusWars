@@ -2,7 +2,8 @@
 #define _GameLogic_H_
 #include "Player.h"
 #include "Stage.h"
-
+#include "Fish.h"
+#include <list>
 class GameLogic {
   public:
     GameLogic();
@@ -23,6 +24,7 @@ class GameLogic {
     Stage stage;
 
     sf::Vector2f playerCollisionPoint;
+    std::list<std::shared_ptr<Fish>> fish_list;
 
 private:
     GameState state;
