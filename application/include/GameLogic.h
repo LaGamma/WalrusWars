@@ -2,7 +2,8 @@
 #define _GameLogic_H_
 #include "Player.h"
 #include "Stage.h"
-
+#include "Fish.h"
+#include <list>
 class GameLogic {
   public:
     GameLogic();

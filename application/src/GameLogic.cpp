@@ -12,6 +12,7 @@ GameLogic::GameLogic() {
     accumulator = 0;
     bump = 0;
     splash = 0;
+    //std::list<std::unique_ptr<Fish>> fish_list;
 }
 
 void GameLogic::update(float dSec) {
@@ -106,6 +107,7 @@ void GameLogic::update(float dSec) {
           handlePlayerCollision();
         }
 
+        //fish powerups
 
 
     }
