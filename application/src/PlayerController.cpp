@@ -1,5 +1,6 @@
 #include "PlayerController.h"
 #include <iostream>
+#include <cmath>
 
 //for ai, generally move towards center if player near edge shortest path towards where player is headed or is depending on difficulty
 // , if in close proximity to fish or closer to fish than player shortest path to fish.
@@ -11,6 +12,7 @@ PlayerController::PlayerController() {
 void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
 
     sf::Vector2f dir = sf::Vector2f(0,0);
+    bool idle = false;
 
 
     if (playerNum == 1) {
@@ -35,10 +37,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
         logic.walrus1.applyActiveForce(dir, dSec);
         // idle state
-        if (logic.walrus1.getStamina() > 99.99 && logic.walrus1.getVel().x < 0.01 && logic.walrus1.getVel().y < 0.01) {
-            dir = sf::Vector2f(0,1);
-            logic.walrus1.setStamina(99.99);
-        }
+        idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus1.getVel().x * logic.walrus1.getVel().x) + (logic.walrus1.getVel().y * logic.walrus1.getVel().y)) < 0.001));
 
     } else {
         //process keyboard input for player 2
@@ -61,27 +60,28 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && logic.walrus2.getStamina() >= 30) {
-            attackAnimTimer = 0.30;//make get switch time * 3, so its consistent if switch time changes
+            attackAnimTimer = 2;//make get switch time * 3, so its consistent if switch time changes
+            anim.setCurrentSpritex(0); //set anim to first frame of attack animation
             logic.handlePlayerAttack(1);
             std::cout << "INITIATE ATTACK" << std::endl;
         }
         logic.walrus2.applyActiveForce(dir, dSec);
         // idle state
-        if (logic.walrus2.getStamina() > 99.99 && logic.walrus2.getVel().x < 0.01 && logic.walrus2.getVel().y < 0.01) {
-            dir = sf::Vector2f(0,1);
-            logic.walrus2.setStamina(99.99);
-        }
-
+        idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus2.getVel().x * logic.walrus2.getVel().x) + (logic.walrus2.getVel().y * logic.walrus2.getVel().y)) < 0.001));
     }
 
     //play animations
     if (attackAnimTimer > 0) {
         anim.updateAttack(dir, dSec);
         attackAnimTimer -= dSec;
-        std::cout << attackAnimTimer << std::endl;
+        //std::cout << attackAnimTimer << std::endl;
     }
-    else{
+    else if (idle) {
+        anim.setCurrentSprite(0,0);
+    }
+    else if (attackAnimTimer <= 0 && !idle) {
         //reset attack animation variables
+        attacking = 0;
         attackAnimTimer = 0;
         //update movement
         anim.update(dir, dSec);
