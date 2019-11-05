@@ -49,7 +49,7 @@ class CameraView {
     sf::CircleShape collision_pt;
     sf::RectangleShape minimapbg;
     sf::CircleShape stage_veil;
-
+    sf::CircleShape attackHitbox;
 };
 
 

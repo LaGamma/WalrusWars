@@ -187,8 +187,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(hitbox);
 
     //attack hitbox
-    //if()
-
+    attackHitbox.setRadius(logic.walrus1.getMass()*6);
+    attackHitbox.setPosition(logic.getAttackCollisionPoint().x, logic.getAttackCollisionPoint().y);
+    attackHitbox.setFillColor(sf::Color(0,255,0));
+    window.draw(attackHitbox);
+    attackHitbox.setRadius(logic.walrus1.getMass()*6);
+    attackHitbox.setPosition(logic.getAttackCollisionPoint().x, logic.getAttackCollisionPoint().y);
+    attackHitbox.setFillColor(sf::Color(0,255,0));
+    window.draw(attackHitbox);
 
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {

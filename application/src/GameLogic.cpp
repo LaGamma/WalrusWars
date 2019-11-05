@@ -166,15 +166,54 @@ void GameLogic::handlePlayerCollision() {
 }
 
 void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
-    if (playerNum = 1){
-        sf::Vector2f w1_pos = walrus1.getPos();
-        float w1_mass = walrus1.getMass();
-        float w1_radius = (w1_mass*6) + 1; //+1 to avoid a regular collision
-        //determine direction of attack
-        if (dir.x == 1 && dir.y == 0){
-            w1_radius;
+    std::cout << "playerNum" << playerNum << std::endl;
+    if (playerNum == 2){
+        sf::Vector2f w2_pos = walrus2.getPos();
+        float w2_mass = walrus2.getMass();
+        float w2_radius = (w2_mass*20) + 1; //+1 to avoid a regular collision
+
+        //determine direction of attack, direction conversion copied from animation
+        attackCollisionPoint = w2_pos;
+        std::cout << "Bx:" <<attackCollisionPoint.x <<"\n" << "By:" <<attackCollisionPoint.y <<"\n"<< std::endl;
+        int hash = dir.x * 17 + dir.y * 7;
+        std::cout << "hash:"<< hash << "\n" << std::endl;
+        switch (hash) {
+            case 17 + 7: //right down
+                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.y += w2_radius;
+                break;
+            case 17 - 7: //right up
+                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.y -= w2_radius;
+                break;
+            case -17 + 7: //left down
+                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.y += w2_radius;
+                break;
+            case -17 - 7: //left up
+                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.y -= w2_radius;
+                break;
+            case 17: //right
+                attackCollisionPoint.x += w2_radius;
+                break;
+            case 7: //down
+                attackCollisionPoint.y += w2_radius;
+                break;
+            case -17: //left
+                attackCollisionPoint.x -= w2_radius;
+                std::cout << "left" << std::endl;
+                break;
+            case -7: //up
+                attackCollisionPoint.y -= w2_radius;
+                break;
+            case 0:
+                break;
         }
+        //if collision point inside other walrus hitbox, apply collision force
+        std::cout << "x:" <<attackCollisionPoint.x <<"\n" << "y:" <<attackCollisionPoint.y <<"\n"<< std::endl;
     }
+    //copy everything for second walrus
 }
 
 void GameLogic::returnToMenu() {
@@ -229,4 +268,7 @@ GameLogic::GameState GameLogic::getState() {
 
 int GameLogic::getStageProgression() {
     return progression;
+}
+sf::Vector2f GameLogic::getAttackCollisionPoint() {
+    return attackCollisionPoint;
 }

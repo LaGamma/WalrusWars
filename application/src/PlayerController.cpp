@@ -61,7 +61,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && logic.walrus2.getStamina() >= 30) {
-            attackAnimTimer = 0.45f;//make get switch time * 3, so its consistent if switch time changes
+            attackAnimTimer = 0.30f;//make get switch time * 3, so its consistent if switch time changes
             anim.setCurrentSpritex(0); //set anim to first frame of attack animation
             attacking = true;
             attackDir = dir;
@@ -84,7 +84,6 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         //std::cout << "attacking" << attacking << std::endl;
         attackAnimTimer = 0;
     }
-
         /*
         else  //once attack animation is finished, spawn hitbox
             logic.handlePlayerAttack(playerNum, anim.getCurrentRow());

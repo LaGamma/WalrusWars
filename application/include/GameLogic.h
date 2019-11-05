@@ -13,6 +13,7 @@ class GameLogic {
     void returnToMenu();
     void playGame();
     int getStageProgression();
+    sf::Vector2f getAttackCollisionPoint();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
@@ -24,6 +25,7 @@ class GameLogic {
     Stage stage;
 
     sf::Vector2f playerCollisionPoint;
+    sf::Vector2f attackCollisionPoint;
 
 private:
     GameState state;
