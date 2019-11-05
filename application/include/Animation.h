@@ -13,6 +13,7 @@ public:
 
   //reset current sprite when player dies
   void setCurrentSprite(int x, int y);
+  //needed to set begining of attack animation
   void setCurrentSpritex(int x);
   int row = 0;
   bool flip = 0;

@@ -165,8 +165,15 @@ void GameLogic::handlePlayerCollision() {
   //std::cout<<bump<<"\n";
 }
 
-void GameLogic::handlePlayerAttack(int playerNum) {
+void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
     if (playerNum = 1){
+        sf::Vector2f w1_pos = walrus1.getPos();
+        float w1_mass = walrus1.getMass();
+        float w1_radius = (w1_mass*6) + 1; //+1 to avoid a regular collision
+        //determine direction of attack
+        if (dir.x == 1 && dir.y == 0){
+            w1_radius;
+        }
     }
 }
 

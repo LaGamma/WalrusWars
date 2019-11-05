@@ -43,6 +43,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         //process keyboard input for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             dir.y -= 1;
+            //std::cout << "y:" << dir.y << "x:" << dir.x << std::endl;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             dir.y += 1;
@@ -60,10 +61,11 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus2.setMass(logic.walrus2.getMass()-0.001);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && logic.walrus2.getStamina() >= 30) {
-            attackAnimTimer = 2;//make get switch time * 3, so its consistent if switch time changes
+            attackAnimTimer = 0.45f;//make get switch time * 3, so its consistent if switch time changes
             anim.setCurrentSpritex(0); //set anim to first frame of attack animation
-            logic.handlePlayerAttack(1);
-            std::cout << "INITIATE ATTACK" << std::endl;
+            attacking = true;
+            attackDir = dir;
+            //std::cout << "INITIATE ATTACK" << std::endl;
         }
         logic.walrus2.applyActiveForce(dir, dSec);
         // idle state
@@ -76,13 +78,26 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         attackAnimTimer -= dSec;
         //std::cout << attackAnimTimer << std::endl;
     }
+    else if (attackAnimTimer <= 0 && attacking){
+        logic.handlePlayerAttack(playerNum, attackDir);
+        attacking = false;
+        //std::cout << "attacking" << attacking << std::endl;
+        attackAnimTimer = 0;
+    }
+
+        /*
+        else  //once attack animation is finished, spawn hitbox
+            logic.handlePlayerAttack(playerNum, anim.getCurrentRow());
+            attacking = false;
+            std::cout << "attacking" << attacking << std::endl;
+            attackAnimTimer = 0;
+        */
+
     else if (idle) {
         anim.setCurrentSprite(0,0);
     }
+
     else if (attackAnimTimer <= 0 && !idle) {
-        //reset attack animation variables
-        attacking = 0;
-        attackAnimTimer = 0;
         //update movement
         anim.update(dir, dSec);
         //std::cout << "MOVING" << std::endl;

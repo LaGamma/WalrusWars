@@ -72,7 +72,7 @@ void Animation::update(sf::Vector2f dir, float dSec) {
             uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
             uvRect.width = -abs(uvRect.width);
             row = 0;
-            flip = 1;
+            flip = 0;
             break;
         case -17: //left
             currentSprite.y = 2;
