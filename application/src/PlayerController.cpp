@@ -13,6 +13,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
 
     sf::Vector2f dir = sf::Vector2f(0,0);
     bool idle = false;
+    bool resting = false;
 
 
     if (playerNum == 1) {
@@ -77,6 +78,8 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         logic.walrus2.applyActiveForce(dir, dSec);
         // idle state
         idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus2.getVel().x * logic.walrus2.getVel().x) + (logic.walrus2.getVel().y * logic.walrus2.getVel().y)) < 0.001));
+        //sleeping state
+        resting = (logic.walrus2.getState() == Player::resting);
     }
 
     //play animations
@@ -84,30 +87,19 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         anim.updateAttack(dir, dSec);
         attackAnimTimer -= dSec;
         //std::cout << attackAnimTimer << std::endl;
-    }
-    else if (attackAnimTimer <= 0 && attacking){
+    } else if (attackAnimTimer <= 0 && attacking){
         logic.handlePlayerAttack(playerNum, attackDir);
         attacking = false;
         //std::cout << "attacking" << attacking << std::endl;
         attackAnimTimer = 0;
-    }
-        /*
-        else  //once attack animation is finished, spawn hitbox
-            logic.handlePlayerAttack(playerNum, anim.getCurrentRow());
-            attacking = false;
-            std::cout << "attacking" << attacking << std::endl;
-            attackAnimTimer = 0;
-        */
-
-    else if (idle) {
-        anim.setCurrentSprite(0,0);
-        attackDir=(sf::Vector2f(0,1));
-
-    }
-
-    else if (attackAnimTimer <= 0 && !idle) {
-        //update movement
-        anim.update(dir, dSec);
+    } else if (resting){
+        anim.updateSleep(dSec);
+    } else if (idle) {
+        anim.setCurrentSprite(0, 0);
+        attackDir = (sf::Vector2f(0, 1));
+    } else if (attackAnimTimer <= 0 && !idle) {
+        //updateMovement movement
+        anim.updateMovement(dir, dSec);
         //std::cout << "MOVING" << std::endl;
     }
 

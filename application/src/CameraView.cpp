@@ -10,14 +10,14 @@ CameraView::CameraView() {
 
 void CameraView::init() {
     //load in textures
-    spriteMapP1.loadFromFile("../images/WalrusMovementSS.png");
-    spriteMapP2.loadFromFile("../images/WalrusMovementSS.png");
+    spriteMapP1.loadFromFile("../images/WalrusMovementSS2.png");
+    spriteMapP2.loadFromFile("../images/WalrusMovementSS2.png");
     menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/minimap3.png");
-    walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
-    walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
-    end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,10), 0.15);
-    end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,10), 0.15);
+    walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
+    walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
+    end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
+    end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
     font.loadFromFile("../fonts/menuFont.ttf");
 }
 

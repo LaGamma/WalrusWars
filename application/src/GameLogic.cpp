@@ -167,8 +167,10 @@ void GameLogic::handlePlayerCollision() {
 
 void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
     std::cout << "playerNum" << playerNum << std::endl;
+    sf::Vector2f w1_pos = walrus1.getPos();
+    sf::Vector2f w2_pos = walrus2.getPos();
+
     if (playerNum == 2){
-        sf::Vector2f w2_pos = walrus2.getPos();
         float w2_mass = walrus2.getMass();
         float w2_radius = (w2_mass*20) + 1; //+1 to avoid a regular collision
 
@@ -188,11 +190,11 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
                 attackCollisionPoint.y -= w2_radius;
                 break;
             case -17 + 7: //left down
-                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.x -= w2_radius;
                 attackCollisionPoint.y += w2_radius;
                 break;
             case -17 - 7: //left up
-                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.x -= w2_radius;
                 attackCollisionPoint.y -= w2_radius;
                 break;
             case 17: //right
@@ -213,6 +215,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
         }
         //if collision point inside other walrus hitbox, apply collision force
         std::cout << "x:" <<attackCollisionPoint.x <<"\n" << "y:" <<attackCollisionPoint.y <<"\n"<< std::endl;
+        //if (attackCollisionPoint
     }
     //copy everything for second walrus
 }

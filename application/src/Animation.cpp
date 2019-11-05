@@ -17,7 +17,7 @@ void Animation::init(sf::Texture* texture, sf::Vector2u sprite_count, float swit
 }
 
 
-void Animation::update(sf::Vector2f dir, float dSec) {
+void Animation::updateMovement(sf::Vector2f dir, float dSec) {
     totalTime += dSec;
 
     if (totalTime >= switchTime) {
@@ -121,6 +121,26 @@ void Animation::updateAttack(sf::Vector2f dir, float dSec){
     }
 
 }
+
+void Animation::updateSleep(float dSec) {
+    totalTime += dSec;
+    currentSprite.y = 10;
+    std::cout << "currentSprite.y" << currentSprite.y<< std::endl;
+
+    if (totalTime >= switchTime) {
+        totalTime -= switchTime;
+        currentSprite.x++;
+        //make the animation loop through row
+        if (currentSprite.x >= spriteCount.x) {
+            currentSprite.x = 0;
+        }
+    }
+    //update uv rect
+    uvRect.top = currentSprite.y * uvRect.height;
+    uvRect.left = currentSprite.x * uvRect.width;
+    uvRect.width = abs(uvRect.width);
+}
+
 
 
 void Animation::setCurrentSprite(int x, int y){
