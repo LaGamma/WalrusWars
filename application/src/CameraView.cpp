@@ -10,8 +10,8 @@ CameraView::CameraView() {
 
 void CameraView::init() {
     //load in textures
-    spriteMapP1.loadFromFile("../images/WalrusMovementSS2.png");
-    spriteMapP2.loadFromFile("../images/WalrusMovementSS2.png");
+    spriteMapP1.loadFromFile("../images/WalrusSS.png");
+    spriteMapP2.loadFromFile("../images/WalrusSS.png");
     menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/minimap3.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
