@@ -111,14 +111,14 @@ void GameLogic::update(float dSec) {
         //need to fine tune these numbers, not sure where we want the fish to be generated
         //rand_create is just a simple way to randomize when fish are created
         int rand_create = rand() % 1000;
-        if (rand_create < 10) {
+        if (rand_create < 5) {
             int rand_x = rand() % 500 + 50;
             int rand_y = rand() % 500 + 50;
             std::shared_ptr<Fish> fish(new Fish() );
             fish->setPosition(sf::Vector2f(rand_x, rand_y));
-            //std::list<std::shared_ptr<Fish>> fish_list;
             fish_list.push_back(fish);
             //std::cout<<fish_list.back()->getPosition().x;
+            curr_fish_pos = fish->getPosition();
         }
 
 
