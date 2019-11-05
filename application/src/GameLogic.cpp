@@ -175,6 +175,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
         //determine direction of attack, direction conversion copied from animation
         attackCollisionPoint = w2_pos;
         std::cout << "Bx:" <<attackCollisionPoint.x <<"\n" << "By:" <<attackCollisionPoint.y <<"\n"<< std::endl;
+        std::cout << "dir.x:" <<dir.x <<"\n" << "dir.y:" <<dir.y <<"\n"<< std::endl;
         int hash = dir.x * 17 + dir.y * 7;
         std::cout << "hash:"<< hash << "\n" << std::endl;
         switch (hash) {

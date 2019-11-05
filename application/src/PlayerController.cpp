@@ -19,15 +19,19 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         //process keyboard input for player 1
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
             dir.y -= 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             dir.y += 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
             dir.x -= 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             dir.x += 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) {
             logic.walrus1.setMass(logic.walrus1.getMass()+0.001);
@@ -43,16 +47,20 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         //process keyboard input for player 2
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             dir.y -= 1;
+            attackDir = dir;
             //std::cout << "y:" << dir.y << "x:" << dir.x << std::endl;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             dir.y += 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             dir.x -= 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
             dir.x += 1;
+            attackDir = dir;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0)) {
             logic.walrus2.setMass(logic.walrus2.getMass()+0.001);
@@ -64,7 +72,6 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             attackAnimTimer = 0.30f;//make get switch time * 3, so its consistent if switch time changes
             anim.setCurrentSpritex(0); //set anim to first frame of attack animation
             attacking = true;
-            attackDir = dir;
             //std::cout << "INITIATE ATTACK" << std::endl;
         }
         logic.walrus2.applyActiveForce(dir, dSec);
