@@ -26,6 +26,9 @@ class GameLogic {
     sf::Vector2f playerCollisionPoint;
     std::list<std::shared_ptr<Fish>> fish_list;
 
+    sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView
+
+
 private:
     GameState state;
     int progression;
