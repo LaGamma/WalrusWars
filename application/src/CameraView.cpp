@@ -345,7 +345,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                       }
                       else{
                         std::cout << "start game!" << std::endl;
-                        createControllers(2);
+                        createControllers(1);
                         logic.resetGame();
                       }
 
