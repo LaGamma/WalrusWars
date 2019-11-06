@@ -27,7 +27,7 @@ void GameLogic::update(float dSec) {
             walrus2.tickUpdate(dSec);
             walrus2.applyPassiveForce(dSec);
         }
-        
+
         // melt stage
         accumulator += dSec;
         if(accumulator >= 1){
@@ -50,7 +50,7 @@ void GameLogic::update(float dSec) {
                 handlePlayerDeath(2);
             }
         }
-        
+
         // player - boundary collision
         if (w1_pos.x >= 800 || w1_pos.x <= 0) {
             handleBoundaryCollision(1, w1_pos.x);
@@ -78,7 +78,7 @@ void GameLogic::update(float dSec) {
             fish_list.push_back(std::unique_ptr<Fish>(new Fish()));
             fish_list.back()->setPosition(sf::Vector2f(rand_x, rand_y));
             //std::cout<<fish_list.back()->getPosition().x<<"\n";
-            curr_fish_pos = fish->getPosition();
+            curr_fish_pos = fish_list.back()->getPosition();
         }
 
     }
@@ -117,7 +117,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
         walrus2.setVel(newVel);
         walrus2.tickUpdate(0.04);
     }
-  
+
 }
 
 void GameLogic::handlePlayerCollision() {
@@ -192,7 +192,7 @@ void GameLogic::handlePlayerDeath(int walrus) {
           //reset progression
           progression = 0;
       }
-      
+
       walrus1.kill();
       if(walrus2.isDead()){
         resetGame();
