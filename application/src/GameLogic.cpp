@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include "GameLogic.h"
+#include "Definitions.h"
 
 GameLogic::GameLogic() {
     state = mainMenu;
@@ -180,7 +181,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
         attackCollisionPoint = w2_pos;
         int acpAdjustment = w2_radius / 2; //range for slash attack
         sf::Vector2f attackKnockBackDir;
-
+        float slashAttackPower = SLASH_ATTACK_POWER;
 
         int hash = dir.x * 17 + dir.y * 7;
         std::cout << "hash:"<< hash << "\n" << std::endl;
@@ -190,32 +191,38 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
                 attackCollisionPoint.x += acpAdjustment;
                 attackCollisionPoint.y += acpAdjustment;
                 //variable used to determine knockback direction if hit
-                attackKnockBackDir = (sf::Vector2f(100,100));
+                attackKnockBackDir = (sf::Vector2f(slashAttackPower, slashAttackPower));
                 break;
             case 17 - 7: //right up
                 attackCollisionPoint.x += acpAdjustment;
                 attackCollisionPoint.y -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(slashAttackPower, -slashAttackPower));
                 break;
             case -17 + 7: //left down
                 attackCollisionPoint.x -= acpAdjustment;
                 attackCollisionPoint.y += acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, slashAttackPower));
                 break;
             case -17 - 7: //left up
                 attackCollisionPoint.x -= acpAdjustment;
                 attackCollisionPoint.y -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, -slashAttackPower));
                 break;
             case 17: //right
                 attackCollisionPoint.x += acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(slashAttackPower, 0));
                 break;
             case 7: //down
                 attackCollisionPoint.y += acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(0, slashAttackPower));
                 break;
             case -17: //left
                 attackCollisionPoint.x -= acpAdjustment;
-                std::cout << "left" << std::endl;
+                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, 0));
                 break;
             case -7: //up
                 attackCollisionPoint.y -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(0, -slashAttackPower));
                 break;
             case 0:
                 break;
