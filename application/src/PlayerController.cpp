@@ -40,6 +40,11 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
             logic.walrus1.setMass(logic.walrus1.getMass()-0.001);
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && logic.walrus1.getStamina() >= 30) {
+            attackAnimTimer = 0.30f;//make get switch time * 3, so its consistent if switch time changes
+            anim.setCurrentSpritex(0); //set anim to first frame of attack animation
+            attacking = true;
+        }
         logic.walrus1.applyActiveForce(dir, dSec);
         // idle state
         idle = (logic.walrus1.getStamina() > 99.99 && (sqrt((logic.walrus1.getVel().x * logic.walrus1.getVel().x) + (logic.walrus1.getVel().y * logic.walrus1.getVel().y)) < 0.001));

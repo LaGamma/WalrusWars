@@ -240,7 +240,70 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
             std::cout << "MISSED SLASH" <<"\n"<< std::endl;
          }
     }
-    //copy everything for second walrus
+    if (playerNum == 1) {
+
+        //determine direction of attack, direction conversion copied from animation
+        attackCollisionPoint = w1_pos;
+        int acpAdjustment = w1_radius / 2; //range for slash attack
+        sf::Vector2f attackKnockBackDir;
+        float slashAttackPower = SLASH_ATTACK_POWER;
+
+        int hash = dir.x * 17 + dir.y * 7;
+        std::cout << "hash:" << hash << "\n" << std::endl;
+        switch (hash) {
+            case 17 + 7: //right down
+                //adjust attack hitbox (hit coordinate) based on direction
+                attackCollisionPoint.x += acpAdjustment;
+                attackCollisionPoint.y += acpAdjustment;
+                //variable used to determine knockback direction if hit
+                attackKnockBackDir = (sf::Vector2f(slashAttackPower, slashAttackPower));
+                break;
+            case 17 - 7: //right up
+                attackCollisionPoint.x += acpAdjustment;
+                attackCollisionPoint.y -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(slashAttackPower, -slashAttackPower));
+                break;
+            case -17 + 7: //left down
+                attackCollisionPoint.x -= acpAdjustment;
+                attackCollisionPoint.y += acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, slashAttackPower));
+                break;
+            case -17 - 7: //left up
+                attackCollisionPoint.x -= acpAdjustment;
+                attackCollisionPoint.y -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, -slashAttackPower));
+                break;
+            case 17: //right
+                attackCollisionPoint.x += acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(slashAttackPower, 0));
+                break;
+            case 7: //down
+                attackCollisionPoint.y += acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(0, slashAttackPower));
+                break;
+            case -17: //left
+                attackCollisionPoint.x -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, 0));
+                break;
+            case -7: //up
+                attackCollisionPoint.y -= acpAdjustment;
+                attackKnockBackDir = (sf::Vector2f(0, -slashAttackPower));
+                break;
+            case 0:
+                break;
+        }
+        //if collision point inside other walrus hitbox, apply collision force
+        std::cout << "x:" << attackCollisionPoint.x << "\n" << "y:" << attackCollisionPoint.y << "\n" << std::endl;
+        //follow circle formula to determine if point is inside other walrus hitbox
+        if ((attackCollisionPoint.x - w2_pos.x) * (attackCollisionPoint.x - w2_pos.x) +
+            (attackCollisionPoint.y - w2_pos.y) * (attackCollisionPoint.y - w2_pos.y) <= w2_radius * w2_radius) {
+            //knock walrus
+            std::cout << "SLASHED" << "\n" << std::endl;
+            walrus2.setVel(attackKnockBackDir);
+        } else {
+            std::cout << "MISSED SLASH" << "\n" << std::endl;
+        }
+    }
 }
 
 void GameLogic::returnToMenu() {
