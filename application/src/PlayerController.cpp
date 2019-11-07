@@ -42,7 +42,9 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
         logic.walrus1.applyActiveForce(dir, dSec);
         // idle state
-        idle = (logic.walrus2.getStamina() > 99.99 && (sqrt((logic.walrus1.getVel().x * logic.walrus1.getVel().x) + (logic.walrus1.getVel().y * logic.walrus1.getVel().y)) < 0.001));
+        idle = (logic.walrus1.getStamina() > 99.99 && (sqrt((logic.walrus1.getVel().x * logic.walrus1.getVel().x) + (logic.walrus1.getVel().y * logic.walrus1.getVel().y)) < 0.001));
+        //sleeping state
+        resting = (logic.walrus1.getState() == Player::resting);
 
     } else {
         //process keyboard input for player 2

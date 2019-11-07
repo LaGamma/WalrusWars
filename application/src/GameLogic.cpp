@@ -169,53 +169,69 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
     std::cout << "playerNum" << playerNum << std::endl;
     sf::Vector2f w1_pos = walrus1.getPos();
     sf::Vector2f w2_pos = walrus2.getPos();
+    float w1_mass = walrus2.getMass();
+    float w1_radius = (w1_mass*20) + 1; //+1 to avoid a regular collision
+    float w2_mass = walrus2.getMass();
+    float w2_radius = (w2_mass*20) + 1; //+1 to avoid a regular collision
 
     if (playerNum == 2){
-        float w2_mass = walrus2.getMass();
-        float w2_radius = (w2_mass*20) + 1; //+1 to avoid a regular collision
 
         //determine direction of attack, direction conversion copied from animation
         attackCollisionPoint = w2_pos;
-        std::cout << "Bx:" <<attackCollisionPoint.x <<"\n" << "By:" <<attackCollisionPoint.y <<"\n"<< std::endl;
-        std::cout << "dir.x:" <<dir.x <<"\n" << "dir.y:" <<dir.y <<"\n"<< std::endl;
+        int acpAdjustment = w2_radius / 2; //range for slash attack
+        sf::Vector2f attackKnockBackDir;
+
+
         int hash = dir.x * 17 + dir.y * 7;
         std::cout << "hash:"<< hash << "\n" << std::endl;
         switch (hash) {
             case 17 + 7: //right down
-                attackCollisionPoint.x += w2_radius;
-                attackCollisionPoint.y += w2_radius;
+                //adjust attack hitbox (hit coordinate) based on direction
+                attackCollisionPoint.x += acpAdjustment;
+                attackCollisionPoint.y += acpAdjustment;
+                //variable used to determine knockback direction if hit
+                attackKnockBackDir = (sf::Vector2f(100,100));
                 break;
             case 17 - 7: //right up
-                attackCollisionPoint.x += w2_radius;
-                attackCollisionPoint.y -= w2_radius;
+                attackCollisionPoint.x += acpAdjustment;
+                attackCollisionPoint.y -= acpAdjustment;
                 break;
             case -17 + 7: //left down
-                attackCollisionPoint.x -= w2_radius;
-                attackCollisionPoint.y += w2_radius;
+                attackCollisionPoint.x -= acpAdjustment;
+                attackCollisionPoint.y += acpAdjustment;
                 break;
             case -17 - 7: //left up
-                attackCollisionPoint.x -= w2_radius;
-                attackCollisionPoint.y -= w2_radius;
+                attackCollisionPoint.x -= acpAdjustment;
+                attackCollisionPoint.y -= acpAdjustment;
                 break;
             case 17: //right
-                attackCollisionPoint.x += w2_radius;
+                attackCollisionPoint.x += acpAdjustment;
                 break;
             case 7: //down
-                attackCollisionPoint.y += w2_radius;
+                attackCollisionPoint.y += acpAdjustment;
                 break;
             case -17: //left
-                attackCollisionPoint.x -= w2_radius;
+                attackCollisionPoint.x -= acpAdjustment;
                 std::cout << "left" << std::endl;
                 break;
             case -7: //up
-                attackCollisionPoint.y -= w2_radius;
+                attackCollisionPoint.y -= acpAdjustment;
                 break;
             case 0:
                 break;
         }
         //if collision point inside other walrus hitbox, apply collision force
         std::cout << "x:" <<attackCollisionPoint.x <<"\n" << "y:" <<attackCollisionPoint.y <<"\n"<< std::endl;
-        //if (attackCollisionPoint
+        //follow circle formula to determine if point is inside other walrus hitbox
+        if ((attackCollisionPoint.x - w1_pos.x) * (attackCollisionPoint.x - w1_pos.x) +
+            (attackCollisionPoint.y - w1_pos.y) * (attackCollisionPoint.y - w1_pos.y) <= w1_radius * w1_radius) {
+            //knock walrus
+            std::cout << "SLASHED" <<"\n"<< std::endl;
+            walrus1.setVel(attackKnockBackDir);
+        }
+        else{
+            std::cout << "MISSED SLASH" <<"\n"<< std::endl;
+         }
     }
     //copy everything for second walrus
 }
