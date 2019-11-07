@@ -284,6 +284,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     stamina_left2.setPosition(stamina_bar2.getPosition());
     window.draw(stamina_left1);
     window.draw(stamina_left2);
+
+    //draw fish
+    if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
+        sf::CircleShape fish_circle = sf::CircleShape(10);
+        fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
+        fish_circle.setPosition(logic.curr_fish_pos);
+        window.draw(fish_circle);
+    }
 }
 
 
@@ -334,8 +342,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                       }
                       else{
                         std::cout << "start game!" << std::endl;
-                        createControllers(2);
-                        logic.playGame();
+                        createControllers(1);
+                        logic.resetGame();
                       }
 
                     } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {

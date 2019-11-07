@@ -2,16 +2,18 @@
 #define _GameLogic_H_
 #include "Player.h"
 #include "Stage.h"
-
+#include "Fish.h"
+#include <list>
 class GameLogic {
   public:
     GameLogic();
     void update(float);
     void handlePlayerDeath(int);
     void handlePlayerCollision();
+    void handleBoundaryCollision(int, float);
     void togglePause();
     void returnToMenu();
-    void playGame();
+    void resetGame();
     int getStageProgression();
     sf::Vector2f getAttackCollisionPoint();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
@@ -25,7 +27,13 @@ class GameLogic {
     Stage stage;
 
     sf::Vector2f playerCollisionPoint;
+
     sf::Vector2f attackCollisionPoint;
+
+    std::list<std::unique_ptr<Fish>> fish_list;
+
+    sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView
+
 
 private:
     GameState state;

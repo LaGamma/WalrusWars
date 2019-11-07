@@ -1,6 +1,8 @@
 #include "BotController.h"
+#include <iostream>
 
 BotController::BotController() {
+  state = 0;
 
 };
 
@@ -12,9 +14,21 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
     sf::Vector2f dir = sf::Vector2f(0,0);
     sf::Vector2f w1_pos = logic.walrus1.getPos();
     sf::Vector2f w2_pos = logic.walrus2.getPos();
+    sf::Vector2f w1_vel = logic.walrus1.getVel();
+    sf::Vector2f w2_vel = logic.walrus2.getVel();
+
 
     if (playerNum == 1) {
         //process input for player 1
+        if(w2_vel.x>=8 || w2_vel.y>=8){
+          changeState(0);
+        }else{
+          changeState(1);
+        }
+        if(logic.walrus2.isDead()){
+          changeState(2);
+        }
+
         if (w1_pos.y > w2_pos.y) {
             dir.y -= 1;
         } else if (w1_pos.y < w2_pos.y) {
@@ -26,10 +40,19 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
             dir.x += 1;
         }
 
-        logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
+        //logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
 
     } else {
         //process input for player 2
+        if(w1_vel.x>=8 || w1_vel.y>=8){
+          changeState(0);
+        }
+        else{
+          changeState(1);
+        }
+        if(logic.walrus1.isDead()){
+          changeState(2);
+        }
         if (w2_pos.y > w1_pos.y) {
             dir.y -= 1;
         } else if (w2_pos.y < w1_pos.y) {
@@ -40,7 +63,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         } else if (w2_pos.x < w1_pos.x) {
             dir.x += 1;
         }
-        logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
+        //logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
 
     }
     anim.updateMovement(dir, dSec/bot_handicap);
@@ -67,3 +90,18 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         }
     }
 };
+
+void BotController::changeState(int state){
+  if(state == 0){
+    std::cout<<"bot is fleeing\n";
+    state = 0;
+  }
+  else if(state == 1){
+    std::cout<<"bot is attacking\n";
+    state = 1;
+  }
+  else{
+    std::cout<<"bot wins\n";
+    state = 2;
+  }
+}
