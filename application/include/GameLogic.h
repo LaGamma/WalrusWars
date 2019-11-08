@@ -15,6 +15,8 @@ class GameLogic {
     void returnToMenu();
     void resetGame();
     int getStageProgression();
+    sf::Vector2f getAttackCollisionPoint();
+    void handlePlayerAttack(int playerNum, sf::Vector2f dir);
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
     bool winner1;
@@ -25,6 +27,9 @@ class GameLogic {
     Stage stage;
 
     sf::Vector2f playerCollisionPoint;
+
+    sf::Vector2f attackCollisionPoint;
+
     std::list<std::unique_ptr<Fish>> fish_list;
 
     sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView

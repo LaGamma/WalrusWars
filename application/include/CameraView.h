@@ -26,7 +26,7 @@ class CameraView {
     sf::Font font;
     char main_menu_selection = 'P';
 
-    // major update classes
+    // major updateMovement classes
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
@@ -49,7 +49,7 @@ class CameraView {
     sf::CircleShape collision_pt;
     sf::RectangleShape minimapbg;
     sf::CircleShape stage_veil;
-
+    sf::CircleShape attackHitbox;
 };
 
 
