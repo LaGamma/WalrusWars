@@ -3,7 +3,19 @@
 
 BotController::BotController() {
   state = 0;
-
+  memset(closedList, false, sizeof (closedList));
+  int i, j;
+  for (i=0; i<40; i++)
+  {
+      for (j=0; j<30; j++)
+      {
+          cellDetails[i][j].f = FLT_MAX;
+          cellDetails[i][j].g = FLT_MAX;
+          cellDetails[i][j].h = FLT_MAX;
+          cellDetails[i][j].pi = -1;
+          cellDetails[i][j].pj = -1;
+      }
+  }
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
@@ -20,6 +32,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     if (playerNum == 1) {
         //process input for player 1
+        int i, j;
         if(w2_vel.x>=8 || w2_vel.y>=8){
           changeState(0);
         }else{
@@ -28,7 +41,22 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         if(logic.walrus2.isDead()){
           changeState(2);
         }
-
+        if(state == 2){
+          i = w1_pos.x/20;
+          j = w1_pos.y/20;
+          cellDetails[i][j].f = 0;
+          cellDetails[i][j].g = 0;
+          cellDetails[i][j].h = 0;
+          cellDetails[i][j].pi = i;
+          cellDetails[i][j].pj = j;
+          openList.insert(cellDetails[i][j]);
+          while(!openList.empty()){
+            cell n = *openList.begin();
+            openList.erase(openList.begin());
+            closedList[i][j] = true;
+            // here you start to go through all cells
+          }
+        }
         if (w1_pos.y > w2_pos.y) {
             dir.y -= 1;
         } else if (w1_pos.y < w2_pos.y) {
