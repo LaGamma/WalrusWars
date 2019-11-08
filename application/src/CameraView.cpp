@@ -19,6 +19,7 @@ void CameraView::init() {
     end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
     end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
     font.loadFromFile("../fonts/menuFont.ttf");
+    soundManager.load();
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -250,6 +251,10 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     stage_veil.setPosition(348.0f + (logic.getStageProgression() * (470 / 5.0f)), 600.0f - 95);
     window.draw(stage_veil);
 
+    if (logic.bump) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.bump);
+        logic.bump = 0;
+      }
     /*
     //draw stage progression. For now display square progressing on bottom of screen
     sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));

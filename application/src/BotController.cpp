@@ -93,15 +93,15 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
 void BotController::changeState(int state){
   if(state == 0){
-    std::cout<<"bot is fleeing\n";
+    //std::cout<<"bot is fleeing\n";
     state = 0;
   }
   else if(state == 1){
-    std::cout<<"bot is attacking\n";
+    //std::cout<<"bot is attacking\n";
     state = 1;
   }
   else{
-    std::cout<<"bot wins\n";
+    //std::cout<<"bot wins\n";
     state = 2;
   }
 }
