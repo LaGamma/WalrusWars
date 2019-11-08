@@ -44,7 +44,7 @@ Now that the Makefile has been succesfully generated, you can compile with 'make
 
 - If you want to add an executable, just add the corresponding .cpp file in the 'bin' subdirectory, and _rerun_ 'cmake .' to update the Makefiles.
 - If you want to add a source file, just add the corresponding .cpp file in the 'src' subdirectory, and _rerun_ 'cmake .' to update the Makefile.
-- If you want to add a header file, just add the corresponding .h file to the 'include' subdirectory. You do not need to updateMovement the Makefile.
+- If you want to add a header file, just add the corresponding .h file to the 'include' subdirectory. You do not need to update the Makefile.
 
 
 **ADVANCED COMPILING**
