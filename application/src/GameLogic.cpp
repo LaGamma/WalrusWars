@@ -70,8 +70,10 @@ void GameLogic::update(float dSec) {
         //rand_create is just a simple way to randomize when fish are created
         int rand_create = rand() % 1000;
         if (rand_create < 5) {
-            int rand_x = rand() % 500 + 50;
-            int rand_y = rand() % 500 + 50;
+            //sf::Vector2f stage_bounds = stage.getFishBounds(progression);
+            //std::cout<<stage_bounds.y;
+            int rand_x = rand() % 400 + 200;
+            int rand_y = rand() % 400 + 200;
             //std::unique_ptr<Fish> fish = std::unique_ptr<Fish>(new Fish());
             //fish->setPosition(sf::Vector2f(rand_x, rand_y));
             //std::list<std::unique_ptr<Fish>> fish_list;
@@ -80,6 +82,35 @@ void GameLogic::update(float dSec) {
             //std::cout<<fish_list.back()->getPosition().x<<"\n";
             curr_fish_pos = fish_list.back()->getPosition();
         }
+
+        //player - fish collision
+        if (curr_fish_pos.x && curr_fish_pos.y) {
+            //check if walrus 1 hits fish first
+            sf::Vector2f fish_w1_diff = w1_pos - curr_fish_pos;
+            if (fish_w1_diff.x < 0)
+                fish_w1_diff.x *= -1;
+            if (fish_w1_diff.y < 0)
+                fish_w1_diff.y *= -1;
+            //then walrus 2
+            sf::Vector2f fish_w2_diff = w2_pos - curr_fish_pos;
+            if (fish_w2_diff.x < 0)
+                fish_w2_diff.x *= -1;
+            if (fish_w2_diff.y < 0)
+                fish_w2_diff.y *= -1;
+            //handle collision of each
+            if (fish_w1_diff.x <= 10 && fish_w1_diff.y <= 10) {
+                //not sure if we should get rid of fish from list now?
+                walrus1.handlePowerUp(1);
+            }
+            else if (fish_w2_diff.x <= 10 && fish_w2_diff.y <= 10) {
+                //not sure if we should get rid of fish from list now?
+                walrus2.handlePowerUp(1);
+            }
+
+
+
+        }
+
 
     }
 

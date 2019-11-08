@@ -90,7 +90,7 @@ void Player::setStamina(float newStamina) {
 }
 
 void Player::handlePowerUp(int powerup) {
-
+    std::cout<<"walrus hit a power up!";
 }
 
 void Player::kill() {
