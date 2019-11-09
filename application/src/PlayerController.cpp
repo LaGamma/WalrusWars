@@ -129,7 +129,6 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
                 break;
             case sf::Event::KeyPressed:
                 if (Event.key.code == sf::Keyboard::P) {
-                    std::cout << "Pause\n";
                     logic.togglePause();
                 }
                 break;

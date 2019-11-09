@@ -54,11 +54,11 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(bg);
 
     //main menu items
-    sf::Text Play("Play", font, 75);
-    sf::Text Stats("Stats", font, 75);
+    sf::Text Play("2 Player", font, 75);
+    sf::Text Stats("1 Player", font, 75);
     sf::Text Options("Options", font, 75);
-    Play.setPosition(360, 325);
-    Stats.setPosition(355, 400);
+    Play.setPosition(330, 325);
+    Stats.setPosition(330, 400);
     Options.setPosition(330, 475);
 
     //handle coloring of selection
@@ -327,42 +327,62 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                     //logic.resumeGame();
                     break;
                 case sf::Event::KeyPressed:
-                    if (Event.key.code == sf::Keyboard::Up) {
-                        std::cout << "menu up" << std::endl;
-                        //track which menu option the player is on
-                        if (main_menu_selection == 'P' || main_menu_selection == 'S')
-                            main_menu_selection = 'P';
-                        else if (main_menu_selection == 'O')
-                            main_menu_selection = 'S';
-                    } else if (Event.key.code == sf::Keyboard::Down) {
-                        std::cout << "menu down" << std::endl;
-                        //track which menu option the player is on
-                        if (main_menu_selection == 'O' || main_menu_selection == 'S')
-                            main_menu_selection = 'O';
-                        else if (main_menu_selection == 'P')
-                            main_menu_selection = 'S';
-                    } else if (Event.key.code == sf::Keyboard::Return) {
-                      if(logic.getState() == GameLogic::GameState::gameOverMenu){
-                        logic.returnToMenu();
-                      }
-                      else{
-                        std::cout << "start game!" << std::endl;
-                        createControllers(1);
-                        logic.resetGame();
-                      }
 
-                    } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
-                        std::cout << "toggle pause" << std::endl;
-                        logic.togglePause();
+                    // which key was pressed?
+                    switch(Event.key.code) {
+
+                        case sf::Keyboard::Up:
+                            //track which menu option the player is on
+                            if (main_menu_selection == 'P' || main_menu_selection == 'S')
+                                main_menu_selection = 'P';
+                            else if (main_menu_selection == 'O')
+                                main_menu_selection = 'S';
+                            break;
+
+                        case sf::Keyboard::Down:
+                            //track which menu option the player is on
+                            if (main_menu_selection == 'O' || main_menu_selection == 'S')
+                                main_menu_selection = 'O';
+                            else if (main_menu_selection == 'P')
+                                main_menu_selection = 'S';
+                            break;
+
+
+                        case sf::Keyboard::Return:
+
+                            switch (logic.getState()) {
+                                case GameLogic::GameState::mainMenu:
+                                    if (main_menu_selection == 'P') {
+                                        std::cout << "2 player game!" << std::endl;
+                                        createControllers(2);
+                                        logic.resetGame();
+                                    } else if (main_menu_selection == 'S') {
+                                        std::cout << "1 player game!" << std::endl;
+                                        createControllers(1);
+                                        logic.resetGame();
+                                    } else if (main_menu_selection == 'O') {
+                                        std::cout << "options menu" << std::endl;
+                                    }
+                                    break;
+                                case GameLogic::GameState::pauseMenu:
+                                    logic.togglePause();
+                                    break;
+                                case GameLogic::GameState::gameOverMenu:
+                                    logic.returnToMenu();
+                                    break;
+                            }
+                            break;
+
+                        case sf::Keyboard::P:
+                            logic.togglePause();
+                            break;
                     }
                     break;
             }
         }
 
     }
-
-
-
+    
 }
 
 void CameraView::createControllers(int players) {
