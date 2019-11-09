@@ -12,10 +12,12 @@ void CameraView::init() {
     //load in textures
     spriteMapP1.loadFromFile("../images/WalrusSS.png");
     spriteMapP2.loadFromFile("../images/WalrusSS.png");
+    spriteMapFish.loadFromFile("../images/FishSS.png");
     menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/minimap3.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
+    fish_animation.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
     end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
     font.loadFromFile("../fonts/menuFont.ttf");
@@ -292,11 +294,20 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         fish_circle.setPosition(logic.curr_fish_pos);
         window.draw(fish_circle);
     }
+    //draw fish sprite test, used to test fish animation
+    sf::CircleShape fish_circle_test = sf::CircleShape(30);
+    fish_circle_test.setPosition(400,300);
+    fish_circle_test.setTexture(&spriteMapFish);
+    fish_circle_test.setTextureRect(fish_animation.uvRect);
+    window.draw(fish_circle_test);
+
 }
 
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
+    //update fish animation every game loop
+    fish_animation.updateFish(dSec);
 
     if (logic.getState() == GameLogic::GameState::playing) {
         // handle input in instantiated player controllers
