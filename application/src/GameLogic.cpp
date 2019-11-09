@@ -37,16 +37,17 @@ void GameLogic::update(float dSec) {
         }
 
         // *check collisions* //
-
         sf::Vector2f w1_pos = walrus1.getPos();
         sf::Vector2f w2_pos = walrus2.getPos();
 
-        // player - water collision
+        // player1 - water collision
         if (stage.getTileDura((w1_pos.x)/20, (w1_pos.y)/20, progression) <= 0) {
             if (!walrus1.isDead()) {
                 handlePlayerDeath(1);
             }
-		    } else if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0) {
+        }
+        // player2 - water collision
+        if (stage.getTileDura((w2_pos.x)/20, (w2_pos.y)/20, progression) <= 0) {
             if (!walrus2.isDead()) {
                 handlePlayerDeath(2);
             }
@@ -125,6 +126,11 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             progression--;
             walrus1.spawn(sf::Vector2f(750.0f, 300.0f));
             walrus2.spawn(sf::Vector2f(400.0f, 300.0f));
+        } else {
+            sf::Vector2f newVel = walrus1.getVel();
+            newVel.x *= -1;
+            walrus1.setVel(newVel);
+            walrus1.tickUpdate(0.04);
         }
     }
 
@@ -133,6 +139,11 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             progression++;
             walrus1.spawn(sf::Vector2f(400.0f, 300.0f));
             walrus2.spawn(sf::Vector2f(0.0f, 300.0f));
+        } else {
+            sf::Vector2f newVel = walrus2.getVel();
+            newVel.x *= -1;
+            walrus2.setVel(newVel);
+            walrus2.tickUpdate(0.04);
         }
     }
 
@@ -357,7 +368,8 @@ void GameLogic::handlePlayerDeath(int walrus) {
 
   //will have more need for separate cases later on to adjust the screen transition
 	if (walrus == 1) {
-	    // check for game over
+
+	  // check for game over
       if (progression == 2) {
           winner1 = false;
           state = gameOverMenu;
@@ -370,9 +382,10 @@ void GameLogic::handlePlayerDeath(int walrus) {
         resetGame();
       }
       splash = 1;
-	}
-	else if (walrus == 2) {
-      //check for game over
+
+	} else if (walrus == 2) {
+
+	  //check for game over
       if (progression == -2) {
           winner1 = true;
           state = gameOverMenu;

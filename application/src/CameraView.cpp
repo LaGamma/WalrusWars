@@ -292,7 +292,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
-
     if (logic.getState() == GameLogic::GameState::playing) {
         // handle input in instantiated player controllers
         player1Controller->update(window, logic, dSec, 1, walrus1_animation);
@@ -309,13 +308,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                 case sf::Event::Closed:
                     window.close();
                     break;
-                    //window out of focus
-                case sf::Event::LostFocus:
-                    //logic.pauseGame();
-                    break;
-                case sf::Event::GainedFocus:
-                    //logic.resumeGame();
-                    break;
+
                 case sf::Event::KeyPressed:
 
                     // which key was pressed?
@@ -372,6 +365,16 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
         }
 
     }
+
+    // update animation sequences
+    if (logic.walrus1.getState() == Player::PlayerState::resting) {
+        walrus1_animation.updateSleep(dSec);
+    }
+    if (logic.walrus2.getState() == Player::PlayerState::resting) {
+        walrus2_animation.updateSleep(dSec);
+    }
+
+
 
 }
 

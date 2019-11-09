@@ -115,9 +115,10 @@ void Animation::updateAttack(sf::Vector2f dir, float dSec){
             uvRect.width = -abs(uvRect.width);
             std::cout << "flipped" << std::endl;
         }
-        else
+        else {
             uvRect.left = currentSprite.x * uvRect.width;
             uvRect.width = abs(uvRect.width);
+        }
     }
 
 }
@@ -127,8 +128,8 @@ void Animation::updateSleep(float dSec) {
     currentSprite.y = 10;
     std::cout << "currentSprite.y" << currentSprite.y<< std::endl;
 
-    if (totalTime >= switchTime) {
-        totalTime -= switchTime;
+    if (totalTime >= switchTime*2) {
+        totalTime -= switchTime*2;
         currentSprite.x++;
         //make the animation loop through row
         if (currentSprite.x >= spriteCount.x) {
