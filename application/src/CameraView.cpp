@@ -143,12 +143,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
     }
     //draw fish
-    if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
-        sf::CircleShape fish_circle = sf::CircleShape(10);
-        fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
-        fish_circle.setPosition(logic.curr_fish_pos);
-        window.draw(fish_circle);
-    }
+    //if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
+    //    sf::CircleShape fish_circle = sf::CircleShape(10);
+    //    fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
+    //    fish_circle.setPosition(logic.curr_fish_pos);
+    //    window.draw(fish_circle);
+    //}
     //draw fish sprite test, used to test fish animation
     sf::CircleShape fish_circle_test = sf::CircleShape(30);
     fish_circle_test.setPosition(400, 300);
@@ -293,7 +293,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
     //update fish animation every game loop
     fish_animation.updateFish(dSec);
-  
+
     if (logic.getState() == GameLogic::GameState::playing) {
         // handle input in instantiated player controllers
         player1Controller->update(window, logic, dSec, 1, walrus1_animation);
