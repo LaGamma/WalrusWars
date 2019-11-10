@@ -104,7 +104,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
     } else if (idle) {
         anim.setCurrentSprite(0, 0);
         attackDir = (sf::Vector2f(0, 1));
-    } else if (attackAnimTimer <= 0 && !idle) {
+    } else if (attackAnimTimer <= 0) {
         //updateMovement movement
         anim.updateMovement(dir, dSec);
         //std::cout << "MOVING" << std::endl;
