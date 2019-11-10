@@ -14,7 +14,7 @@ void Player::spawn(sf::Vector2f spawn_pos) {
     state = normal;
 }
 
-//updateMovement movement and stamina recovery
+// update movement and stamina recovery
 void Player::tickUpdate(float dSec) {
     pos += vel * dSec;
 

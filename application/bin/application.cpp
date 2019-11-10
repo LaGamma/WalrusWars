@@ -1,7 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <GameLogic.h>
 #include <CameraView.h>
-#include <Player.h>
 #include <iostream>
 
 
@@ -12,7 +11,6 @@ int main(int argc, char** argv)
 
   CameraView view;
   GameLogic logic;
-  Player player;
 
   view.init();
 
