@@ -31,14 +31,16 @@ class GameLogic {
     sf::Vector2f attackCollisionPoint;
 
     std::list<std::unique_ptr<Fish>> fish_list;
+    //std::unique_ptr<Fish> fish_list[3];
 
-    sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView
+    //sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView
 
 
 private:
     GameState state;
     int progression;
     float accumulator;
+    int fish_num;
 };
 
 #endif /* _GameLogic_H_ */
