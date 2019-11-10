@@ -34,8 +34,10 @@ class CameraView {
     SoundManager soundManager;
     Animation walrus1_animation;
     Animation walrus2_animation;
+    Animation fish_animation;
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;
+    sf::Texture spriteMapFish;
     sf::Texture menu_background;
     sf::Texture stage_progression;
 
