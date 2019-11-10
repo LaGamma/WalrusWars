@@ -281,10 +281,19 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(stamina_left2);
 
     //draw fish
-    if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
+//    if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
+//        sf::CircleShape fish_circle = sf::CircleShape(10);
+//        fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
+//        fish_circle.setPosition(logic.curr_fish_pos);
+//        window.draw(fish_circle);
+//    }
+    //loop through fish_list and draw each
+    std::list<std::unique_ptr<Fish>>::iterator it;
+    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
+        sf::Vector2f curr_fish_pos = (*it)->getPosition();
         sf::CircleShape fish_circle = sf::CircleShape(10);
         fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
-        fish_circle.setPosition(logic.curr_fish_pos);
+        fish_circle.setPosition(curr_fish_pos);
         window.draw(fish_circle);
     }
 }
