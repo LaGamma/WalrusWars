@@ -128,6 +128,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
 
+
+
     for (int i = 0; i < 40; i++) {
         for (int j = 0; j < 30; j++) {
             float dura = logic.stage.getTileDura(i, j, logic.getStageProgression());
@@ -143,12 +145,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
     }
     //draw fish
-    //if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
-    //    sf::CircleShape fish_circle = sf::CircleShape(10);
-    //    fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
-    //    fish_circle.setPosition(logic.curr_fish_pos);
-    //    window.draw(fish_circle);
-    //}
+    /**if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
+        sf::CircleShape fish_circle = sf::CircleShape(10);
+        fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
+        fish_circle.setPosition(logic.curr_fish_pos);
+        window.draw(fish_circle);
+    }**/
     //draw fish sprite test, used to test fish animation
     sf::CircleShape fish_circle_test = sf::CircleShape(30);
     fish_circle_test.setPosition(400, 300);
