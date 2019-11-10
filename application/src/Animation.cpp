@@ -147,6 +147,9 @@ void Animation::updateSleep(float dSec) {
 void Animation::setCurrentSprite(int x, int y){
     currentSprite.x = x;
     currentSprite.y = y;
+    uvRect.top = currentSprite.y * uvRect.height;
+    uvRect.left = currentSprite.x * uvRect.width;
+    uvRect.width = abs(uvRect.width);
 }
 void Animation::setCurrentSpritex(int x){
     currentSprite.x = x;

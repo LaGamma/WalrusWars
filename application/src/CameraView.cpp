@@ -104,14 +104,8 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     if (logic.winner1)
     {
         //walrus1 won
-        sf::CircleShape player1;
-
         walrus1_animation.setCurrentSprite(0,0);
-        player1.setRadius(logic.walrus1.getMass()*10);
-        player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
-        player1.setTexture(&spriteMapP1);
         player1.setTextureRect(walrus1_animation.uvRect);
-
         window.draw(player1);
         text.setString("Walrus 1 Won!");
     }
@@ -119,15 +113,8 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     else
     {
         //walrus2 won
-        sf::CircleShape player2;
-
         walrus2_animation.setCurrentSprite(0,0);
-        player2.setRadius(logic.walrus2.getMass()*10);
-        player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
-        player2.setFillColor(sf::Color(150, 150, 255, 255));
-        player2.setTexture(&spriteMapP2);
         player2.setTextureRect(walrus2_animation.uvRect);
-
         window.draw(player2);
         text.setString("Walrus 2 Won!");
     }
@@ -365,16 +352,6 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
         }
 
     }
-
-    // update animation sequences
-    if (logic.walrus1.getState() == Player::PlayerState::resting) {
-        walrus1_animation.updateSleep(dSec);
-    }
-    if (logic.walrus2.getState() == Player::PlayerState::resting) {
-        walrus2_animation.updateSleep(dSec);
-    }
-
-
 
 }
 
