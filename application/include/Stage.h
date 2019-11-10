@@ -1,6 +1,7 @@
 #ifndef _Stage_H_
 #define _Stage_H_
-#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+
 class Stage {
   public:
     Stage();

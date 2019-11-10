@@ -26,7 +26,7 @@ class CameraView {
     sf::Font font;
     char main_menu_selection = 'P';
 
-    // major updateMovement classes
+    // major InputManager classes
     std::unique_ptr<Controller> player1Controller;
     std::unique_ptr<Controller> player2Controller;
 
@@ -34,8 +34,6 @@ class CameraView {
     SoundManager soundManager;
     Animation walrus1_animation;
     Animation walrus2_animation;
-    Animation end_walrus1_animation;
-    Animation end_walrus2_animation;
     Animation fish_animation;
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;

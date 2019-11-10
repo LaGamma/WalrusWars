@@ -18,9 +18,8 @@ void CameraView::init() {
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
     fish_animation.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
-    end_walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
-    end_walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
     font.loadFromFile("../fonts/menuFont.ttf");
+    soundManager.load();
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -55,11 +54,11 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(bg);
 
     //main menu items
-    sf::Text Play("Play", font, 75);
-    sf::Text Stats("Stats", font, 75);
+    sf::Text Play("2 Player", font, 75);
+    sf::Text Stats("1 Player", font, 75);
     sf::Text Options("Options", font, 75);
-    Play.setPosition(360, 325);
-    Stats.setPosition(355, 400);
+    Play.setPosition(330, 325);
+    Stats.setPosition(330, 400);
     Options.setPosition(330, 475);
 
     //handle coloring of selection
@@ -109,11 +108,12 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
         //walrus1 won
         sf::CircleShape player1;
 
+        walrus1_animation.setCurrentSprite(0,0);
         player1.setRadius(logic.walrus1.getMass()*10);
         player1.setPosition(logic.walrus1.getPos().x - player1.getRadius(), logic.walrus1.getPos().y - player1.getRadius());
-        //player1.setFillColor(sf::Color(180, 0, 255, 255));
         player1.setTexture(&spriteMapP1);
-        player1.setTextureRect(end_walrus1_animation.uvRect);
+        player1.setTextureRect(walrus1_animation.uvRect);
+
         window.draw(player1);
         text.setString("Walrus 1 Won!");
     }
@@ -123,11 +123,13 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
         //walrus2 won
         sf::CircleShape player2;
 
+        walrus2_animation.setCurrentSprite(0,0);
         player2.setRadius(logic.walrus2.getMass()*10);
         player2.setPosition(logic.walrus2.getPos().x - player2.getRadius(), logic.walrus2.getPos().y - player2.getRadius());
         player2.setFillColor(sf::Color(150, 150, 255, 255));
         player2.setTexture(&spriteMapP2);
-        player2.setTextureRect(end_walrus2_animation.uvRect);
+        player2.setTextureRect(walrus2_animation.uvRect);
+
         window.draw(player2);
         text.setString("Walrus 2 Won!");
     }
@@ -138,7 +140,6 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
-
 
     for (int i = 0; i < 40; i++) {
         for (int j = 0; j < 30; j++) {
@@ -265,15 +266,10 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     stage_veil.setPosition(348.0f + (logic.getStageProgression() * (470 / 5.0f)), 600.0f - 95);
     window.draw(stage_veil);
 
-    /*
-    //draw stage progression. For now display square progressing on bottom of screen
-    sf::RectangleShape rectangle = sf::RectangleShape(sf::Vector2f(20,20));
-    rectangle.setFillColor(sf::Color(255, 0, 0, 255));
-    //rectangle.setOutlineColor(sf::Color(255,0,0));
-    //rectangle.setOutlineThickness(3);
-    rectangle.setPosition(400.0f + (logic.getStageProgression() * (800.0f / 5.0f)), 600.0f - 25);
-    window.draw(rectangle);
-    */
+    if (logic.bump) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.bump);
+        logic.bump = 0;
+    }
 
 
     //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
@@ -335,41 +331,61 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                     //logic.resumeGame();
                     break;
                 case sf::Event::KeyPressed:
-                    if (Event.key.code == sf::Keyboard::Up) {
-                        std::cout << "menu up" << std::endl;
-                        //track which menu option the player is on
-                        if (main_menu_selection == 'P' || main_menu_selection == 'S')
-                            main_menu_selection = 'P';
-                        else if (main_menu_selection == 'O')
-                            main_menu_selection = 'S';
-                    } else if (Event.key.code == sf::Keyboard::Down) {
-                        std::cout << "menu down" << std::endl;
-                        //track which menu option the player is on
-                        if (main_menu_selection == 'O' || main_menu_selection == 'S')
-                            main_menu_selection = 'O';
-                        else if (main_menu_selection == 'P')
-                            main_menu_selection = 'S';
-                    } else if (Event.key.code == sf::Keyboard::Return) {
-                      if(logic.getState() == GameLogic::GameState::gameOverMenu){
-                        logic.returnToMenu();
-                      }
-                      else{
-                        std::cout << "start game!" << std::endl;
-                        createControllers(1);
-                        logic.resetGame();
-                      }
 
-                    } else if (Event.key.code == sf::Keyboard::P && logic.getState() == GameLogic::GameState::pauseMenu) {
-                        std::cout << "toggle pause" << std::endl;
-                        logic.togglePause();
+                    // which key was pressed?
+                    switch(Event.key.code) {
+
+                        case sf::Keyboard::Up:
+                            //track which menu option the player is on
+                            if (main_menu_selection == 'P' || main_menu_selection == 'S')
+                                main_menu_selection = 'P';
+                            else if (main_menu_selection == 'O')
+                                main_menu_selection = 'S';
+                            break;
+
+                        case sf::Keyboard::Down:
+                            //track which menu option the player is on
+                            if (main_menu_selection == 'O' || main_menu_selection == 'S')
+                                main_menu_selection = 'O';
+                            else if (main_menu_selection == 'P')
+                                main_menu_selection = 'S';
+                            break;
+
+
+                        case sf::Keyboard::Return:
+
+                            switch (logic.getState()) {
+                                case GameLogic::GameState::mainMenu:
+                                    if (main_menu_selection == 'P') {
+                                        std::cout << "2 player game!" << std::endl;
+                                        createControllers(2);
+                                        logic.resetGame();
+                                    } else if (main_menu_selection == 'S') {
+                                        std::cout << "1 player game!" << std::endl;
+                                        createControllers(1);
+                                        logic.resetGame();
+                                    } else if (main_menu_selection == 'O') {
+                                        std::cout << "options menu" << std::endl;
+                                    }
+                                    break;
+                                case GameLogic::GameState::pauseMenu:
+                                    logic.togglePause();
+                                    break;
+                                case GameLogic::GameState::gameOverMenu:
+                                    logic.returnToMenu();
+                                    break;
+                            }
+                            break;
+
+                        case sf::Keyboard::P:
+                            logic.togglePause();
+                            break;
                     }
                     break;
             }
         }
 
     }
-
-
 
 }
 
