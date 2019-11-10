@@ -8,6 +8,7 @@ public:
   void updateMovement(sf::Vector2f dir, float dSec);
   void updateAttack(sf::Vector2f dir, float dSec);
   void updateSleep(float dSec);
+  void updateFish(float dSec);
   void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
 
   sf::IntRect uvRect;
