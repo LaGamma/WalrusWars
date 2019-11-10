@@ -126,7 +126,6 @@ void Animation::updateAttack(sf::Vector2f dir, float dSec){
 void Animation::updateSleep(float dSec) {
     totalTime += dSec;
     currentSprite.y = 10;
-    std::cout << "currentSprite.y" << currentSprite.y<< std::endl;
 
     if (totalTime >= switchTime*2) {
         totalTime -= switchTime*2;
@@ -142,11 +141,31 @@ void Animation::updateSleep(float dSec) {
     uvRect.width = abs(uvRect.width);
 }
 
+void Animation::updateFish(float dSec) {
+    totalTime += dSec;
+    currentSprite.y = 1;
+
+    if (totalTime >= switchTime) {
+        totalTime -= switchTime;
+        currentSprite.x++;
+        //make the animation loop through row
+        if (currentSprite.x >= spriteCount.x) {
+            currentSprite.x = 0;
+        }
+    }
+    //update uv rect
+    uvRect.top = currentSprite.y * uvRect.height;
+    uvRect.left = currentSprite.x * uvRect.width;
+    uvRect.width = abs(uvRect.width);
+}
 
 
 void Animation::setCurrentSprite(int x, int y){
     currentSprite.x = x;
     currentSprite.y = y;
+    uvRect.top = currentSprite.y * uvRect.height;
+    uvRect.left = currentSprite.x * uvRect.width;
+    uvRect.width = abs(uvRect.width);
 }
 void Animation::setCurrentSpritex(int x){
     currentSprite.x = x;
