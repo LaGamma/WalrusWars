@@ -11,8 +11,8 @@ void Stage::generateMap(){
 	int i;
 	int j;
 	long r;
-	for(i = 0; i<40; i++){
-		for(j = 0; j<30; j++){
+	for(i = 0; i < ICE_BLOCKS_WIDTH; i++){
+		for(j = 0; j < ICE_BLOCKS_HEIGHT; j++){
 			if((i>8 && i<=32)&&(j>2 && j<=28)){
 				centerStage[i][j] = 1;
 				leftStage1[i][j] = 1;
@@ -78,7 +78,7 @@ void Stage::generateMap(){
 
 void Stage::tickMelt(int stage) {
 	// melt the correct stage
-	typedef float stage_map[40][30];
+	typedef float stage_map[ICE_BLOCKS_WIDTH][ICE_BLOCKS_HEIGHT];
 	stage_map *melting_stage;
 	switch (stage) {
 		case -2:
@@ -99,8 +99,8 @@ void Stage::tickMelt(int stage) {
 	}
 	float sum;
 	int r;
-	for(int i = 0; i<40; i++) {
-		for(int j = 0; j<30; j++) {
+	for(int i = 0; i < ICE_BLOCKS_WIDTH; i++) {
+		for(int j = 0; j < ICE_BLOCKS_HEIGHT; j++) {
 			if ((*melting_stage)[i][j] > 0) {
 				r = rand() % 100 + 1;
 				sum = (*melting_stage)[i-1][j] + (*melting_stage)[i+1][j] + (*melting_stage)[i-1][j-1] + (*melting_stage)[i-1][j+1] + (*melting_stage)[i+1][j-1] + (*melting_stage)[i+1][j+1] + (*melting_stage)[i][j+1]+ (*melting_stage)[i][j-1];

@@ -3,6 +3,7 @@
 #include "PlayerController.h"
 #include "BotController.h"
 #include <iostream>
+#include <Definitions.h>
 
 CameraView::CameraView() {
 
@@ -132,15 +133,13 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
 
-
-
-    for (int i = 0; i < 40; i++) {
-        for (int j = 0; j < 30; j++) {
+    for (int i = 0; i < ICE_BLOCKS_WIDTH; i++) {
+        for (int j = 0; j < ICE_BLOCKS_HEIGHT; j++) {
             float dura = logic.stage.getTileDura(i, j, logic.getStageProgression());
             if (dura > 0) {
                 // draw ice graphics based on melt
-                ice.setSize(sf::Vector2f(20 * dura, 20 * dura));
-                ice.setPosition((i * 20 + (20 - ice.getSize().x / 2)), (j * 20 + (20 - ice.getSize().y / 2)));
+                ice.setSize(sf::Vector2f(ICE_BLOCKS_SIZE_X * dura, ICE_BLOCKS_SIZE_Y * dura));
+                ice.setPosition((i * ICE_BLOCKS_SIZE_X + ((ICE_BLOCKS_SIZE_X - ice.getSize().x) / 2)), (j * ICE_BLOCKS_SIZE_Y + ((ICE_BLOCKS_SIZE_Y - ice.getSize().y) / 2)));
                 ice.setFillColor(sf::Color(50, 247, 250, 200 * dura));
                 ice.setOutlineColor(sf::Color(255, 255, 255, 255));
                 ice.setOutlineThickness(4 * dura);
@@ -159,7 +158,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
 
     // draw Player1
-    player1.setSize(sf::Vector2f(logic.walrus1.getMass() * 20, logic.walrus1.getMass() * 20));
+    player1.setSize(sf::Vector2f(logic.walrus1.getMass(), logic.walrus1.getMass()));
     player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x / 2,
                         logic.walrus1.getPos().y - player1.getSize().y / 2);
     //player1.setFillColor(sf::Color(180, 0, 255, 255));
@@ -167,7 +166,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     player1.setTextureRect(walrus1_animation.uvRect);
 
     // draw Player2
-    player2.setSize(sf::Vector2f(logic.walrus2.getMass() * 20, logic.walrus2.getMass() * 20));
+    player2.setSize(sf::Vector2f(logic.walrus2.getMass(), logic.walrus2.getMass()));
     player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x / 2,
                         logic.walrus2.getPos().y - player2.getSize().y / 2);
     player2.setFillColor(sf::Color(150, 150, 255, 255));
@@ -175,23 +174,24 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     player2.setTextureRect(walrus2_animation.uvRect);
 
     //hitbox.setOutlineThickness(4);
-    hitbox.setRadius(logic.walrus1.getMass() * 6);
+    hitbox.setRadius(logic.walrus1.getMass()/2);
     hitbox.setPosition(logic.walrus1.getPos().x - hitbox.getRadius(), logic.walrus1.getPos().y - hitbox.getRadius());
     hitbox.setFillColor(sf::Color(0, 0, 0, 0));
     window.draw(hitbox);
-    hitbox.setRadius(logic.walrus2.getMass() * 6);
+    hitbox.setRadius(logic.walrus2.getMass()/2);
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
 
     //attack hitbox
-    attackHitbox.setRadius(logic.walrus1.getMass() * 6);
+    /**attackHitbox.setRadius(logic.walrus1.getMass());
     attackHitbox.setPosition(logic.getAttackCollisionPoint().x, logic.getAttackCollisionPoint().y);
     attackHitbox.setFillColor(sf::Color(0, 255, 0));
     window.draw(attackHitbox);
-    attackHitbox.setRadius(logic.walrus1.getMass() * 6);
+    attackHitbox.setRadius(logic.walrus1.getMass());
     attackHitbox.setPosition(logic.getAttackCollisionPoint().x, logic.getAttackCollisionPoint().y);
     attackHitbox.setFillColor(sf::Color(0, 255, 0));
     window.draw(attackHitbox);
+     **/
 
     //draw fish sprite test, used to test fish animation
     sf::CircleShape fish_circle_test = sf::CircleShape(30);
@@ -238,12 +238,13 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     text.setFont(font);
     text.setCharacterSize(100);
     text.setFillColor(sf::Color(255, 0, 0, 255));
-    text.setPosition(400, 250);
     if (logic.walrus1.isDead()) {
-        text.setString("GO ->");
+        text.setPosition(600, 250);
+        text.setString(GO_RIGHT);
         window.draw(text);
     } else if (logic.walrus2.isDead()) {
-        text.setString("<-GO");
+        text.setPosition(200, 250);
+        text.setString(GO_LEFT);
         window.draw(text);
     }
     // draw collision point

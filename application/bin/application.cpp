@@ -7,7 +7,7 @@
 int main(int argc, char** argv)
 {
   // create main window
-  sf::RenderWindow App(sf::VideoMode(800,600,32), "Walrus Wars");
+  sf::RenderWindow App(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT,32), APP_TITLE);
 
   CameraView view;
   GameLogic logic;
