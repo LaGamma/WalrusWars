@@ -14,6 +14,7 @@ GameLogic::GameLogic() {
     bump = 0;
     splash = 0;
     fish_num = 0;
+    fish_accumulator = 0.0f;
 }
 
 void GameLogic::update(float dSec) {
@@ -71,19 +72,29 @@ void GameLogic::update(float dSec) {
         //fish powerups
         //need to fine tune these numbers, not sure where we want the fish to be generated
         //rand_create is just a simple way to randomize when fish are created
-
-        int rand_create = rand() % 1000;
-        if (fish_num < 3 && rand_create < 5) {
+        fish_accumulator += dSec;
+        if (fish_num < 3 && fish_accumulator > 3.0) {
+            fish_accumulator = 0;
             //sf::Vector2f stage_bounds = stage.getFishBounds(progression);
             //std::cout<<stage_bounds.y;
             int rand_x = rand() % 400 + 200;
             int rand_y = rand() % 400 + 200;
-            //std::unique_ptr<Fish> fish = std::unique_ptr<Fish>(new Fish());
-            //fish->setPosition(sf::Vector2f(rand_x, rand_y));
-            //std::list<std::unique_ptr<Fish>> fish_list;
+            int rand_color = rand() % 10;
+            //make sure not on water
+            float tile_dur = stage.getTileDura(rand_x / 20, rand_y / 20, progression);
+            while (tile_dur == 0.0) {
+                //may need to tweak these values if the loop never breaks
+                rand_x = rand() % 400 + 200;
+                rand_y = rand() % 400 + 200;
+                tile_dur = stage.getTileDura(rand_x / 20, rand_y / 20, progression);
+            }
             fish_list.push_back(std::unique_ptr<Fish>(new Fish()));
             fish_list.back()->setPosition(sf::Vector2f(rand_x, rand_y));
-            //std::cout<<fish_list.back()->getPosition().x<<"\n";
+            if (rand_color < 5)
+                fish_list.back()->setColor(0);
+            else
+                fish_list.back()->setColor(1);
+            std::cout<<fish_list.back()->getPosition().x<<"\n";
             //curr_fish_pos = fish_list.back()->getPosition();
             fish_num++;
             std::cout<<fish_num;
@@ -91,41 +102,33 @@ void GameLogic::update(float dSec) {
 
         //have list of no more than 3 fish
         //check for collision of each fish
+        sf::Vector2f fish_pos [3];
+        int fish_col [3];
         int delete_idx = -1;
         int idx = 0;
         std::list<std::unique_ptr<Fish>>::iterator it;
-        for (it = fish_list.begin(); it != fish_list.end(); it++) {
-            sf::Vector2f curr_fish_pos = (*it)->getPosition();
-            //std::cout<<it->getPosition().x<<"\n";
-            //std::cout<<"testing";
-            //player - fish collision
-            if (curr_fish_pos.x && curr_fish_pos.y) {
-                //check if walrus 1 hits fish first
-                sf::Vector2f fish_w1_diff = w1_pos - curr_fish_pos;
-                if (fish_w1_diff.x < 0)
-                    fish_w1_diff.x *= -1;
-                if (fish_w1_diff.y < 0)
-                    fish_w1_diff.y *= -1;
-                //then walrus 2
-                sf::Vector2f fish_w2_diff = w2_pos - curr_fish_pos;
-                if (fish_w2_diff.x < 0)
-                    fish_w2_diff.x *= -1;
-                if (fish_w2_diff.y < 0)
-                    fish_w2_diff.y *= -1;
-                //handle collision of each
-                if (fish_w1_diff.x <= 10 && fish_w1_diff.y <= 10) {
-                    //need to delete from list
-                    delete_idx = idx;
-                    walrus1.handlePowerUp(1);
-                }
-                else if (fish_w2_diff.x <= 10 && fish_w2_diff.y <= 10) {
-                    //need to delete from list
-                    delete_idx = idx;
-                    walrus2.handlePowerUp(1);
-                }
-
-            }
+        for (it = fish_list.begin(); it != fish_list.end() && idx <= fish_list.size(); it++) {
+            fish_pos[idx] = (*it)->getPosition();
+            fish_col[idx] = (*it)->getColor();
             idx++;
+        }
+
+        for (idx = 0; idx < fish_list.size(); idx++) {
+            float fish_w1_diff_x = fish_pos[idx].x - w1_pos.x;
+            float fish_w1_diff_y = fish_pos[idx].y - w1_pos.y;
+            if (fish_w1_diff_x < 1 && fish_w1_diff_y < 1) {
+                delete_idx = idx;
+                walrus1.handlePowerUp(fish_col[idx]);
+                break;
+            }
+            float fish_w2_diff_x = fish_pos[idx].x - w2_pos.x;
+            float fish_w2_diff_y = fish_pos[idx].y - w2_pos.y;
+            if (fish_w2_diff_x < 1 && fish_w2_diff_y < 1) {
+                delete_idx = idx;
+                walrus2.handlePowerUp(fish_col[idx]);
+                break;
+            }
+
         }
 
         //delete correct fish from list
@@ -421,7 +424,8 @@ void GameLogic::handlePlayerDeath(int walrus) {
       }
       splash = 1;
 
-	} else if (walrus == 2) {
+	}
+	else if (walrus == 2) {
 
 	  //check for game over
       if (progression == -2) {

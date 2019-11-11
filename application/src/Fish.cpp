@@ -12,3 +12,10 @@ void Fish::setPosition(sf::Vector2f position) {
 sf::Vector2f Fish::getPosition() {
     return pos;
 }
+
+unsigned int Fish::getColor() {
+    return color;
+}
+void Fish::setColor(unsigned int clr) {
+    color = clr;
+}

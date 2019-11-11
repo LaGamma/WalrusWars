@@ -18,9 +18,12 @@ void CameraView::init() {
     stage_progression_active.loadFromFile("../images/MinimapPlatformActive.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
-    fish_animation.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
+    fish_animation1.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
+    fish_animation2.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
+    fish_animation3.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
+
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -145,19 +148,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
             }
         }
     }
-    //draw fish
-    /**if (logic.curr_fish_pos.x && logic.curr_fish_pos.y) {
-        sf::CircleShape fish_circle = sf::CircleShape(10);
-        fish_circle.setFillColor(sf::Color(255, 0, 255, 255));
-        fish_circle.setPosition(logic.curr_fish_pos);
-        window.draw(fish_circle);
-    }**/
-    //draw fish sprite test, used to test fish animation
-    sf::CircleShape fish_circle_test = sf::CircleShape(30);
-    fish_circle_test.setPosition(400, 300);
-    fish_circle_test.setTexture(&spriteMapFish);
-    fish_circle_test.setTextureRect(fish_animation.uvRect);
-    window.draw(fish_circle_test);
 
     /*
     divide the image up in to its individual sprites by using dimensions of
@@ -337,16 +327,46 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(stamina_left1);
     window.draw(stamina_left2);
 
+    //draw fish sprite test, used to test fish animation
+    sf::CircleShape fish_circle_test = sf::CircleShape(30);
+    std::list<std::unique_ptr<Fish>>::iterator it;
+    int count = 0;
+    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
+        sf::Vector2f curr_fish_pos = (*it)->getPosition();
+        fish_circle_test.setPosition(curr_fish_pos);
+        fish_circle_test.setTexture(&spriteMapFish);
+        if (count == 0) {
+            fish_circle_test.setTextureRect(fish_animation1.uvRect);
+            fish_animation1.setCurrentSpritey((*it)->getColor());
+        }
+        else if (count == 1) {
+            fish_circle_test.setTextureRect(fish_animation2.uvRect);
+            fish_animation2.setCurrentSpritey((*it)->getColor());
+        }
+        else {
+            fish_circle_test.setTextureRect(fish_animation3.uvRect);
+            fish_animation3.setCurrentSpritey((*it)->getColor());
+        }
+
+        window.draw(fish_circle_test);
+        count++;
+    }
+
+
+
+
+
 }
 
 
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
-    //update fish animation every game loop
-    fish_animation.updateFish(dSec);
+    //update fish animation every gam
+    fish_animation1.updateFish(dSec);
+    fish_animation2.updateFish(dSec);
+    fish_animation3.updateFish(dSec);
 
-  
     if (logic.getState() == GameLogic::GameState::playing) {
         // handle input in instantiated player controllers
         player1Controller->update(window, logic, dSec, 1, walrus1_animation);

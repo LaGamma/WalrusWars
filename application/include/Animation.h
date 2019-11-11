@@ -17,6 +17,7 @@ public:
   void setCurrentSprite(int x, int y);
   //needed to set begining of attack animation
   void setCurrentSpritex(int x);
+  void setCurrentSpritey(int y);
   int row = 0;
   bool flip = 0;
 private:

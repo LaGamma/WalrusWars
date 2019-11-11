@@ -37,6 +37,7 @@ private:
     float stamina;
     constexpr static const float decelerate_strength = 20.0f;
     constexpr static const float accelerate_strength = 500.0f;
+    float speed;
 };
 
 #endif
