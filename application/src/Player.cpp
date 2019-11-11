@@ -73,6 +73,7 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
             force_dir = force_dir * 0.2f;
             break;
     }
+    force_dir *= speed;
 
     vel += force_dir * accelerate_strength * dSec;
     stamina -= sqrt((force_dir.x * force_dir.x) + (force_dir.y * force_dir.y)) *30*dSec;
@@ -80,7 +81,6 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
     if (stamina < 0) {
         state = resting;
     }
-    vel *= speed;
 }
 void Player::setVel(sf::Vector2f newVel) {
     vel = newVel;

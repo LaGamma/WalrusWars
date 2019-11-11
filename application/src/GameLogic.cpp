@@ -77,15 +77,15 @@ void GameLogic::update(float dSec) {
             fish_accumulator = 0;
             //sf::Vector2f stage_bounds = stage.getFishBounds(progression);
             //std::cout<<stage_bounds.y;
-            int rand_x = rand() % 400 + 200;
-            int rand_y = rand() % 400 + 200;
+            int rand_x = rand() % 700 + 100;
+            int rand_y = rand() % 500 + 100;
             int rand_color = rand() % 10;
             //make sure not on water
             float tile_dur = stage.getTileDura(rand_x / 20, rand_y / 20, progression);
-            while (tile_dur == 0.0) {
+            while (tile_dur <= 0) {
                 //may need to tweak these values if the loop never breaks
-                rand_x = rand() % 400 + 200;
-                rand_y = rand() % 400 + 200;
+                rand_x = rand() % 700 + 100;
+                rand_y = rand() % 500 + 100;
                 tile_dur = stage.getTileDura(rand_x / 20, rand_y / 20, progression);
             }
             fish_list.push_back(std::unique_ptr<Fish>(new Fish()));
