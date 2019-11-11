@@ -11,7 +11,7 @@ class GameLogic {
     void handlePlayerDeath(int);
     void handlePlayerCollision();
     void handleBoundaryCollision(int, float);
-    void handleFishCollision(int, int, int);
+    void handleFishCollision(int, std::unique_ptr<Fish> &fish);
     void togglePause();
     void returnToMenu();
     void resetGame();

@@ -45,10 +45,7 @@ void GameLogic::update(float dSec) {
                 fish_list.back()->setColor(0);
             else
                 fish_list.back()->setColor(1);
-            std::cout<<fish_list.back()->getPosition().x<<"\n";
-            //curr_fish_pos = fish_list.back()->getPosition();
             fish_num++;
-            std::cout<<fish_num;
         }
 
         // process movement
@@ -102,40 +99,29 @@ void GameLogic::update(float dSec) {
         // fish collisions
         //have list of no more than 3 fish
         //check for collision of each fish
-        sf::Vector2f fish_pos [3];
-        int fish_col [3];
-        int idx = 0;
-        std::list<std::unique_ptr<Fish>>::iterator it;
-        for (it = fish_list.begin(); it != fish_list.end() && idx <= fish_list.size(); it++) {
-            fish_pos[idx] = (*it)->getPosition();
-            fish_col[idx] = (*it)->getColor();
-            idx++;
-        }
-
-        for (idx = 0; idx < fish_list.size(); idx++) {
+        std::list<std::unique_ptr<Fish>>::iterator fish;
+        for (fish = fish_list.begin(); fish != fish_list.end(); fish++) {
+            sf::Vector2f fish_pos = (*fish)->getPosition();
             // fish - player1 collision
-            posDiff = w1_pos - fish_pos[idx];
+            posDiff = w1_pos - fish_pos;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
             if (dist < 6.5*walrus1.getMass() + 15 && !walrus1.isDead()) {
-                handleFishCollision(1, idx, fish_col[idx]);
+                handleFishCollision(1, *fish);
                 break;
             }
             // fish - player 2 collision
-            posDiff = w2_pos - fish_pos[idx];
+            posDiff = w2_pos - fish_pos;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
             if (dist < 6.5*walrus2.getMass() + 15 && !walrus2.isDead()) {
-                handleFishCollision(2, idx, fish_col[idx]);
+                handleFishCollision(2, *fish);
                 break;
             }
             // fish - water collision
-            if (stage.getTileDura(fish_pos[idx].x/20, fish_pos[idx].y/20, progression) <= 0) {
-                handleFishCollision(0, idx, fish_col[idx]);
+            if (stage.getTileDura(fish_pos.x/20, fish_pos.y/20, progression) <= 0) {
+                handleFishCollision(0, *fish);
                 break;
             }
-
         }
-
-
 
     }
 
@@ -186,34 +172,15 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
 
 }
 
-void GameLogic::handleFishCollision(int player, int fish_idx, int fish_color) {
+void GameLogic::handleFishCollision(int player, std::unique_ptr<Fish> &fish) {
 
     if (player == 1) {
-        walrus1.handlePowerUp(fish_color);
+        walrus1.handlePowerUp(fish->getColor());
     } else if (player == 2) {
-        walrus2.handlePowerUp(fish_color);
+        walrus2.handlePowerUp(fish->getColor());
     }
 
-    //delete correct fish from list
-    if (fish_idx == 0) {
-        fish_list.pop_front();
-    }
-    else if (fish_idx == 2) {
-        fish_list.pop_back();
-    }
-    //deleting middle is harder
-    else {
-        //pop last element and store it.
-        sf::Vector2f stored_pos = fish_list.back()->getPosition();
-        unsigned int stored_color = fish_list.back()->getColor();
-        fish_list.pop_back();
-        //pop new last (middle) element
-        fish_list.pop_back();
-        //push the stored element to back of list
-        fish_list.push_back(std::unique_ptr<Fish>(new Fish()));
-        fish_list.back()->setPosition(stored_pos);
-        fish_list.back()->setColor(stored_color);
-    }
+    fish_list.remove(fish);
     fish_num--;
 
 }
