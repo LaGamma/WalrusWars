@@ -109,6 +109,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
   memset(closedList, false, sizeof (closedList));
   int i, j, x, y;
+  int newCost;
   if(state == 0){
     //calculate safe positions
   }
@@ -139,6 +140,8 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
           cellDetails[i][j].f = FLT_MAX;
           cellDetails[i][j].g = FLT_MAX;
           cellDetails[i][j].h = FLT_MAX;
+          cellDetails[i][j].pos_x = i;
+          cellDetails[i][j].pos_y = j;
           cellDetails[i][j].pi = -1;
           cellDetails[i][j].pj = -1;
       }
@@ -153,9 +156,87 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   openList.push(cellDetails[i][j]);
   while(!openList.empty()){
     cell n = openList.front();
+    i = n.pos_x;
+    j = n.pos_y;
     openList.pop();
     closedList[i][j] = true;
-    // here you start to go through all cells
+    if (i == x && j == y){
+      break
+    }; //if destination, end search
+    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
+    if(!closedList[i-1][j-1] && newCost<cellDetails[i-1][j-1].g && logic.stage.getTileDura(i-1,j-1,logic.getStageProgression())>=.5){
+      cellDetails[i-1][j-1].g = newCost;
+      cellDetails[i-1][j-1].h = std::abs((i-1)-(x))+std::abs((j-1)-(y));
+      cellDetails[i-1][j-1].f = cellDetails[i-1][j-1].h + cellDetails[i-1][j-1].g;
+      cellDetails[i-1][j-1].pi = i;
+      cellDetails[i-1][j-1].pj = j;
+      openList.push(cellDetails[i-1][j-1]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
+    if(!closedList[i][j-1] && newCost<cellDetails[i][j-1].g && logic.stage.getTileDura(i,j-1,logic.getStageProgression())>=.5){
+      cellDetails[i][j-1].g = newCost;
+      cellDetails[i][j-1].h = std::abs((i)-(x))+std::abs((j-1)-(y));
+      cellDetails[i][j-1].f = cellDetails[i][j-1].h + cellDetails[i][j-1].g;
+      cellDetails[i][j-1].pi = i;
+      cellDetails[i][j-1].pj = j;
+      openList.push(cellDetails[i][j-1]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j)-(w_pos.y/20));
+    if(!closedList[i-1][j] && newCost<cellDetails[i-1][j].g && logic.stage.getTileDura(i-1,j,logic.getStageProgression())>=.5){
+      cellDetails[i-1][j].g = newCost;
+      cellDetails[i-1][j].h = std::abs((i-1)-(x))+std::abs((j)-(y));
+      cellDetails[i-1][j].f = cellDetails[i-1][j].h + cellDetails[i-1][j].g;
+      cellDetails[i-1][j].pi = i;
+      cellDetails[i-1][j].pj = j;
+      openList.push(cellDetails[i-1][j]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    if(!closedList[i-1][j+1] && newCost<cellDetails[i-1][j+1].g && logic.stage.getTileDura(i-1,j+1,logic.getStageProgression())>=.5){
+      cellDetails[i-1][j+1].g = newCost;
+      cellDetails[i-1][j+1].h = std::abs((i-1)-(x))+std::abs((j+1)-(y));
+      cellDetails[i-1][j+1].f = cellDetails[i-1][j+1].h + cellDetails[i-1][j+1].g;
+      cellDetails[i-1][j+1].pi = i;
+      cellDetails[i-1][j+1].pj = j;
+      openList.push(cellDetails[i-1][j+1]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
+      cellDetails[i][j+1].g = newCost;
+      cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
+      cellDetails[i][j+1].f = cellDetails[i][j+1].h + cellDetails[i][j+1].g;
+      cellDetails[i][j+1].pi = i;
+      cellDetails[i][j+1].pj = j;
+      openList.push(cellDetails[i][j+1]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    if(!closedList[i+1][j+1] && newCost<cellDetails[i+1][j+1].g && logic.stage.getTileDura(i+1,j+1,logic.getStageProgression())>=.5){
+      cellDetails[i+1][j+1].g = newCost;
+      cellDetails[i+1][j+1].h = std::abs((i+1)-(x))+std::abs((j+1)-(y));
+      cellDetails[i+1][j+1].f = cellDetails[i+1][j+1].h + cellDetails[i+1][j+1].g;
+      cellDetails[i+1][j+1].pi = i;
+      cellDetails[i+1][j+1].pj = j;
+      openList.push(cellDetails[i+1][j+1]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
+    if(!closedList[i+1][j-1] && newCost<cellDetails[i+1][j-1].g && logic.stage.getTileDura(i+1,j-1,logic.getStageProgression())>=.5){
+      cellDetails[i+1][j-1].g = newCost;
+      cellDetails[i+1][j-1].h = std::abs((i+1)-(x))+std::abs((j-1)-(y));
+      cellDetails[i+1][j-1].f = cellDetails[i+1][j-1].h + cellDetails[i+1][j-1].g;
+      cellDetails[i+1][j-1].pi = i;
+      cellDetails[i+1][j-1].pj = j;
+      openList.push(cellDetails[i+1][j-1]);
+    }
+    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
+      cellDetails[i][j+1].g = newCost;
+      cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
+      cellDetails[i][j+1].f = cellDetails[i][j+1].h + cellDetails[i][j+1].g;
+      cellDetails[i][j+1].pi = i;
+      cellDetails[i][j+1].pj = j;
+      openList.push(cellDetails[i][j+1]);
+    }
+
+
   }
 }
 

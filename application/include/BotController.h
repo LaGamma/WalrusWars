@@ -7,7 +7,7 @@
 class BotController : public Controller {
 
   struct cell{
-    int pi, pj;
+    int pi, pj, pos_x, pos_y;
     float f, g, h;
   };
 
