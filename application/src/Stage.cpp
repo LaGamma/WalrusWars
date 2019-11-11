@@ -140,46 +140,13 @@ float Stage::getTileDura(int x, int y, int stage) {
 	switch (stage) {
 		case -2:
 		    return leftStage2[x][y];
-		    break;
 		case -1:
 		    return leftStage1[x][y];
-		    break;
 		case 0:
 		    return centerStage[x][y];
-		    break;
 		case 1:
 		    return rightStage1[x][y];
-		    break;
 		case 2:
 		    return rightStage2[x][y];
-		    break;
 	}
-}
-
-sf::Vector2f Stage::getFishBounds(int stage) {
-    sf::Vector2f ret(0, 0);
-//    sf::Vector2f ret(centerStage[0][0], centerStage[40][30]);
-    switch (stage) {
-        case -2:
-            ret.x = leftStage2[0][0];
-            ret.y = leftStage2[40][30];
-            break;
-        case -1:
-            ret.x = leftStage1[0][0];
-            ret.y = leftStage1[40][30];
-            break;
-        case 0:
-            ret.x = centerStage[0][0];
-            ret.y = centerStage[40][30];
-            break;
-        case 1:
-            ret.x = rightStage1[0][0];
-            ret.y = rightStage1[40][30];
-            break;
-        case 2:
-            ret.x = rightStage2[0][0];
-            ret.y = rightStage2[40][30];
-            break;
-    }
-    return ret;
 }
