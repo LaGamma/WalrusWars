@@ -14,7 +14,8 @@ void CameraView::init() {
     spriteMapP2.loadFromFile("../images/WalrusSS.png");
     spriteMapFish.loadFromFile("../images/FishSS.png");
     menu_background.loadFromFile("../images/menu_title.png");
-    stage_progression.loadFromFile("../images/minimap3.png");
+    stage_progression.loadFromFile("../images/MinimapPlatform.png");
+    stage_progression_active.loadFromFile("../images/MinimapPlatformActive.png");
     walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
     fish_animation1.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
@@ -131,6 +132,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
 
+
+
     for (int i = 0; i < 40; i++) {
         for (int j = 0; j < 30; j++) {
             float dura = logic.stage.getTileDura(i, j, logic.getStageProgression());
@@ -145,7 +148,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
             }
         }
     }
-
 
     /*
     divide the image up in to its individual sprites by using dimensions of
@@ -226,23 +228,72 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(collision_pt);
 
     //draw minimap background
+    /*
     minimapbg.setSize(sf::Vector2f(440, 70));
     minimapbg.setPosition(180, 515);
     minimapbg.setFillColor(sf::Color::Blue);
     window.draw(minimapbg);
+    */
 
-    //draw minimap
-    minimap.setSize(sf::Vector2f(450, 80));
-    //minimap.setFillColor(sf::Color(50,247,250,100));
-    minimap.setTexture(&stage_progression);
-    minimap.setPosition(175, 500);
-    window.draw(minimap);
+    //draw minimap, drawn as individual platforms
+    mmStageL2.setSize(sf::Vector2f(140, 100));
+    mmStageL.setSize(sf::Vector2f(170, 120));
+    mmStage.setSize(sf::Vector2f(200, 140));
+    mmStageR.setSize(sf::Vector2f(170, 120));
+    mmStageR2.setSize(sf::Vector2f(140, 100));
+    mmStageL2.setTexture(&stage_progression);
+    mmStageL.setTexture(&stage_progression);
+    mmStage.setTexture(&stage_progression);
+    mmStageR.setTexture(&stage_progression);
+    mmStageR2.setTexture(&stage_progression);
+    mmStageL2.setPosition(190, -25);
+    mmStageL.setPosition(240, -30);
+    mmStage.setPosition(300, -35);
+    mmStageR.setPosition(390, -30);
+    mmStageR2.setPosition(470, -25);
+    window.draw(mmStageL2);
+    window.draw(mmStageL);
+    window.draw(mmStage);
+    window.draw(mmStageR);
+    window.draw(mmStageR2);
+
+    //initialize minimap indicators
+    mmStageL2i.setSize(sf::Vector2f(140, 100));
+    mmStageLi.setSize(sf::Vector2f(170, 120));
+    mmStagei.setSize(sf::Vector2f(200, 140));
+    mmStageRi.setSize(sf::Vector2f(170, 120));
+    mmStageR2i.setSize(sf::Vector2f(140, 100));
+    mmStageL2i.setTexture(&stage_progression_active);
+    mmStageLi.setTexture(&stage_progression_active);
+    mmStagei.setTexture(&stage_progression_active);
+    mmStageRi.setTexture(&stage_progression_active);
+    mmStageR2i.setTexture(&stage_progression_active);
+    mmStageL2i.setPosition(190, -25);
+    mmStageLi.setPosition(240, -30);
+    mmStagei.setPosition(300, -35);
+    mmStageRi.setPosition(390, -30);
+    mmStageR2i.setPosition(470, -25);
+
+    //draw indicator based on progression
+    int progression = int(logic.getStageProgression());
+    if (progression == -2)
+        window.draw(mmStageL2i);
+    else if (progression == -1)
+        window.draw(mmStageLi);
+    else if (progression == 0)
+        window.draw(mmStagei);
+    else if (progression == 1)
+        window.draw(mmStageRi);
+    else if (progression == 2)
+        window.draw(mmStageR2i);
 
     //draw stage indicator veil
+    /*
     stage_veil.setRadius(55);
     stage_veil.setFillColor(sf::Color(0, 0, 255, 100));
     stage_veil.setPosition(348.0f + (logic.getStageProgression() * (470 / 5.0f)), 600.0f - 95);
     window.draw(stage_veil);
+    */
 
     if (logic.bump) {
         soundManager.playSound(SoundManager::SFX::bump, logic.bump);
@@ -257,8 +308,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300, 25));
     stamina_bar1.setFillColor(sf::Color(255, 0, 0, 255));
     stamina_bar2.setFillColor(sf::Color(255, 0, 0, 255));
-    stamina_bar1.setPosition(80, 50);
-    stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 50, 50);
+    stamina_bar1.setPosition(70, 60);
+    stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 70, 60);
     window.draw(stamina_bar1);
     window.draw(stamina_bar2);
 
@@ -311,7 +362,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
-    //update fish animation every game loop
+    //update fish animation every gam
     fish_animation1.updateFish(dSec);
     fish_animation2.updateFish(dSec);
     fish_animation3.updateFish(dSec);
