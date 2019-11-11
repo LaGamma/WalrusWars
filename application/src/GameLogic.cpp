@@ -13,7 +13,6 @@ GameLogic::GameLogic() {
     accumulator = 0;
     bump = 0;
     splash = 0;
-    fish_num = 0;
     fish_accumulator = 0.0f;
 }
 
@@ -25,7 +24,7 @@ void GameLogic::update(float dSec) {
         //need to fine tune these numbers, not sure where we want the fish to be generated
         //rand_create is just a simple way to randomize when fish are created
         fish_accumulator += dSec;
-        if (fish_num < 3 && fish_accumulator > 3.0) {
+        if (fish_list.size() < 3 && fish_accumulator > 3.0) {
             fish_accumulator = 0;
             //sf::Vector2f stage_bounds = stage.getFishBounds(progression);
             //std::cout<<stage_bounds.y;
@@ -45,7 +44,6 @@ void GameLogic::update(float dSec) {
                 fish_list.back()->setColor(0);
             else
                 fish_list.back()->setColor(1);
-            fish_num++;
         }
 
         // process movement
@@ -181,8 +179,6 @@ void GameLogic::handleFishCollision(int player, std::unique_ptr<Fish> &fish) {
     }
 
     fish_list.remove(fish);
-    fish_num--;
-
 }
 
 void GameLogic::handlePlayerCollision() {

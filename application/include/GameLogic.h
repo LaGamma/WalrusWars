@@ -41,7 +41,6 @@ private:
     GameState state;
     int progression;
     float accumulator;
-    int fish_num;
     float fish_accumulator;
 };
 
