@@ -6,16 +6,15 @@
 class Fish {
 
 public:
-    Fish();
+    Fish(sf::Vector2f);
 
-    void setPosition(sf::Vector2f);
+    void spawn(sf::Vector2f);
     sf::Vector2f getPosition();
     unsigned int getColor();
-    void setColor(unsigned int clr);
 
 private:
     sf::Vector2f pos;
-    unsigned int color; //0 is red, 1 is green, this will also act as powerup marker
+    int color; //0 is red, 1 is green, this will also act as powerup marker
 
 };
 

@@ -30,7 +30,6 @@ void GameLogic::update(float dSec) {
             //std::cout<<stage_bounds.y;
             int rand_x = rand() % 700 + 100;
             int rand_y = rand() % 500 + 100;
-            int rand_color = rand() % 10;
             //make sure not on water
             float tile_dur = stage.getTileDura(rand_x / 20, rand_y / 20, progression);
             while (tile_dur <= 0) {
@@ -38,12 +37,7 @@ void GameLogic::update(float dSec) {
                 rand_y = rand() % 500 + 100;
                 tile_dur = stage.getTileDura(rand_x / 20, rand_y / 20, progression);
             }
-            fish_list.push_back(std::unique_ptr<Fish>(new Fish()));
-            fish_list.back()->setPosition(sf::Vector2f(rand_x, rand_y));
-            if (rand_color < 5)
-                fish_list.back()->setColor(0);
-            else
-                fish_list.back()->setColor(1);
+            fish_list.push_back(std::unique_ptr<Fish>(new Fish(sf::Vector2f(rand_x, rand_y))));
         }
 
         // process movement
@@ -87,7 +81,7 @@ void GameLogic::update(float dSec) {
             handleBoundaryCollision(2, w2_pos.x);
         }
 
-        // player1 - player2 collision
+        // player - player collision
         sf::Vector2f posDiff = w1_pos - w2_pos;
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
         if (dist < 6.5*(walrus1.getMass() + walrus2.getMass()) && !(walrus1.isDead() || walrus2.isDead())) {
