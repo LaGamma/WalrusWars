@@ -237,7 +237,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
     std::cout << "playerNum" << playerNum << std::endl;
     sf::Vector2f w1_pos = walrus1.getPos();
     sf::Vector2f w2_pos = walrus2.getPos();
-    float w1_mass = walrus2.getMass();
+    float w1_mass = walrus1.getMass();
     float w1_radius = (w1_mass*20) + 1; //+1 to avoid a regular collision
     float w2_mass = walrus2.getMass();
     float w2_radius = (w2_mass*20) + 1; //+1 to avoid a regular collision
@@ -294,6 +294,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
             case 0:
                 break;
         }
+        walrus2.setStamina(walrus2.getStamina() - 20);
         //if collision point inside other walrus hitbox, apply collision force
         std::cout << "x:" <<attackCollisionPoint.x <<"\n" << "y:" <<attackCollisionPoint.y <<"\n"<< std::endl;
         //follow circle formula to determine if point is inside other walrus hitbox
@@ -301,7 +302,8 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
             (attackCollisionPoint.y - w1_pos.y) * (attackCollisionPoint.y - w1_pos.y) <= w1_radius * w1_radius) {
             //knock walrus
             std::cout << "SLASHED" <<"\n"<< std::endl;
-            walrus1.setVel(attackKnockBackDir);
+            walrus1.setVel(walrus1.getVel() + attackKnockBackDir);
+            walrus1.setStamina(walrus1.getStamina() - 40);
         }
         else{
             std::cout << "MISSED SLASH" <<"\n"<< std::endl;
@@ -359,6 +361,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
             case 0:
                 break;
         }
+        walrus1.setStamina(walrus1.getStamina() - 20);
         //if collision point inside other walrus hitbox, apply collision force
         std::cout << "x:" << attackCollisionPoint.x << "\n" << "y:" << attackCollisionPoint.y << "\n" << std::endl;
         //follow circle formula to determine if point is inside other walrus hitbox
@@ -366,7 +369,8 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
             (attackCollisionPoint.y - w2_pos.y) * (attackCollisionPoint.y - w2_pos.y) <= w2_radius * w2_radius) {
             //knock walrus
             std::cout << "SLASHED" << "\n" << std::endl;
-            walrus2.setVel(attackKnockBackDir);
+            walrus2.setVel(walrus2.getVel() + attackKnockBackDir);
+            walrus2.setStamina(walrus2.getStamina() - 40);
         } else {
             std::cout << "MISSED SLASH" << "\n" << std::endl;
         }
