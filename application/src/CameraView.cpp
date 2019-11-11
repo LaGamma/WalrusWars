@@ -193,6 +193,31 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     attackHitbox.setFillColor(sf::Color(0, 255, 0));
     window.draw(attackHitbox);
 
+    //draw fish sprite test, used to test fish animation
+    sf::CircleShape fish_circle_test = sf::CircleShape(30);
+    std::list<std::unique_ptr<Fish>>::iterator it;
+    int count = 0;
+    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
+        sf::Vector2f curr_fish_pos = (*it)->getPosition();
+        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x-15,curr_fish_pos.y-15));
+        fish_circle_test.setTexture(&spriteMapFish);
+        if (count == 0) {
+            fish_circle_test.setTextureRect(fish_animation1.uvRect);
+            fish_animation1.setCurrentSpritey((*it)->getColor());
+        }
+        else if (count == 1) {
+            fish_circle_test.setTextureRect(fish_animation2.uvRect);
+            fish_animation2.setCurrentSpritey((*it)->getColor());
+        }
+        else {
+            fish_circle_test.setTextureRect(fish_animation3.uvRect);
+            fish_animation3.setCurrentSpritey((*it)->getColor());
+        }
+
+        window.draw(fish_circle_test);
+        count++;
+    }
+
     // draw in order of depth
     if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
         if (!logic.walrus2.isDead()) {
@@ -326,35 +351,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     stamina_left2.setPosition(stamina_bar2.getPosition());
     window.draw(stamina_left1);
     window.draw(stamina_left2);
-
-    //draw fish sprite test, used to test fish animation
-    sf::CircleShape fish_circle_test = sf::CircleShape(30);
-    std::list<std::unique_ptr<Fish>>::iterator it;
-    int count = 0;
-    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
-        sf::Vector2f curr_fish_pos = (*it)->getPosition();
-        fish_circle_test.setPosition(curr_fish_pos);
-        fish_circle_test.setTexture(&spriteMapFish);
-        if (count == 0) {
-            fish_circle_test.setTextureRect(fish_animation1.uvRect);
-            fish_animation1.setCurrentSpritey((*it)->getColor());
-        }
-        else if (count == 1) {
-            fish_circle_test.setTextureRect(fish_animation2.uvRect);
-            fish_animation2.setCurrentSpritey((*it)->getColor());
-        }
-        else {
-            fish_circle_test.setTextureRect(fish_animation3.uvRect);
-            fish_animation3.setCurrentSpritey((*it)->getColor());
-        }
-
-        window.draw(fish_circle_test);
-        count++;
-    }
-
-
-
-
 
 }
 
