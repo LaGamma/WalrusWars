@@ -1,24 +1,14 @@
 #include "BotController.h"
 #include <iostream>
+#include <cstring>
+#include <cfloat>
 
 //for ai, generally move towards center if player near edge shortest path towards where player is headed or is depending on difficulty
 // , if in close proximity to fish or closer to fish than player shortest path to fish.
 
 BotController::BotController() {
   state = 0;
-  //memset(closedList, false, sizeof (closedList));
-  int i, j;
-  for (i=0; i<40; i++)
-  {
-      for (j=0; j<30; j++)
-      {
-          //cellDetails[i][j].f = FLT_MAX;
-          //cellDetails[i][j].g = FLT_MAX;
-          //cellDetails[i][j].h = FLT_MAX;
-          cellDetails[i][j].pi = -1;
-          cellDetails[i][j].pj = -1;
-      }
-  }
+
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
@@ -44,22 +34,6 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         if(logic.walrus2.isDead()){
           changeState(2);
         }
-        //if(state == 2){
-        //  i = w1_pos.x/20;
-        //  j = w1_pos.y/20;
-        //  cellDetails[i][j].f = 0;
-        //  cellDetails[i][j].g = 0;
-        //  cellDetails[i][j].h = 0;
-        //  cellDetails[i][j].pi = i;
-        //  cellDetails[i][j].pj = j;
-        //  openList.insert(cellDetails[i][j]);
-        //  while(!openList.empty()){
-        //    cell n = *openList.begin();
-        //    openList.erase(openList.begin());
-        //    closedList[i][j] = true;
-        //    // here you start to go through all cells
-        //  }
-        //}
         if (w1_pos.y > w2_pos.y) {
             dir.y -= 1;
         } else if (w1_pos.y < w2_pos.y) {
@@ -122,6 +96,69 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
     }
 };
 
+void BotController::calculatePath(GameLogic &logic, int playerNum){
+  sf::Vector2f w_pos;
+  sf::Vector2f w_vel;
+  if(playerNum==1){
+    w_pos = logic.walrus1.getPos();
+    w_vel = logic.walrus1.getVel();
+  }
+  else{
+    w_pos = logic.walrus2.getPos();
+    w_vel = logic.walrus2.getVel();
+  }
+  memset(closedList, false, sizeof (closedList));
+  int i, j, x, y;
+  if(state == 0){
+    //calculate safe positions
+  }
+  else if(state == 1){
+    if(playerNum==1){
+      x = logic.walrus2.getPos().x;
+      y = logic.walrus2.getPos().y;
+    }
+    else {
+      x = logic.walrus1.getPos().x;
+      y = logic.walrus1.getPos().y;
+    }
+  }
+  else{
+    if(playerNum==1){
+      x = 39;
+      y = 15;
+    }
+    else {
+      x = 0;
+      y = 15;
+    }
+  }
+  for (i=0; i<40; i++)
+  {
+      for (j=0; j<30; j++)
+      {
+          cellDetails[i][j].f = FLT_MAX;
+          cellDetails[i][j].g = FLT_MAX;
+          cellDetails[i][j].h = FLT_MAX;
+          cellDetails[i][j].pi = -1;
+          cellDetails[i][j].pj = -1;
+      }
+  }
+  i = w_pos.x/20;
+  j = w_pos.y/20;
+  cellDetails[i][j].f = 0;
+  cellDetails[i][j].g = 0;
+  cellDetails[i][j].h = 0;
+  cellDetails[i][j].pi = i;
+  cellDetails[i][j].pj = j;
+  openList.push(cellDetails[i][j]);
+  while(!openList.empty()){
+    cell n = openList.front();
+    openList.pop();
+    closedList[i][j] = true;
+    // here you start to go through all cells
+  }
+}
+
 void BotController::changeState(int state){
   if(state == 0){
     //std::cout<<"bot is fleeing\n";
@@ -135,4 +172,4 @@ void BotController::changeState(int state){
     //std::cout<<"bot wins\n";
     state = 2;
   }
-}
+};

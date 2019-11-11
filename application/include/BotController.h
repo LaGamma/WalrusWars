@@ -1,6 +1,6 @@
 #ifndef _BotController_H_
 #define _BotController_H_
-#include <set>
+#include <queue>
 #include "Controller.h"
 
 
@@ -17,9 +17,10 @@ class BotController : public Controller {
       void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim);
       void changeState(int);
       int state;
-      std::set<cell> openList;
+      std::queue<cell> openList;
       bool closedList[40][30];
       cell cellDetails[40][30];
+      void calculatePath(GameLogic &logic, int playerNum);
 };
 
 
