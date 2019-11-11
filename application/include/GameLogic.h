@@ -11,6 +11,7 @@ class GameLogic {
     void handlePlayerDeath(int);
     void handlePlayerCollision();
     void handleBoundaryCollision(int, float);
+    void handleFishCollision(int, int, int);
     void togglePause();
     void returnToMenu();
     void resetGame();

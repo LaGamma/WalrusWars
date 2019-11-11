@@ -333,7 +333,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     int count = 0;
     for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
         sf::Vector2f curr_fish_pos = (*it)->getPosition();
-        fish_circle_test.setPosition(curr_fish_pos);
+        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x-15,curr_fish_pos.y-15));
         fish_circle_test.setTexture(&spriteMapFish);
         if (count == 0) {
             fish_circle_test.setTextureRect(fish_animation1.uvRect);
