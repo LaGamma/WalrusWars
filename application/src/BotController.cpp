@@ -161,7 +161,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     openList.pop();
     closedList[i][j] = true;
     if (i == x && j == y){
-      break
+      break;
     }; //if destination, end search
     newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
     if(!closedList[i-1][j-1] && newCost<cellDetails[i-1][j-1].g && logic.stage.getTileDura(i-1,j-1,logic.getStageProgression())>=.5){
