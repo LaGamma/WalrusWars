@@ -94,6 +94,7 @@ void Player::setStamina(float newStamina) {
 }
 
 void Player::handlePowerUp(int powerup) {
+    stamina += 20;
     if (powerup == 0) {
         speed_boost += 0.01;
         std::cout<<"power up speed!";
