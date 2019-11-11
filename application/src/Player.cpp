@@ -12,6 +12,7 @@ void Player::spawn(sf::Vector2f spawn_pos) {
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);
     state = normal;
+    speed = 1.0f;
 }
 
 // update movement and stamina recovery
@@ -53,6 +54,7 @@ void Player::applyPassiveForce(float dSec) {
         vel.y += decelerate_strength * dSec * resting_resistance;
     }
 
+
 }
 
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
@@ -78,6 +80,7 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
     if (stamina < 0) {
         state = resting;
     }
+    vel *= speed;
 }
 void Player::setVel(sf::Vector2f newVel) {
     vel = newVel;
@@ -90,7 +93,14 @@ void Player::setStamina(float newStamina) {
 }
 
 void Player::handlePowerUp(int powerup) {
-    std::cout<<"walrus hit a power up!";
+    if (powerup == 0) {
+        speed += 0.01;
+        std::cout<<"power up speed!";
+    }
+    else if (powerup == 1) {
+        std::cout<<"power up mass!";
+        mass += 1.0;
+    }
 }
 
 void Player::kill() {

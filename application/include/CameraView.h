@@ -34,7 +34,9 @@ class CameraView {
     SoundManager soundManager;
     Animation walrus1_animation;
     Animation walrus2_animation;
-    Animation fish_animation;
+    Animation fish_animation1;
+    Animation fish_animation2;
+    Animation fish_animation3;
     sf::Texture spriteMapP1;
     sf::Texture spriteMapP2;
     sf::Texture spriteMapFish;
@@ -50,6 +52,7 @@ class CameraView {
     sf::RectangleShape minimapbg;
     sf::CircleShape stage_veil;
     sf::CircleShape attackHitbox;
+
 };
 
 

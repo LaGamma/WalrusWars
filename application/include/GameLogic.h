@@ -41,6 +41,7 @@ private:
     int progression;
     float accumulator;
     int fish_num;
+    float fish_accumulator;
 };
 
 #endif /* _GameLogic_H_ */
