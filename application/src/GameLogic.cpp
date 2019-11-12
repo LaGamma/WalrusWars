@@ -224,7 +224,6 @@ void GameLogic::handlePlayerCollision() {
   sf::Vector2f velDiff = walrus1.getVel() - walrus2.getVel();
   float magnitude = sqrt((velDiff.x * velDiff.x) + (velDiff.y * velDiff.y));
   bump = (int) (magnitude*0.2);
-  std::cout<<bump<<"\n";
 }
 
 void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
