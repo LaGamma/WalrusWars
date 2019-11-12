@@ -11,6 +11,7 @@ class GameLogic {
     void handlePlayerDeath(int);
     void handlePlayerCollision();
     void handleBoundaryCollision(int, float);
+    void handleFishCollision(int, std::unique_ptr<Fish> &fish);
     void togglePause();
     void returnToMenu();
     void resetGame();
@@ -40,7 +41,7 @@ private:
     GameState state;
     int progression;
     float accumulator;
-    int fish_num;
+    float fish_accumulator;
 };
 
 #endif /* _GameLogic_H_ */

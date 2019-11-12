@@ -5,11 +5,12 @@
 class Animation {
 public:
   Animation();
+  void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
   void updateMovement(sf::Vector2f dir, float dSec);
   void updateAttack(sf::Vector2f dir, float dSec);
   void updateSleep(float dSec);
   void updateFish(float dSec);
-  void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
+
 
   sf::IntRect uvRect;
 
@@ -17,6 +18,7 @@ public:
   void setCurrentSprite(int x, int y);
   //needed to set begining of attack animation
   void setCurrentSpritex(int x);
+  void setCurrentSpritey(int y);
   int row = 0;
   bool flip = 0;
 private:

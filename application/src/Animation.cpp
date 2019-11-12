@@ -143,7 +143,7 @@ void Animation::updateSleep(float dSec) {
 
 void Animation::updateFish(float dSec) {
     totalTime += dSec;
-    currentSprite.y = 1;
+    //currentSprite.y = 1;
 
     if (totalTime >= switchTime) {
         totalTime -= switchTime;
@@ -169,4 +169,8 @@ void Animation::setCurrentSprite(int x, int y){
 }
 void Animation::setCurrentSpritex(int x){
     currentSprite.x = x;
+}
+
+void Animation::setCurrentSpritey(int y) {
+    currentSprite.y = y;
 }

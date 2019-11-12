@@ -15,7 +15,6 @@ public:
     void applyActiveForce(sf::Vector2f, float);
     void tickUpdate(float);
     void handlePowerUp(int);
-    void applyStaminaChange(bool moving, bool resting);
 
     // getters and setters
     enum PlayerState {normal, raising_tusks, attacking, resting, dead};
@@ -35,8 +34,7 @@ private:
     PlayerState state;
     float mass;
     float stamina;
-    constexpr static const float decelerate_strength = 20.0f;
-    constexpr static const float accelerate_strength = 500.0f;
+    float speed_boost;
 };
 
 #endif
