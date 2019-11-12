@@ -25,14 +25,20 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     if (playerNum == 1) {
         //process input for player 1
-        int i, j;
-        if(w2_vel.x>=8 || w2_vel.y>=8){
+        if(!logic.walrus2.isDead() && w2_vel.x>=15 || w2_vel.y>=15 && (state != 0)){
           changeState(0);
-        }else{
-          changeState(1);
+          calculatePath(logic, playerNum);
         }
-        if(logic.walrus2.isDead()){
+        if(!logic.walrus2.isDead() && (state != 1) && (w2_vel.x<15 || w2_vel.y<15)){
+          changeState(1);
+          calculatePath(logic, playerNum);
+        }
+        if(logic.walrus2.isDead() && (state != 2)){
           changeState(2);
+          calculatePath(logic, playerNum);
+        }
+        if(cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pi || cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pj){
+          std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
         }
         if (w1_pos.y > w2_pos.y) {
             dir.y -= 1;
@@ -49,14 +55,20 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     } else {
         //process input for player 2
-        if(w1_vel.x>=8 || w1_vel.y>=8){
+        if(!logic.walrus1.isDead() && w1_vel.x>=15 || w1_vel.y>=15 && (state != 0)){
           changeState(0);
+          calculatePath(logic, playerNum);
         }
-        else{
+        if(!logic.walrus1.isDead() && (state != 1)  && (w1_vel.x<15 || w1_vel.y<15)){
           changeState(1);
+          calculatePath(logic, playerNum);
         }
-        if(logic.walrus1.isDead()){
+        if(logic.walrus1.isDead() && (state != 2)){
           changeState(2);
+          calculatePath(logic, playerNum);
+        }
+        if(cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi || cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pj){
+          std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
         }
         if (w2_pos.y > w1_pos.y) {
             dir.y -= 1;
@@ -112,6 +124,8 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   int newCost;
   if(state == 0){
     //calculate safe positions
+    x = 0;
+    y = 0;
   }
   else if(state == 1){
     if(playerNum==1){
@@ -240,17 +254,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
 }
 
-void BotController::changeState(int state){
-  if(state == 0){
-    //std::cout<<"bot is fleeing\n";
-    state = 0;
-  }
-  else if(state == 1){
-    //std::cout<<"bot is attacking\n";
-    state = 1;
-  }
-  else{
-    //std::cout<<"bot wins\n";
-    state = 2;
-  }
+void BotController::changeState(int x){
+  state = x;
+  std::cout<<state<<"\n";
 };
