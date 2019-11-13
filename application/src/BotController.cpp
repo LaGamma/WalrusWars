@@ -85,6 +85,8 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         }
         if(cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi || cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pj){
           std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
+          // maybe instead of checking parent to current pos, we check each adjacent block to see if that block's parent = current pos
+          // this is because parents are stored going back to the current pos? something to try
           if(int(w2_pos.x/20)>=cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi){
             //direction = left
             dir.x -=1;
