@@ -1,6 +1,6 @@
 #ifndef _Definitions_H_
 #define _Definitions_H_
-/*Contains all game variables for easy tweaking and balancing*/
+/* Contains all game variables for easy tweaking and balancing, and all text strings for easy translation */
 
 // window
 #define WINDOW_HEIGHT 600.0f
@@ -47,6 +47,9 @@
 
 // fish
 #define FISH_SIZE 15.0f
+
+// volume
+#define BUMP_VOL_SCALE 0.2f
 
 
 // strings

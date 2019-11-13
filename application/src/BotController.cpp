@@ -6,7 +6,6 @@
 
 BotController::BotController() {
   state = 0;
-
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {

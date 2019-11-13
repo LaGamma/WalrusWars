@@ -301,7 +301,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     mmStageR2i.setPosition(470, -25);
 
     //draw indicator based on progression
-    int progression = int(logic.getStageProgression());
+    int progression = logic.getStageProgression();
     if (progression == -2)
         window.draw(mmStageL2i);
     else if (progression == -1)
