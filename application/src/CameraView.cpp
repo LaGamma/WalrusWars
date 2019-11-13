@@ -54,7 +54,7 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     //main menu background
     window.clear(sf::Color(150, 150, 150));
     sf::RectangleShape bg;
-    bg.setSize(sf::Vector2f(800,600));
+    bg.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     bg.setTexture(&menu_background);
     window.draw(bg);
 
@@ -62,9 +62,9 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     sf::Text Play("2 Player", font, 75);
     sf::Text Stats("1 Player", font, 75);
     sf::Text Options("Options", font, 75);
-    Play.setPosition(330, 325);
-    Stats.setPosition(330, 400);
-    Options.setPosition(330, 475);
+    Play.setPosition(33 * WINDOW_WIDTH / 80, 325 * WINDOW_HEIGHT / 600);
+    Stats.setPosition(33 * WINDOW_WIDTH / 80, 2 * WINDOW_HEIGHT / 3);
+    Options.setPosition(33 * WINDOW_WIDTH / 80, 475 * WINDOW_HEIGHT / 600);
 
     //handle coloring of selection
     if (main_menu_selection == 'P'){
@@ -92,7 +92,7 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw transparent screen
-    sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(800,600));
+    sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
 
@@ -103,9 +103,9 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     window.clear(sf::Color::Red);
     sf::Text text;
     text.setFont(font);
-    text.setCharacterSize(100);
+    text.setCharacterSize(UI_TEXT_SIZE);
     text.setFillColor(sf::Color(255,255,255,255));
-    text.setPosition(200, 50);
+    text.setPosition(WINDOW_WIDTH / 4, WINDOW_HEIGHT / 12);
 
 
     if (logic.winner1)
@@ -174,11 +174,11 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     player2.setTextureRect(walrus2_animation.uvRect);
 
     //hitbox.setOutlineThickness(4);
-    hitbox.setRadius(logic.walrus1.getMass()/2);
+    hitbox.setRadius(logic.walrus1.getMass() * PLAYER_HITBOX_SCALE);
     hitbox.setPosition(logic.walrus1.getPos().x - hitbox.getRadius(), logic.walrus1.getPos().y - hitbox.getRadius());
     hitbox.setFillColor(sf::Color(0, 0, 0, 0));
     window.draw(hitbox);
-    hitbox.setRadius(logic.walrus2.getMass()/2);
+    hitbox.setRadius(logic.walrus2.getMass() * PLAYER_HITBOX_SCALE);
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
 
@@ -194,12 +194,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
      **/
 
     //draw fish sprite test, used to test fish animation
-    sf::CircleShape fish_circle_test = sf::CircleShape(30);
+    sf::CircleShape fish_circle_test = sf::CircleShape(FISH_SIZE * 2);
     std::list<std::unique_ptr<Fish>>::iterator it;
     int count = 0;
     for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
         sf::Vector2f curr_fish_pos = (*it)->getPosition();
-        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x-15,curr_fish_pos.y-15));
+        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x - FISH_SIZE,curr_fish_pos.y - FISH_SIZE));
         fish_circle_test.setTexture(&spriteMapFish);
         if (count == 0) {
             fish_circle_test.setTextureRect(fish_animation1.uvRect);
@@ -236,14 +236,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
     sf::Text text;
     text.setFont(font);
-    text.setCharacterSize(100);
+    text.setCharacterSize(UI_TEXT_SIZE);
     text.setFillColor(sf::Color(255, 0, 0, 255));
     if (logic.walrus1.isDead()) {
-        text.setPosition(600, 250);
+        text.setPosition(3 * WINDOW_WIDTH / 4, (WINDOW_HEIGHT / 2) - (UI_TEXT_SIZE / 2));
         text.setString(GO_RIGHT);
         window.draw(text);
     } else if (logic.walrus2.isDead()) {
-        text.setPosition(200, 250);
+        text.setPosition(WINDOW_WIDTH / 4, (WINDOW_HEIGHT / 2) - (UI_TEXT_SIZE / 2));
         text.setString(GO_LEFT);
         window.draw(text);
     }
@@ -262,21 +262,21 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     */
 
     //draw minimap, drawn as individual platforms
-    mmStageL2.setSize(sf::Vector2f(140, 100));
-    mmStageL.setSize(sf::Vector2f(170, 120));
-    mmStage.setSize(sf::Vector2f(200, 140));
-    mmStageR.setSize(sf::Vector2f(170, 120));
-    mmStageR2.setSize(sf::Vector2f(140, 100));
+    mmStageL2.setSize(sf::Vector2f(140*WINDOW_WIDTH/800, WINDOW_HEIGHT/6));
+    mmStageL.setSize(sf::Vector2f(170*WINDOW_WIDTH/800, 120*WINDOW_HEIGHT/600));
+    mmStage.setSize(sf::Vector2f(200*WINDOW_WIDTH/800, 140*WINDOW_HEIGHT/600));
+    mmStageR.setSize(sf::Vector2f(170*WINDOW_WIDTH/800, 120*WINDOW_HEIGHT/600));
+    mmStageR2.setSize(sf::Vector2f(140*WINDOW_WIDTH/800, WINDOW_HEIGHT/6));
     mmStageL2.setTexture(&stage_progression);
     mmStageL.setTexture(&stage_progression);
     mmStage.setTexture(&stage_progression);
     mmStageR.setTexture(&stage_progression);
     mmStageR2.setTexture(&stage_progression);
-    mmStageL2.setPosition(190, -25);
-    mmStageL.setPosition(240, -30);
-    mmStage.setPosition(300, -35);
-    mmStageR.setPosition(390, -30);
-    mmStageR2.setPosition(470, -25);
+    mmStageL2.setPosition(190*WINDOW_WIDTH/800, -25*WINDOW_HEIGHT/600);
+    mmStageL.setPosition(240*WINDOW_WIDTH/800, -30*WINDOW_HEIGHT/600);
+    mmStage.setPosition(300*WINDOW_WIDTH/800, -35*WINDOW_HEIGHT/600);
+    mmStageR.setPosition(390*WINDOW_WIDTH/800, -30*WINDOW_HEIGHT/600);
+    mmStageR2.setPosition(470*WINDOW_WIDTH/800, -25*WINDOW_HEIGHT/600);
     window.draw(mmStageL2);
     window.draw(mmStageL);
     window.draw(mmStage);
@@ -284,21 +284,21 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(mmStageR2);
 
     //initialize minimap indicators
-    mmStageL2i.setSize(sf::Vector2f(140, 100));
-    mmStageLi.setSize(sf::Vector2f(170, 120));
-    mmStagei.setSize(sf::Vector2f(200, 140));
-    mmStageRi.setSize(sf::Vector2f(170, 120));
-    mmStageR2i.setSize(sf::Vector2f(140, 100));
+    mmStageL2i.setSize(sf::Vector2f(140*WINDOW_WIDTH/800, 100*WINDOW_HEIGHT/600));
+    mmStageLi.setSize(sf::Vector2f(170*WINDOW_WIDTH/800, 120*WINDOW_HEIGHT/600));
+    mmStagei.setSize(sf::Vector2f(200*WINDOW_WIDTH/800, 140*WINDOW_HEIGHT/600));
+    mmStageRi.setSize(sf::Vector2f(170*WINDOW_WIDTH/800, 120*WINDOW_HEIGHT/600));
+    mmStageR2i.setSize(sf::Vector2f(140*WINDOW_WIDTH/800, 100*WINDOW_HEIGHT/600));
     mmStageL2i.setTexture(&stage_progression_active);
     mmStageLi.setTexture(&stage_progression_active);
     mmStagei.setTexture(&stage_progression_active);
     mmStageRi.setTexture(&stage_progression_active);
     mmStageR2i.setTexture(&stage_progression_active);
-    mmStageL2i.setPosition(190, -25);
-    mmStageLi.setPosition(240, -30);
-    mmStagei.setPosition(300, -35);
-    mmStageRi.setPosition(390, -30);
-    mmStageR2i.setPosition(470, -25);
+    mmStageL2i.setPosition(190*WINDOW_WIDTH/800, -25*WINDOW_HEIGHT/600);
+    mmStageLi.setPosition(240*WINDOW_WIDTH/800, -30*WINDOW_HEIGHT/600);
+    mmStagei.setPosition(300*WINDOW_WIDTH/800, -35*WINDOW_HEIGHT/600);
+    mmStageRi.setPosition(390*WINDOW_WIDTH/800, -30*WINDOW_HEIGHT/600);
+    mmStageR2i.setPosition(470*WINDOW_WIDTH/800, -25*WINDOW_HEIGHT/600);
 
     //draw indicator based on progression
     int progression = logic.getStageProgression();
@@ -330,12 +330,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
 
     //draw stamina boxes: these don't change
-    sf::RectangleShape stamina_bar1 = sf::RectangleShape(sf::Vector2f(300, 25));
-    sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300, 25));
+    sf::RectangleShape stamina_bar1 = sf::RectangleShape(sf::Vector2f(300*WINDOW_WIDTH/800, 25*WINDOW_HEIGHT/600));
+    sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300*WINDOW_WIDTH/800, 25*WINDOW_HEIGHT/600));
     stamina_bar1.setFillColor(sf::Color(255, 0, 0, 255));
     stamina_bar2.setFillColor(sf::Color(255, 0, 0, 255));
-    stamina_bar1.setPosition(70, 60);
-    stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 70, 60);
+    stamina_bar1.setPosition(70*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
+    stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 70*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
     window.draw(stamina_bar1);
     window.draw(stamina_bar2);
 
@@ -343,9 +343,9 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //need to adjust dimensions to be based on walrus staminas
     //bar length is 300. Max stamina is 100
     sf::RectangleShape stamina_left1 = sf::RectangleShape(
-            sf::Vector2f(logic.walrus1.getStamina() * 3, stamina_bar1.getSize().y));
+            sf::Vector2f(stamina_bar1.getSize().x * logic.walrus1.getStamina()/100, stamina_bar1.getSize().y));
     sf::RectangleShape stamina_left2 = sf::RectangleShape(
-            sf::Vector2f(logic.walrus2.getStamina() * 3, stamina_bar2.getSize().y));
+            sf::Vector2f(stamina_bar1.getSize().x * logic.walrus2.getStamina()/100, stamina_bar2.getSize().y));
     stamina_left1.setFillColor(sf::Color(255, 255, 0, 255));
     stamina_left2.setFillColor(sf::Color(255, 255, 0, 255));
     stamina_left1.setPosition(stamina_bar1.getPosition());

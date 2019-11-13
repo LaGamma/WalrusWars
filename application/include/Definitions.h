@@ -3,8 +3,8 @@
 /* Contains all game variables for easy tweaking and balancing, and all text strings for easy translation */
 
 // window
-#define WINDOW_HEIGHT 600.0f
-#define WINDOW_WIDTH 800.0f
+#define WINDOW_HEIGHT 600.0f //900
+#define WINDOW_WIDTH 800.0f //1200
 #define APP_TITLE "Walrus Wars"
 
 // collision variables
@@ -39,6 +39,8 @@
 #define ATTACKED_STAMINA_LOST 40.0f
 #define MOVEMENT_STAMINA_COST_SCALE 30
 
+#define INIT_MASS 80.0f
+
 // stage
 #define ICE_BLOCKS_WIDTH 40
 #define ICE_BLOCKS_HEIGHT 30
@@ -50,6 +52,9 @@
 
 // volume
 #define BUMP_VOL_SCALE 0.2f
+
+// text
+#define UI_TEXT_SIZE 100
 
 
 // strings

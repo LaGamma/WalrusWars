@@ -8,7 +8,7 @@ Player::Player() {
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
-    mass = 80.0f;
+    mass = INIT_MASS;
     stamina = MAX_STAMINA;
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);
