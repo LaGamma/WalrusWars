@@ -38,20 +38,36 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           calculatePath(logic, playerNum);
         }
         if(cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pi || cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pj){
-          std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
-        }
-        if (w1_pos.y > w2_pos.y) {
+          std::cout<<"path calculated!\n";
+          if(int(w1_pos.x/20)>=cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pi){
+            //direction = left
+            dir.x -=1;
+          }
+          else if(int(w1_pos.x/20)<cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pi){
+            //direction = right
+            dir.x +=1;
+          }
+          if(int(w1_pos.y/20)>=cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pj){
+            //direction = up
             dir.y -= 1;
-        } else if (w1_pos.y < w2_pos.y) {
+          }
+          else if(int(w1_pos.y/20)<cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pj){
+            //direction = down
             dir.y += 1;
+          }
         }
-        if (w1_pos.x > w2_pos.x) {
-            dir.x -= 1;
-        } else if (w1_pos.x < w2_pos.x) {
-            dir.x += 1;
-        }
+        //if (w1_pos.y > w2_pos.y) {
+        //    dir.y -= 1;
+        //} else if (w1_pos.y < w2_pos.y) {
+        //    dir.y += 1;
+        //}
+        //if (w1_pos.x > w2_pos.x) {
+        //    dir.x -= 1;
+        //} else if (w1_pos.x < w2_pos.x) {
+        //    dir.x += 1;
+        //}
 
-        //logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
+        logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
 
     } else {
         //process input for player 2
@@ -69,18 +85,34 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         }
         if(cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi || cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pj){
           std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
-        }
-        if (w2_pos.y > w1_pos.y) {
+          if(int(w2_pos.x/20)>=cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi){
+            //direction = left
+            dir.x -=1;
+          }
+          else if(int(w2_pos.x/20)<cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi){
+            //direction = right
+            dir.x +=1;
+          }
+          if(int(w2_pos.y/20)>=cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pj){
+            //direction = up
             dir.y -= 1;
-        } else if (w2_pos.y < w1_pos.y) {
+          }
+          else if(int(w2_pos.y/20)<cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pj){
+            //direction = down
             dir.y += 1;
+          }
         }
-        if (w2_pos.x > w1_pos.x) {
-            dir.x -= 1;
-        } else if (w2_pos.x < w1_pos.x) {
-            dir.x += 1;
-        }
-        //logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
+        //if (w2_pos.y > w1_pos.y) {
+        //    dir.y -= 1;
+        //} else if (w2_pos.y < w1_pos.y) {
+        //    dir.y += 1;
+        //}
+        //if (w2_pos.x > w1_pos.x) {
+        //    dir.x -= 1;
+        //} else if (w2_pos.x < w1_pos.x) {
+        //    dir.x += 1;
+        //}
+        logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
 
     }
     anim.updateMovement(dir, dSec/bot_handicap);
@@ -123,9 +155,9 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   int i, j, x, y;
   int newCost;
   if(state == 0){
-    //calculate safe positions
-    x = 0;
-    y = 0;
+    //calculate safe positions, for now middle of the stage.
+    x = 20;
+    y = 15;
   }
   else if(state == 1){
     if(playerNum==1){
