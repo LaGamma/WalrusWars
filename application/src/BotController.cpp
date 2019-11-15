@@ -24,7 +24,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     if (playerNum == 1) {
         //process input for player 1
-        if(!logic.walrus2.isDead() && w2_vel.x>=15 || w2_vel.y>=15 && (state != 0)){
+        if(!logic.walrus2.isDead() && (state != 0) && w2_vel.x>=15 || w2_vel.y>=15){
           changeState(0);
           calculatePath(logic, playerNum);
         }
@@ -35,6 +35,10 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         if(logic.walrus2.isDead() && (state != 2)){
           changeState(2);
           calculatePath(logic, playerNum);
+        }
+        if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pj){
+          //direction = left
+          dir.x -=1;
         }
         else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pj){
           //direction = right
@@ -72,7 +76,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     } else {
         //process input for player 2
-        if(!logic.walrus1.isDead() && w1_vel.x>=15 || w1_vel.y>=15 && (state != 0)){
+        if(!logic.walrus1.isDead() && (state != 0) && w1_vel.x>=15 || w1_vel.y>=15){
           changeState(0);
           calculatePath(logic, playerNum);
         }
@@ -169,12 +173,16 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
   else if(state == 1){
     if(playerNum==1){
-      x = logic.walrus2.getPos().x;
-      y = logic.walrus2.getPos().y;
+      //x = int(logic.walrus2.getPos().x/20);
+      //y = int(logic.walrus2.getPos().y/20);
+      x = 25;
+      y = 15;
     }
     else {
-      x = logic.walrus1.getPos().x;
-      y = logic.walrus1.getPos().y;
+      //x = int(logic.walrus1.getPos().x/20);
+      //y = int(logic.walrus1.getPos().y/20);
+      x = 25;
+      y = 15;
     }
   }
   else{
@@ -202,6 +210,8 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
   i = w_pos.x/ICE_BLOCKS_SIZE_X;
   j = w_pos.y/ICE_BLOCKS_SIZE_Y;
+
+
   cellDetails[i][j].f = 0;
   cellDetails[i][j].g = 0;
   cellDetails[i][j].h = 0;
@@ -214,6 +224,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     j = n.pos_y;
     openList.pop();
     closedList[i][j] = true;
+
     if (i == x && j == y){
       break;
     }; //if destination, end search
@@ -291,6 +302,20 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     }
 
 
+  }
+
+  i = cellDetails[x][y].pi;
+  j = cellDetails[x][y].pj;
+  while(true){
+    if(i==w_pos.x/20 && j==w_pos.y/20){
+      break;
+    }
+    std::cout<<"the x position: "<<i<<"\n";
+    std::cout<<"the y position: "<<j<<"\n";
+    std::cout<<"The parent x: "<<cellDetails[i][j].pi<<"\n";
+    std::cout<<"The parent y: "<<cellDetails[i][j].pj<<"\n\n";
+    i = cellDetails[i][j].pi;
+    j = cellDetails[i][j].pj;
   }
 }
 
