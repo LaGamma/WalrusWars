@@ -229,9 +229,9 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
     sf::Vector2f w1_pos = walrus1.getPos();
     sf::Vector2f w2_pos = walrus2.getPos();
     float w1_mass = walrus1.getMass();
-    float w1_radius = (w1_mass) + 1; //+1 to avoid a regular collision
+    float w1_radius = w1_mass + 1; //+1 to avoid a regular collision
     float w2_mass = walrus2.getMass();
-    float w2_radius = (w2_mass) + 1; //+1 to avoid a regular collision
+    float w2_radius = w2_mass + 1; //+1 to avoid a regular collision
 
     if (playerNum == 2){
 

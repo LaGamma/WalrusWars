@@ -41,9 +41,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus1.setMass(logic.walrus1.getMass()-0.01);
         }**/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && logic.walrus1.getStamina() >= 30) {
-            attackAnimTimer = 0.30f;//make get switch time * 3, so its consistent if switch time changes
+            attackAnimTimer = 0.60f;//make get switch time * 3, so its consistent if switch time changes
             anim.setCurrentSpritex(0); //set anim to first frame of attack animation
             attacking = true;
+            logic.walrus1.raiseTusks();
         }
         logic.walrus1.applyActiveForce(dir, dSec);
         // idle state
@@ -77,9 +78,10 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
             logic.walrus2.setMass(logic.walrus2.getMass()-0.01);
         }**/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && logic.walrus2.getStamina() >= 30) {
-            attackAnimTimer = 0.30f;//make get switch time * 3, so its consistent if switch time changes
+            attackAnimTimer = 0.60f;//make get switch time * 3, so its consistent if switch time changes
             anim.setCurrentSpritex(0); //set anim to first frame of attack animation
             attacking = true;
+            logic.walrus2.raiseTusks();
             //std::cout << "INITIATE ATTACK" << std::endl;
         }
         logic.walrus2.applyActiveForce(dir, dSec);
@@ -96,6 +98,11 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         //std::cout << attackAnimTimer << std::endl;
     } else if (attackAnimTimer <= 0 && attacking){
         logic.handlePlayerAttack(playerNum, attackDir);
+        if (playerNum == 1) {
+            logic.walrus1.slash();
+        } else {
+            logic.walrus2.slash();
+        }
         attacking = false;
         //std::cout << "attacking" << attacking << std::endl;
         attackAnimTimer = 0;

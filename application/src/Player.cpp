@@ -62,16 +62,16 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
     switch (state) {
         case dead:
-            force_dir = force_dir * DEAD_FORCE_SCALE;
+            force_dir = force_dir * DEAD_MOVEMENT_SCALEDOWN;
             break;
         case resting:
-            force_dir = force_dir * RESTING_FORCE_SCALE;
+            force_dir = force_dir * RESTING_MOVEMENT_SCALEDOWN;
             break;
         case raising_tusks:
-            force_dir = force_dir * RAISING_TUSKS_FORCE_SCALE;
+            force_dir = force_dir * RAISING_TUSKS_MOVEMENT_SCALEDOWN;
             break;
         case attacking:
-            force_dir = force_dir * ATTACKING_FORCE_SCALE;
+            force_dir = force_dir * ATTACKING_MOVEMENT_SCALEDOWN;
             break;
     }
     force_dir *= speed_boost;
@@ -103,10 +103,17 @@ void Player::handlePowerUp(int powerup) {
     }
 }
 
+void Player::raiseTusks() {
+    state = raising_tusks;
+}
+
+void Player::slash() {
+    state = normal;
+}
+
 void Player::kill() {
     state = dead;
 }
-
 
 bool Player::isDead() {
     return (state == dead);
