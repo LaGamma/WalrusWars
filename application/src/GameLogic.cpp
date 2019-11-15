@@ -379,6 +379,11 @@ void GameLogic::returnToMenu() {
  * */
 void GameLogic::handlePlayerDeath(int walrus) {
 
+    //check if both are dead (fixes respawn bug)
+    if (walrus2.isDead() && walrus == 1) {
+        resetGame();
+    }
+
   //will have more need for separate cases later on to adjust the screen transition
 	if (walrus == 1) {
 
@@ -391,10 +396,9 @@ void GameLogic::handlePlayerDeath(int walrus) {
       }
 
       walrus1.kill();
-      if(walrus2.isDead()){
-        resetGame();
-      }
-      splash = 1;
+//      if(walrus2.isDead()) {
+//        resetGame();
+//      }
 
 	}
 	else if (walrus == 2) {
@@ -411,8 +415,10 @@ void GameLogic::handlePlayerDeath(int walrus) {
       if(walrus1.isDead()){
         resetGame();
       }
-      splash = 1;
+
 	}
+    splash = 1;
+
 
 }
 
