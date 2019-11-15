@@ -10,6 +10,8 @@ public:
     Player();
     
     void kill();
+    void raiseTusks();
+    void slash();
     void spawn(sf::Vector2f);
     void applyPassiveForce(float);
     void applyActiveForce(sf::Vector2f, float);

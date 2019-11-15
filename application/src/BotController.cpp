@@ -8,7 +8,6 @@
 
 BotController::BotController() {
   state = 0;
-
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
@@ -37,7 +36,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           changeState(2);
           calculatePath(logic, playerNum);
         }
-        if(cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pi || cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)].pj){
+        if(cellDetails[int(w1_pos.x/ICE_BLOCKS_SIZE_X)][int(w1_pos.y/ICE_BLOCKS_SIZE_Y)].pi || cellDetails[int(w1_pos.x/ICE_BLOCKS_SIZE_X)][int(w1_pos.y/ICE_BLOCKS_SIZE_Y)].pj){
           std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
         }
         if (w1_pos.y > w2_pos.y) {
@@ -67,7 +66,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           changeState(2);
           calculatePath(logic, playerNum);
         }
-        if(cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pi || cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)].pj){
+        if(cellDetails[int(w2_pos.x/ICE_BLOCKS_SIZE_X)][int(w2_pos.y/ICE_BLOCKS_SIZE_Y)].pi || cellDetails[int(w2_pos.x/ICE_BLOCKS_SIZE_X)][int(w2_pos.y/ICE_BLOCKS_SIZE_Y)].pj){
           std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
         }
         if (w2_pos.y > w1_pos.y) {
@@ -147,9 +146,9 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       y = 15;
     }
   }
-  for (i=0; i<40; i++)
+  for (i=0; i<ICE_BLOCKS_WIDTH; i++)
   {
-      for (j=0; j<30; j++)
+      for (j=0; j<ICE_BLOCKS_HEIGHT; j++)
       {
           cellDetails[i][j].f = FLT_MAX;
           cellDetails[i][j].g = FLT_MAX;
@@ -160,8 +159,8 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
           cellDetails[i][j].pj = -1;
       }
   }
-  i = w_pos.x/20;
-  j = w_pos.y/20;
+  i = w_pos.x/ICE_BLOCKS_SIZE_X;
+  j = w_pos.y/ICE_BLOCKS_SIZE_Y;
   cellDetails[i][j].f = 0;
   cellDetails[i][j].g = 0;
   cellDetails[i][j].h = 0;
@@ -177,7 +176,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     if (i == x && j == y){
       break;
     }; //if destination, end search
-    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i-1][j-1] && newCost<cellDetails[i-1][j-1].g && logic.stage.getTileDura(i-1,j-1,logic.getStageProgression())>=.5){
       cellDetails[i-1][j-1].g = newCost;
       cellDetails[i-1][j-1].h = std::abs((i-1)-(x))+std::abs((j-1)-(y));
@@ -186,7 +185,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i-1][j-1].pj = j;
       openList.push(cellDetails[i-1][j-1]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i][j-1] && newCost<cellDetails[i][j-1].g && logic.stage.getTileDura(i,j-1,logic.getStageProgression())>=.5){
       cellDetails[i][j-1].g = newCost;
       cellDetails[i][j-1].h = std::abs((i)-(x))+std::abs((j-1)-(y));
@@ -195,7 +194,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i][j-1].pj = j;
       openList.push(cellDetails[i][j-1]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i-1][j] && newCost<cellDetails[i-1][j].g && logic.stage.getTileDura(i-1,j,logic.getStageProgression())>=.5){
       cellDetails[i-1][j].g = newCost;
       cellDetails[i-1][j].h = std::abs((i-1)-(x))+std::abs((j)-(y));
@@ -204,7 +203,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i-1][j].pj = j;
       openList.push(cellDetails[i-1][j]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i-1][j+1] && newCost<cellDetails[i-1][j+1].g && logic.stage.getTileDura(i-1,j+1,logic.getStageProgression())>=.5){
       cellDetails[i-1][j+1].g = newCost;
       cellDetails[i-1][j+1].h = std::abs((i-1)-(x))+std::abs((j+1)-(y));
@@ -213,7 +212,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i-1][j+1].pj = j;
       openList.push(cellDetails[i-1][j+1]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
       cellDetails[i][j+1].g = newCost;
       cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
@@ -222,7 +221,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i][j+1].pj = j;
       openList.push(cellDetails[i][j+1]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i+1][j+1] && newCost<cellDetails[i+1][j+1].g && logic.stage.getTileDura(i+1,j+1,logic.getStageProgression())>=.5){
       cellDetails[i+1][j+1].g = newCost;
       cellDetails[i+1][j+1].h = std::abs((i+1)-(x))+std::abs((j+1)-(y));
@@ -231,7 +230,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i+1][j+1].pj = j;
       openList.push(cellDetails[i+1][j+1]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/20))+std::abs((j-1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i+1][j-1] && newCost<cellDetails[i+1][j-1].g && logic.stage.getTileDura(i+1,j-1,logic.getStageProgression())>=.5){
       cellDetails[i+1][j-1].g = newCost;
       cellDetails[i+1][j-1].h = std::abs((i+1)-(x))+std::abs((j-1)-(y));
@@ -240,7 +239,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
       cellDetails[i+1][j-1].pj = j;
       openList.push(cellDetails[i+1][j-1]);
     }
-    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/20))+std::abs((j+1)-(w_pos.y/20));
+    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
       cellDetails[i][j+1].g = newCost;
       cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));

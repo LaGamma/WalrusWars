@@ -21,8 +21,8 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
     GameState getState();
     bool winner1;
-    int bump;
-    int splash;
+    float bump;
+    float splash;
     Player walrus1;
     Player walrus2;
     Stage stage;

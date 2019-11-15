@@ -10,12 +10,11 @@ void SoundManager::load() {
     std::cout << "Could not load audio\n";
   }
   bumpSound.setBuffer(bumpBuffer);
-  //bumpSound.setVolume(100.0f);
 }
 
-void SoundManager::playSound(SoundManager::SFX sfx, int vol){
+void SoundManager::playSound(SoundManager::SFX sfx, float vol){
   if(sfx == SoundManager::SFX::bump){
-    bumpSound.setVolume((float)(vol));
+    bumpSound.setVolume(vol);
     bumpSound.play();
   };
   if(sfx == SoundManager::SFX::splash){
