@@ -8,8 +8,8 @@ Player::Player() {
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
-    mass = 4.0f;
-    stamina = 100.0f;
+    mass = INIT_MASS;
+    stamina = MAX_STAMINA;
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);
     state = normal;
@@ -22,19 +22,19 @@ void Player::tickUpdate(float dSec) {
 
     switch (state) {
         case resting:
-            stamina += 20 * dSec;
-            if (stamina > 25) {
+            stamina += RESTING_STAMINA_REGEN_RATE * dSec;
+            if (stamina > STAMINA_THRESHOLD) {
                 state = normal;
             }
             break;
-        case normal:
-            stamina += 10 * dSec;
+        default:
+            stamina += NORMAL_STAMINA_REGEN_RATE * dSec;
             break;
     }
 
     // cap stamina
-    if (stamina > 100.0) {
-        stamina = 100.0;
+    if (stamina > MAX_STAMINA) {
+        stamina = MAX_STAMINA;
     }
 
 }
@@ -62,22 +62,22 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
     switch (state) {
         case dead:
-            force_dir = force_dir * 0.0f;
+            force_dir = force_dir * DEAD_MOVEMENT_SCALEDOWN;
             break;
         case resting:
-            force_dir = force_dir * 0.2f;
+            force_dir = force_dir * RESTING_MOVEMENT_SCALEDOWN;
             break;
         case raising_tusks:
-            force_dir = force_dir * 0.5f;
+            force_dir = force_dir * RAISING_TUSKS_MOVEMENT_SCALEDOWN;
             break;
         case attacking:
-            force_dir = force_dir * 0.2f;
+            force_dir = force_dir * ATTACKING_MOVEMENT_SCALEDOWN;
             break;
     }
     force_dir *= speed_boost;
 
     vel += force_dir * dSec * ACCELERATE_STRENGTH;
-    stamina -= sqrt((force_dir.x * force_dir.x) + (force_dir.y * force_dir.y)) *30*dSec;
+    stamina -= sqrt((force_dir.x * force_dir.x) + (force_dir.y * force_dir.y)) * dSec * MOVEMENT_STAMINA_COST_SCALE;
 
     if (stamina < 0) {
         state = resting;
@@ -94,21 +94,26 @@ void Player::setStamina(float newStamina) {
 }
 
 void Player::handlePowerUp(int powerup) {
-    stamina += 20;
+    stamina += FISH_STAMINA_GAINED;
     if (powerup == 0) {
-        speed_boost += 0.01;
-        std::cout<<"power up speed!";
+        speed_boost += FISH_SPEED_BOOST;
     }
     else if (powerup == 1) {
-        std::cout<<"power up mass!";
-        mass += 0.5;
+        mass += FISH_MASS_BOOST;
     }
+}
+
+void Player::raiseTusks() {
+    state = raising_tusks;
+}
+
+void Player::slash() {
+    state = normal;
 }
 
 void Player::kill() {
     state = dead;
 }
-
 
 bool Player::isDead() {
     return (state == dead);

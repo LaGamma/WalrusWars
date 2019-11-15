@@ -1,6 +1,7 @@
 #ifndef _Stage_H_
 #define _Stage_H_
 #include <SFML/System.hpp>
+#include <Definitions.h>
 
 class Stage {
   public:
@@ -9,11 +10,11 @@ class Stage {
     void tickMelt(int);
     float getTileDura(int,int,int);
   private:
-    float centerStage[40][30];
-    float leftStage1[40][30];
-    float leftStage2[40][30];
-    float rightStage1[40][30];
-    float rightStage2[40][30];
+    float centerStage[ICE_BLOCKS_WIDTH][ICE_BLOCKS_HEIGHT];
+    float leftStage1[ICE_BLOCKS_WIDTH][ICE_BLOCKS_HEIGHT];
+    float leftStage2[ICE_BLOCKS_WIDTH][ICE_BLOCKS_HEIGHT];
+    float rightStage1[ICE_BLOCKS_WIDTH][ICE_BLOCKS_HEIGHT];
+    float rightStage2[ICE_BLOCKS_WIDTH][ICE_BLOCKS_HEIGHT];
 
 };
 

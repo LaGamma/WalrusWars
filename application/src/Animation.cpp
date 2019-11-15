@@ -96,7 +96,7 @@ void Animation::updateMovement(sf::Vector2f dir, float dSec) {
 
 void Animation::updateAttack(sf::Vector2f dir, float dSec){
     totalTime += dSec;
-    currentSprite.y = row +5;
+    currentSprite.y = row + 5;
     //std::cout << totalTime << std::endl;
 
     if (totalTime >= switchTime) {
@@ -127,8 +127,8 @@ void Animation::updateSleep(float dSec) {
     totalTime += dSec;
     currentSprite.y = 10;
 
-    if (totalTime >= switchTime*2) {
-        totalTime -= switchTime*2;
+    if (totalTime >= switchTime * 2) {
+        totalTime -= switchTime * 2;
         currentSprite.x++;
         //make the animation loop through row
         if (currentSprite.x >= spriteCount.x) {
