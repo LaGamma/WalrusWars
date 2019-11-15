@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include "Definitions.h"
 #include "Player.h"
 
 Player::Player() {
@@ -7,12 +8,12 @@ Player::Player() {
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
-    mass = 4.0f;
-    stamina = 100.0f;
+    mass = INIT_MASS;
+    stamina = MAX_STAMINA;
     pos = spawn_pos;
     vel = sf::Vector2f(0.0f, 0.0f);
     state = normal;
-    speed = 1.0f;
+    speed_boost = 1.0f;
 }
 
 // update movement and stamina recovery
@@ -21,19 +22,19 @@ void Player::tickUpdate(float dSec) {
 
     switch (state) {
         case resting:
-            stamina += 20 * dSec;
-            if (stamina > 25) {
+            stamina += RESTING_STAMINA_REGEN_RATE * dSec;
+            if (stamina > STAMINA_THRESHOLD) {
                 state = normal;
             }
             break;
-        case normal:
-            stamina += 10 * dSec;
+        default:
+            stamina += NORMAL_STAMINA_REGEN_RATE * dSec;
             break;
     }
 
     // cap stamina
-    if (stamina > 100.0) {
-        stamina = 100.0;
+    if (stamina > MAX_STAMINA) {
+        stamina = MAX_STAMINA;
     }
 
 }
@@ -44,14 +45,14 @@ void Player::applyPassiveForce(float dSec) {
     float resting_resistance = (state == resting) ? 2.0:1.0;
 
     if (vel.x > 0) {
-        vel.x -= decelerate_strength * dSec * resting_resistance;
+        vel.x -= dSec * resting_resistance * DECELERATE_STRENGTH;
     } else if (vel.x < 0) {
-        vel.x += decelerate_strength * dSec * resting_resistance;
+        vel.x += dSec * resting_resistance * DECELERATE_STRENGTH;
     }
     if (vel.y > 0) {
-        vel.y -= decelerate_strength * dSec * resting_resistance;
+        vel.y -= dSec * resting_resistance * DECELERATE_STRENGTH;
     } else if (vel.y < 0) {
-        vel.y += decelerate_strength * dSec * resting_resistance;
+        vel.y += dSec * resting_resistance * DECELERATE_STRENGTH;
     }
 
 
@@ -61,26 +62,26 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
     switch (state) {
         case dead:
-            force_dir = force_dir * 0.0f;
+            force_dir = force_dir * DEAD_MOVEMENT_SCALEDOWN;
             break;
         case resting:
-            force_dir = force_dir * 0.2f;
+            force_dir = force_dir * RESTING_MOVEMENT_SCALEDOWN;
             break;
         case raising_tusks:
-            force_dir = force_dir * 0.5f;
+            force_dir = force_dir * RAISING_TUSKS_MOVEMENT_SCALEDOWN;
             break;
         case attacking:
-            force_dir = force_dir * 0.2f;
+            force_dir = force_dir * ATTACKING_MOVEMENT_SCALEDOWN;
             break;
     }
+    force_dir *= speed_boost;
 
-    vel += force_dir * accelerate_strength * dSec;
-    stamina -= sqrt((force_dir.x * force_dir.x) + (force_dir.y * force_dir.y)) *30*dSec;
+    vel += force_dir * dSec * ACCELERATE_STRENGTH;
+    stamina -= sqrt((force_dir.x * force_dir.x) + (force_dir.y * force_dir.y)) * dSec * MOVEMENT_STAMINA_COST_SCALE;
 
     if (stamina < 0) {
         state = resting;
     }
-    vel *= speed;
 }
 void Player::setVel(sf::Vector2f newVel) {
     vel = newVel;
@@ -93,20 +94,26 @@ void Player::setStamina(float newStamina) {
 }
 
 void Player::handlePowerUp(int powerup) {
+    stamina += FISH_STAMINA_GAINED;
     if (powerup == 0) {
-        speed += 0.01;
-        std::cout<<"power up speed!";
+        speed_boost += FISH_SPEED_BOOST;
     }
     else if (powerup == 1) {
-        std::cout<<"power up mass!";
-        mass += 1.0;
+        mass += FISH_MASS_BOOST;
     }
+}
+
+void Player::raiseTusks() {
+    state = raising_tusks;
+}
+
+void Player::slash() {
+    state = normal;
 }
 
 void Player::kill() {
     state = dead;
 }
-
 
 bool Player::isDead() {
     return (state == dead);

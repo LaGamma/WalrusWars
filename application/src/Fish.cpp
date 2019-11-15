@@ -1,12 +1,19 @@
 #include <iostream>
 #include "Fish.h"
 
-Fish::Fish() {
+Fish::Fish(sf::Vector2f pos) {
+    spawn(pos);
 
 }
 
-void Fish::setPosition(sf::Vector2f position) {
+void Fish::spawn(sf::Vector2f position) {
     pos = position;
+
+    int rand_color = rand() % 10;
+    if (rand_color < 5)
+        color = 0;
+    else
+        color = 1;
 }
 
 sf::Vector2f Fish::getPosition() {
@@ -15,7 +22,4 @@ sf::Vector2f Fish::getPosition() {
 
 unsigned int Fish::getColor() {
     return color;
-}
-void Fish::setColor(unsigned int clr) {
-    color = clr;
 }

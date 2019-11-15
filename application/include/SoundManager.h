@@ -7,7 +7,7 @@ class SoundManager {
     SoundManager();
     enum Music{title,battle,victory};
     enum SFX{bump,splash,menuSelect,menuMove,fish};
-    void playSound(SFX, int);
+    void playSound(SFX, float);
     void playMusic(Music);
     void load();
   private:
