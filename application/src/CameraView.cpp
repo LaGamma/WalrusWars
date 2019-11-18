@@ -44,6 +44,9 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
         case GameLogic::GameState::gameOverMenu:
             drawGameOverMenu(window, logic);
             break;
+        case GameLogic::GameState::optionsMenu:
+            drawOptionsMenu(window, logic);
+            break;
     }
     // display
     window.display();
@@ -95,6 +98,82 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
+
+}
+
+void CameraView::drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic) {
+    window.clear(sf::Color::Blue);
+
+    sf::Text options_text;
+    options_text.setFont(font);
+    options_text.setCharacterSize(UI_TEXT_SIZE / 2);
+    options_text.setFillColor(sf::Color(255, 255, 255, 255));
+    options_text.setPosition(WINDOW_WIDTH / 2 - 25, 50);
+    options_text.setString(OPTIONS_STRING);
+
+    window.draw(options_text);
+
+    sf::Text sfx_text;
+    sfx_text.setFont(font);
+    sfx_text.setCharacterSize(UI_TEXT_SIZE / 3);
+    sfx_text.setFillColor(sf::Color(255, 255, 255, 255));
+    sfx_text.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 5);
+    sfx_text.setString(SFX_VOLUME_STRING);
+
+    float tmp = VOLUME_BAR_WIDTH;
+    sf::RectangleShape sfx_line(sf::Vector2f(tmp, sfx_text.getGlobalBounds().height));
+    //sf::RectangleShape sfx_line(sf::Vector2f(150, 20));
+    sfx_line.setFillColor(sf::Color::Black);
+    sfx_line.setPosition(sfx_text.getGlobalBounds().left + sfx_text.getGlobalBounds().width + 25,
+                         sfx_text.getGlobalBounds().top);
+    window.draw(sfx_line);
+
+    sf::CircleShape sfx_choice(15);
+    sfx_choice.setFillColor(sf::Color(0, 255, 255, 255));
+    sfx_choice.setPosition(sfx_line.getPosition().x -sfx_choice.getRadius() + logic.getSFXVolume(), sfx_line.getPosition().y - 10);
+    window.draw(sfx_choice);
+
+    //music
+    sf::Text music_text;
+    music_text.setFont(font);
+    music_text.setCharacterSize(UI_TEXT_SIZE / 3);
+    music_text.setFillColor(sf::Color(255, 255, 255, 255));
+    music_text.setPosition(WINDOW_WIDTH / 10, sfx_text.getPosition().y + 50);
+    music_text.setString(MUSIC_VOLUME_STRING);
+
+    tmp = MUSIC_VOLUME_MAX + 50;
+    sf::RectangleShape music_line(sf::Vector2f(tmp, music_text.getGlobalBounds().height));
+    music_line.setFillColor(sf::Color::Black);
+    music_line.setPosition(sfx_line.getPosition().x, music_text.getGlobalBounds().top);
+    window.draw(music_line);
+
+    sf::CircleShape music_choice(15);
+    music_choice.setFillColor(sf::Color(0, 255, 255, 255));
+    music_choice.setPosition(music_line.getPosition().x + - music_choice.getRadius() + logic.getMusicVolume(), music_line.getPosition().y - 10);
+    window.draw(music_choice);
+
+    sf::Text quit_text;
+    quit_text.setFont(font);
+    quit_text.setCharacterSize(UI_TEXT_SIZE / 3);
+    quit_text.setFillColor(sf::Color(255, 255, 255, 255));
+    quit_text.setPosition(WINDOW_WIDTH / 10, music_text.getPosition().y + 50);
+    quit_text.setString(QUIT_STRING);
+
+
+    //handle coloring of selection
+    if (options_menu_selection == 'S') {
+        sfx_text.setFillColor(sf::Color::Black);
+    }
+    if (options_menu_selection == 'M') {
+        music_text.setFillColor(sf::Color::Black);
+    }
+    if (options_menu_selection == 'Q') {
+        quit_text.setFillColor(sf::Color::Black);
+    }
+
+    window.draw(sfx_text);
+    window.draw(music_text);
+    window.draw(quit_text);
 
 }
 
@@ -392,6 +471,12 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 main_menu_selection = 'P';
                             else if (main_menu_selection == 'O')
                                 main_menu_selection = 'S';
+                            if (logic.getState() == GameLogic::GameState::optionsMenu) {
+                                if (options_menu_selection == 'S' || options_menu_selection == 'M')
+                                    options_menu_selection = 'S';
+                                else if (options_menu_selection == 'Q')
+                                    options_menu_selection = 'M';
+                            }
                             break;
 
                         case sf::Keyboard::Down:
@@ -400,9 +485,35 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 main_menu_selection = 'O';
                             else if (main_menu_selection == 'P')
                                 main_menu_selection = 'S';
+                            if (logic.getState() == GameLogic::GameState::optionsMenu) {
+                                if (options_menu_selection == 'S')
+                                    options_menu_selection = 'M';
+                                else if (options_menu_selection == 'M' || options_menu_selection == 'Q')
+                                    options_menu_selection = 'Q';
+                            }
                             break;
 
-
+                        case sf::Keyboard::Right:
+                            if (logic.getState() == GameLogic::GameState::optionsMenu) {
+                                if (options_menu_selection == 'S') {
+                                    logic.setSFXVolume(logic.getSFXVolume() + 10);
+                                    std::cout<<logic.getSFXVolume();
+                                }
+                                else if (options_menu_selection == 'M') {
+                                    logic.setMusicVolume(logic.getMusicVolume() + 10);
+                                }
+                            }
+                            break;
+                        case sf::Keyboard::Left:
+                            if (logic.getState() == GameLogic::GameState::optionsMenu) {
+                                if (options_menu_selection == 'S') {
+                                    logic.setSFXVolume(logic.getSFXVolume() - 10);
+                                }
+                                else if (options_menu_selection == 'M') {
+                                    logic.setMusicVolume(logic.getMusicVolume() - 10);
+                                }
+                            }
+                            break;
                         case sf::Keyboard::Return:
 
                             switch (logic.getState()) {
@@ -417,6 +528,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                         logic.resetGame();
                                     } else if (main_menu_selection == 'O') {
                                         std::cout << "options menu" << std::endl;
+                                        logic.handleOptionsMenu();
                                     }
                                     break;
                                 case GameLogic::GameState::pauseMenu:
@@ -424,6 +536,12 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     break;
                                 case GameLogic::GameState::gameOverMenu:
                                     logic.returnToMenu();
+                                    break;
+                                case GameLogic::GameState::optionsMenu:
+                                    if(options_menu_selection == 'Q') {
+                                        options_menu_selection = 'S';
+                                        logic.returnToMenu();
+                                    }
                                     break;
                             }
                             break;
