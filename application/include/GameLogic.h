@@ -15,10 +15,15 @@ class GameLogic {
     void togglePause();
     void returnToMenu();
     void resetGame();
+    void handleOptionsMenu();
     int getStageProgression();
+    void setSFXVolume(float vol);
+    void setMusicVolume(float vol);
+    float getSFXVolume();
+    float getMusicVolume();
     sf::Vector2f getAttackCollisionPoint();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
-    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu};
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu};
     GameState getState();
     bool winner1;
     float bump;
@@ -42,6 +47,8 @@ private:
     int progression;
     float accumulator;
     float fish_accumulator;
+    float sfx_volume;
+    float music_volume;
 };
 
 #endif /* _GameLogic_H_ */

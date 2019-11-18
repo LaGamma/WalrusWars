@@ -60,5 +60,16 @@
 // strings
 #define GO_RIGHT "GO ->"
 #define GO_LEFT "<- GO"
+#define OPTIONS_STRING "OPTIONS:"
+#define SFX_VOLUME_STRING "SFX Volume: "
+#define MUSIC_VOLUME_STRING "Music Volume: "
+#define QUIT_STRING "Quit"
+
+//volume
+#define SFX_VOLUME_BASE 50.0f;
+#define MUSIC_VOLUME_BASE 50.0f;
+#define SFX_VOLUME_MAX 100.0f;
+#define MUSIC_VOLUME_MAX 100.0f;
+#define VOLUME_BAR_WIDTH 100.0f;
 
 #endif /* _Definitions_H_ */
