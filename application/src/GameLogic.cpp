@@ -14,6 +14,10 @@ GameLogic::GameLogic() {
     bump = 0;
     splash = 0;
     fish_accumulator = 0.0f;
+    //sfx_volume = SFX_VOLUME_BASE;
+    //music_volume = SFX_VOLUME_MAX
+    sfx_volume = 50.0f;
+    music_volume = 50.0f;
 }
 
 void GameLogic::update(float dSec) {
@@ -373,11 +377,39 @@ void GameLogic::returnToMenu() {
   stage.generateMap();
 }
 
+void GameLogic::setSFXVolume(float vol) {
+    float tmp = SFX_VOLUME_MAX;
+    if (vol > tmp)
+        vol = tmp;
+    else if (vol <= 0.0)
+        vol = 0;
+    sfx_volume = vol;
+
+}
+void GameLogic::setMusicVolume(float vol) {
+    float tmp = MUSIC_VOLUME_MAX;
+    if (vol > tmp)
+        vol = tmp;
+    else if (vol <= 0.0)
+        vol = 0;
+    music_volume = vol;
+}
+float GameLogic::getSFXVolume() {
+    return sfx_volume;
+}
+float GameLogic::getMusicVolume() {
+    return music_volume;
+}
 /*
  *1 param: walrus1 died
  * 2 param: walrus2 died
  * */
 void GameLogic::handlePlayerDeath(int walrus) {
+
+    //check if both are dead (fixes respawn bug)
+    if (walrus2.isDead() && walrus == 1) {
+        resetGame();
+    }
 
   //will have more need for separate cases later on to adjust the screen transition
 	if (walrus == 1) {
@@ -391,10 +423,9 @@ void GameLogic::handlePlayerDeath(int walrus) {
       }
 
       walrus1.kill();
-      if(walrus2.isDead()){
-        resetGame();
-      }
-      splash = 1;
+//      if(walrus2.isDead()) {
+//        resetGame();
+//      }
 
 	}
 	else if (walrus == 2) {
@@ -411,8 +442,10 @@ void GameLogic::handlePlayerDeath(int walrus) {
       if(walrus1.isDead()){
         resetGame();
       }
-      splash = 1;
+
 	}
+    splash = 1;
+
 
 }
 
@@ -428,6 +461,10 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
+}
+
+void GameLogic::handleOptionsMenu() {
+    state = optionsMenu;
 }
 
 GameLogic::GameState GameLogic::getState() {
