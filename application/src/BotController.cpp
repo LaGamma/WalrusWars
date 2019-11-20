@@ -24,7 +24,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     if (playerNum == 1) {
         //process input for player 1
-        if(!logic.walrus2.isDead() && (state != 0) && w2_vel.x>=15 || w2_vel.y>=15){
+        if(!logic.walrus2.isDead() && (state != 0) && (w2_vel.x>=15 || w2_vel.y>=15)){
           changeState(0);
           calculatePath(logic, playerNum);
         }
@@ -76,7 +76,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     } else {
         //process input for player 2
-        if(!logic.walrus1.isDead() && (state != 0) && w1_vel.x>=15 || w1_vel.y>=15){
+        if(!logic.walrus1.isDead() && (state != 0) && (w1_vel.x>=15 || w1_vel.y>=15)){
           changeState(0);
           calculatePath(logic, playerNum);
         }
@@ -186,12 +186,13 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     }
   }
   else{
+    std::cout<<state<<"\n";
     if(playerNum==1){
-      x = 39;
+      x = 0;
       y = 15;
     }
     else {
-      x = 0;
+      x = 39;
       y = 15;
     }
   }
