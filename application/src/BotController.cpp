@@ -36,43 +36,43 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           changeState(2);
           calculatePath(logic, playerNum);
         }
-        //if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pj){
-        //  //direction = left
-        //  dir.x -=1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pj){
-        //  //direction = right
-        //  dir.x +=1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)+1].pj){
-        //  //direction = down
-        //  dir.y +=1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)-1].pj){
-        //  //direction = up
-        //  dir.y -=1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)-1].pj){
-        //  //direction = left up
-        //  dir.x -=1;
-        //  dir.y -= 1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)-1].pj){
-        //  //direction = right up
-        //  dir.x +=1;
-        //  dir.y-=1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)+1].pj){
-        //  //direction = down left
-        //  dir.x -= 1;
-        //  dir.y +=1;
-        //}
-        //else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)+1].pj){
-        //  //direction = down right
-        //  dir.y +=1;
-        //  dir.x += 1;
-        //}
-        //logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
+        if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pj){
+          //direction = left
+          dir.x -=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pj){
+          //direction = right
+          dir.x +=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)+1].pj){
+          //direction = down
+          dir.y +=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)-1].pj){
+          //direction = up
+          dir.y -=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)-1].pj){
+          //direction = left up
+          dir.x -=1;
+          dir.y -= 1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)-1].pj){
+          //direction = right up
+          dir.x +=1;
+          dir.y-=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)+1].pj){
+          //direction = down left
+          dir.x -= 1;
+          dir.y +=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)+1].pj){
+          //direction = down right
+          dir.y +=1;
+          dir.x += 1;
+        }
+        logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
 
     } else {
         //process input for player 2
@@ -88,43 +88,43 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           changeState(2);
           calculatePath(logic, playerNum);
         }
-        //if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)].pj){
-        //  //direction = left
-        //  dir.x -=1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)].pj){
-        //  //direction = right
-        //  dir.x +=1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)+1].pj){
-        //  //direction = down
-        //  dir.y +=1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)-1].pj){
-        //  //direction = up
-        //  dir.y -=1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)-1].pj){
-        //  //direction = left up
-        //  dir.x -=1;
-        //  dir.y -= 1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)-1].pj){
-        //  //direction = right up
-        //  dir.x +=1;
-        //  dir.y-=1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)+1].pj){
-        //  //direction = down left
-        //  dir.x -= 1;
-        //  dir.y +=1;
-        //}
-        //else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)+1].pj){
-        //  //direction = down right
-        //  dir.y +=1;
-        //  dir.x += 1;
-        //}
-        //logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
+        if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)].pj){
+          //direction = left
+          dir.x -=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)].pj){
+          //direction = right
+          dir.x +=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)+1].pj){
+          //direction = down
+          dir.y +=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)-1].pj){
+          //direction = up
+          dir.y -=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)-1].pj){
+          //direction = left up
+          dir.x -=1;
+          dir.y -= 1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)-1].pj){
+          //direction = right up
+          dir.x +=1;
+          dir.y-=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)+1].pj){
+          //direction = down left
+          dir.x -= 1;
+          dir.y +=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)+1].pj){
+          //direction = down right
+          dir.y +=1;
+          dir.x += 1;
+        }
+        logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
 
     }
     anim.updateMovement(dir, dSec/bot_handicap);
@@ -306,20 +306,20 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
 
 
   }
-
-  i = cellDetails[x][y].pi;
-  j = cellDetails[x][y].pj;
-  while(true){
-    if(i==w_pos.x/20 && j==w_pos.y/20){
-      break;
-    }
-    std::cout<<"the x position: "<<i<<"\n";
-    std::cout<<"the y position: "<<j<<"\n";
-    std::cout<<"The parent x: "<<cellDetails[i][j].pi<<"\n";
-    std::cout<<"The parent y: "<<cellDetails[i][j].pj<<"\n\n";
-    i = cellDetails[i][j].pi;
-    j = cellDetails[i][j].pj;
-  }
+  //this is just a printing system to check paths, not necessary
+  //i = cellDetails[x][y].pi;
+  //j = cellDetails[x][y].pj;
+  //while(true){
+  //  if(i==w_pos.x/20 && j==w_pos.y/20){
+  //    break;
+  //  }
+  //  std::cout<<"the x position: "<<i<<"\n";
+  //  std::cout<<"the y position: "<<j<<"\n";
+  //  std::cout<<"The parent x: "<<cellDetails[i][j].pi<<"\n";
+  //  std::cout<<"The parent y: "<<cellDetails[i][j].pj<<"\n\n";
+  //  i = cellDetails[i][j].pi;
+  //  j = cellDetails[i][j].pj;
+  //}
 }
 
 void BotController::changeState(int x){
