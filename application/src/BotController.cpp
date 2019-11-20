@@ -307,6 +307,8 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
 
   }
   //this is just a printing system to check paths, not necessary
+  // maybe at this point it could store the moves in a stack? and then the update function changes direction based on that stack?
+  //just an idea
   //i = cellDetails[x][y].pi;
   //j = cellDetails[x][y].pj;
   //while(true){
