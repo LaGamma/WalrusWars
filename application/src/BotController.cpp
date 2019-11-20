@@ -24,7 +24,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     if (playerNum == 1) {
         //process input for player 1
-        if(!logic.walrus2.isDead() && w2_vel.x>=15 || w2_vel.y>=15 && (state != 0)){
+        if(!logic.walrus2.isDead() && (state != 0) && (w2_vel.x>=15 || w2_vel.y>=15)){
           changeState(0);
           calculatePath(logic, playerNum);
         }
@@ -36,25 +36,47 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           changeState(2);
           calculatePath(logic, playerNum);
         }
-        if(cellDetails[int(w1_pos.x/ICE_BLOCKS_SIZE_X)][int(w1_pos.y/ICE_BLOCKS_SIZE_Y)].pi || cellDetails[int(w1_pos.x/ICE_BLOCKS_SIZE_X)][int(w1_pos.y/ICE_BLOCKS_SIZE_Y)].pj){
-          std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
+        if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)].pj){
+          //direction = left
+          dir.x -=1;
         }
-        if (w1_pos.y > w2_pos.y) {
-            dir.y -= 1;
-        } else if (w1_pos.y < w2_pos.y) {
-            dir.y += 1;
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)].pj){
+          //direction = right
+          dir.x +=1;
         }
-        if (w1_pos.x > w2_pos.x) {
-            dir.x -= 1;
-        } else if (w1_pos.x < w2_pos.x) {
-            dir.x += 1;
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)+1].pj){
+          //direction = down
+          dir.y +=1;
         }
-
-        //logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)][int(w1_pos.y/20)-1].pj){
+          //direction = up
+          dir.y -=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)-1].pj){
+          //direction = left up
+          dir.x -=1;
+          dir.y -= 1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)-1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)-1].pj){
+          //direction = right up
+          dir.x +=1;
+          dir.y-=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)-1][int(w1_pos.y/20)+1].pj){
+          //direction = down left
+          dir.x -= 1;
+          dir.y +=1;
+        }
+        else if(int(w1_pos.x/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)+1].pi && int(w1_pos.y/20)==cellDetails[int(w1_pos.x/20)+1][int(w1_pos.y/20)+1].pj){
+          //direction = down right
+          dir.y +=1;
+          dir.x += 1;
+        }
+        logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
 
     } else {
         //process input for player 2
-        if(!logic.walrus1.isDead() && w1_vel.x>=15 || w1_vel.y>=15 && (state != 0)){
+        if(!logic.walrus1.isDead() && (state != 0) && (w1_vel.x>=15 || w1_vel.y>=15)){
           changeState(0);
           calculatePath(logic, playerNum);
         }
@@ -66,20 +88,43 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
           changeState(2);
           calculatePath(logic, playerNum);
         }
-        if(cellDetails[int(w2_pos.x/ICE_BLOCKS_SIZE_X)][int(w2_pos.y/ICE_BLOCKS_SIZE_Y)].pi || cellDetails[int(w2_pos.x/ICE_BLOCKS_SIZE_X)][int(w2_pos.y/ICE_BLOCKS_SIZE_Y)].pj){
-          std::cout<<"path calculated!\n"; //we've found a path. Now need to iterate through parents and move in that direction
+        if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)].pj){
+          //direction = left
+          dir.x -=1;
         }
-        if (w2_pos.y > w1_pos.y) {
-            dir.y -= 1;
-        } else if (w2_pos.y < w1_pos.y) {
-            dir.y += 1;
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)].pj){
+          //direction = right
+          dir.x +=1;
         }
-        if (w2_pos.x > w1_pos.x) {
-            dir.x -= 1;
-        } else if (w2_pos.x < w1_pos.x) {
-            dir.x += 1;
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)+1].pj){
+          //direction = down
+          dir.y +=1;
         }
-        //logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)][int(w2_pos.y/20)-1].pj){
+          //direction = up
+          dir.y -=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)-1].pj){
+          //direction = left up
+          dir.x -=1;
+          dir.y -= 1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)-1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)-1].pj){
+          //direction = right up
+          dir.x +=1;
+          dir.y-=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)-1][int(w2_pos.y/20)+1].pj){
+          //direction = down left
+          dir.x -= 1;
+          dir.y +=1;
+        }
+        else if(int(w2_pos.x/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)+1].pi && int(w2_pos.y/20)==cellDetails[int(w2_pos.x/20)+1][int(w2_pos.y/20)+1].pj){
+          //direction = down right
+          dir.y +=1;
+          dir.x += 1;
+        }
+        logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
 
     }
     anim.updateMovement(dir, dSec/bot_handicap);
@@ -122,27 +167,32 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   int i, j, x, y;
   int newCost;
   if(state == 0){
-    //calculate safe positions
-    x = 0;
-    y = 0;
+    //calculate safe positions, for now middle of the stage.
+
+    std::cout<<state<<"\n";
+    x = 20;
+    y = 15;
   }
   else if(state == 1){
+
+    std::cout<<state<<"\n";
     if(playerNum==1){
-      x = logic.walrus2.getPos().x;
-      y = logic.walrus2.getPos().y;
+      x = int(logic.walrus2.getPos().x/20);
+      y = int(logic.walrus2.getPos().y/20);
     }
     else {
-      x = logic.walrus1.getPos().x;
-      y = logic.walrus1.getPos().y;
+      x = int(logic.walrus1.getPos().x/20);
+      y = int(logic.walrus1.getPos().y/20);
     }
   }
   else{
+    std::cout<<state<<"\n";
     if(playerNum==1){
-      x = 39;
+      x = 0;
       y = 15;
     }
     else {
-      x = 0;
+      x = 39;
       y = 15;
     }
   }
@@ -161,6 +211,10 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
   i = w_pos.x/ICE_BLOCKS_SIZE_X;
   j = w_pos.y/ICE_BLOCKS_SIZE_Y;
+  while(!openList.empty()){
+    openList.pop();
+  } //crucial to start with an empty list!!
+
   cellDetails[i][j].f = 0;
   cellDetails[i][j].g = 0;
   cellDetails[i][j].h = 0;
@@ -173,6 +227,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     j = n.pos_y;
     openList.pop();
     closedList[i][j] = true;
+
     if (i == x && j == y){
       break;
     }; //if destination, end search
@@ -251,9 +306,24 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
 
 
   }
+  //this is just a printing system to check paths, not necessary
+  // maybe at this point it could store the moves in a stack? and then the update function changes direction based on that stack?
+  //just an idea
+  //i = cellDetails[x][y].pi;
+  //j = cellDetails[x][y].pj;
+  //while(true){
+  //  if(i==w_pos.x/20 && j==w_pos.y/20){
+  //    break;
+  //  }
+  //  std::cout<<"the x position: "<<i<<"\n";
+  //  std::cout<<"the y position: "<<j<<"\n";
+  //  std::cout<<"The parent x: "<<cellDetails[i][j].pi<<"\n";
+  //  std::cout<<"The parent y: "<<cellDetails[i][j].pj<<"\n\n";
+  //  i = cellDetails[i][j].pi;
+  //  j = cellDetails[i][j].pj;
+  //}
 }
 
 void BotController::changeState(int x){
   state = x;
-  std::cout<<state<<"\n";
 };
