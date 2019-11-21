@@ -411,9 +411,7 @@ void GameLogic::handlePlayerDeath(int walrus) {
         resetGame();
     }
 
-  //will have more need for separate cases later on to adjust the screen transition
 	if (walrus == 1) {
-
 	  // check for game over
       if (progression == 2) {
           winner1 = false;
@@ -423,13 +421,8 @@ void GameLogic::handlePlayerDeath(int walrus) {
       }
 
       walrus1.kill();
-//      if(walrus2.isDead()) {
-//        resetGame();
-//      }
 
-	}
-	else if (walrus == 2) {
-
+	} else if (walrus == 2) {
 	  //check for game over
       if (progression == -2) {
           winner1 = true;
@@ -445,7 +438,6 @@ void GameLogic::handlePlayerDeath(int walrus) {
 
 	}
     splash = 1;
-
 
 }
 
