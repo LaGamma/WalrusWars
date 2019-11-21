@@ -23,6 +23,7 @@ class BotController : public Controller {
       cell cellDetails[40][30];
       void calculatePath(GameLogic &logic, int playerNum);
       std::stack<int> directionStack;
+      sf::Vector2f dir;
 };
 
 
