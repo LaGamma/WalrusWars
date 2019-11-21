@@ -2,6 +2,7 @@
 #define _BotController_H_
 #include <queue>
 #include "Controller.h"
+#include <stack>
 
 
 class BotController : public Controller {
@@ -21,6 +22,7 @@ class BotController : public Controller {
       bool closedList[40][30];
       cell cellDetails[40][30];
       void calculatePath(GameLogic &logic, int playerNum);
+      std::stack<int> directionStack;
 };
 
 
