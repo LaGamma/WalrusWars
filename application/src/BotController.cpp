@@ -301,33 +301,36 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
   i = w_pos.x/ICE_BLOCKS_SIZE_X;
   j = w_pos.y/ICE_BLOCKS_SIZE_Y;
-  while((i!=x)||(j!=y)){
-    if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj<y)) {  // top left corner (1)
-      directionStack.push(1);
+  if(!logic.walrus2.isDead()){
+    while((i!=x)||(j!=y)){
+      if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj<y)) {  // top left corner (1)
+        directionStack.push(1);
+      }
+      else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj<y)) {  // top center (2)
+        directionStack.push(2);
+      }
+      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj<y)) {  // top right corner (3)
+        directionStack.push(3);
+      }
+      else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj==y)) {  // left (4)
+        directionStack.push(4);
+      }
+      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj==y)) {  // right (5)
+        directionStack.push(5);
+      }
+      else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj>y)) {  // bottom left (6)
+        directionStack.push(6);
+      }
+      else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj>y)) {  // bottom center (7)
+        directionStack.push(7);
+      }
+      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj>y)) {  // bottom center (8)
+        directionStack.push(8);
+      }
+      std::cout<<"looping\n";
+      x = cellDetails[x][y].pi;
+      y = cellDetails[x][y].pj;
     }
-    else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj<y)) {  // top center (2)
-      directionStack.push(2);
-    }
-    else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj<y)) {  // top right corner (3)
-      directionStack.push(3);
-    }
-    else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj==y)) {  // left (4)
-      directionStack.push(4);
-    }
-    else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj==y)) {  // right (5)
-      directionStack.push(5);
-    }
-    else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj>y)) {  // bottom left (6)
-      directionStack.push(6);
-    }
-    else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj>y)) {  // bottom center (7)
-      directionStack.push(7);
-    }
-    else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj>y)) {  // bottom center (8)
-      directionStack.push(8);
-    }
-    x = cellDetails[x][y].pi;
-    y = cellDetails[x][y].pj;
   }
 }
 
