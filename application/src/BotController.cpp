@@ -14,7 +14,7 @@ BotController::BotController() {
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
 
 
-    float bot_handicap = 1;  // higher number == slower bot
+    float bot_handicap = .5;  // higher number == slower bot
     sf::Vector2f w1_pos = logic.walrus1.getPos();
     sf::Vector2f w2_pos = logic.walrus2.getPos();
     sf::Vector2f w1_vel = logic.walrus1.getVel();
@@ -167,12 +167,12 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
 
     std::cout<<state<<"\n";
     if(playerNum==1){
-      x = int(logic.walrus2.getPos().x/20);
-      y = int(logic.walrus2.getPos().y/20);
+      x = int(logic.walrus2.getPos().x/ICE_BLOCKS_SIZE_X);
+      y = int(logic.walrus2.getPos().y/ICE_BLOCKS_SIZE_Y);
     }
     else {
-      x = int(logic.walrus1.getPos().x/20);
-      y = int(logic.walrus1.getPos().y/20);
+      x = int(logic.walrus1.getPos().x/ICE_BLOCKS_SIZE_X);
+      y = int(logic.walrus1.getPos().y/ICE_BLOCKS_SIZE_Y);
     }
   }
   else{
@@ -301,33 +301,42 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
   }
   i = w_pos.x/ICE_BLOCKS_SIZE_X;
   j = w_pos.y/ICE_BLOCKS_SIZE_Y;
-  while((i!=x)||(j!=y)){
-    if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj<y)) {  // top left corner (1)
-      directionStack.push(1);
+  if(!logic.walrus2.isDead()){
+    while((i!=x)||(j!=y)){
+      //std::cout<<"i = "<<i<<"\n";
+      //std::cout<<"j = "<<j<<"\n";
+      //std::cout<<"x = "<<x<<"\n";
+      //std::cout<<"y = "<<y<<"\n";
+      if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj<y)) {  // top left corner (1)
+        directionStack.push(1);
+      }
+      else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj<y)) {  // top center (2)
+        directionStack.push(2);
+      }
+      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj<y)) {  // top right corner (3)
+        directionStack.push(3);
+      }
+      else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj==y)) {  // left (4)
+        directionStack.push(4);
+      }
+      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj==y)) {  // right (5)
+        directionStack.push(5);
+      }
+      else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj>y)) {  // bottom left (6)
+        directionStack.push(6);
+      }
+      else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj>y)) {  // bottom center (7)
+        directionStack.push(7);
+      }
+      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj>y)) {  // bottom center (8)
+        directionStack.push(8);
+      }
+      x = cellDetails[x][y].pi;
+      y = cellDetails[x][y].pj;
+      if(x==-1||y==-1){
+        break;
+      }
     }
-    else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj<y)) {  // top center (2)
-      directionStack.push(2);
-    }
-    else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj<y)) {  // top right corner (3)
-      directionStack.push(3);
-    }
-    else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj==y)) {  // left (4)
-      directionStack.push(4);
-    }
-    else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj==y)) {  // right (5)
-      directionStack.push(5);
-    }
-    else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj>y)) {  // bottom left (6)
-      directionStack.push(6);
-    }
-    else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj>y)) {  // bottom center (7)
-      directionStack.push(7);
-    }
-    else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj>y)) {  // bottom center (8)
-      directionStack.push(8);
-    }
-    x = cellDetails[x][y].pi;
-    y = cellDetails[x][y].pj;
   }
 }
 
