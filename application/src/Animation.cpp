@@ -33,15 +33,6 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
                     currentSprite.x = 0;
                 }
             }
-            //flip sprite if needed
-            if(flip) {
-                uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                uvRect.width = -abs(uvRect.width);
-            }
-            else {
-                uvRect.left = currentSprite.x * uvRect.width;
-                uvRect.width = abs(uvRect.width);
-            }
             break;
         case Player::raising_tusks:
             totalTime += dSec;
@@ -57,16 +48,6 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
                     currentSprite.x = 1;
                 }
             }
-
-            //flip sprite if needed
-            if(flip) {
-                uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                uvRect.width = -abs(uvRect.width);
-            }
-            else {
-                uvRect.left = currentSprite.x * uvRect.width;
-                uvRect.width = abs(uvRect.width);
-            }
             break;
         case Player::attacking:
             totalTime += dSec;
@@ -81,15 +62,6 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
                 if (currentSprite.x == 1) {
                     currentSprite.x = 2;
                 }
-            }
-            //flip sprite if needed
-            if(flip) {
-                uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                uvRect.width = -abs(uvRect.width);
-            }
-            else {
-                uvRect.left = currentSprite.x * uvRect.width;
-                uvRect.width = abs(uvRect.width);
             }
             break;
         case Player::running:
@@ -109,57 +81,41 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
             switch (hash) {
                 case 17 + 7: //right down
                     currentSprite.y = 4;
-                    uvRect.left = currentSprite.x * uvRect.width;
-                    uvRect.width = abs(uvRect.width);
                     row = 4;
                     flip = 1;
                     break;
                 case 17 - 7: //right up
                     currentSprite.y = 3;
-                    uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                    uvRect.width = -abs(uvRect.width);
                     row = 3;
                     flip = 1;
                     break;
                 case -17 + 7: //left down
                     currentSprite.y = 4;
-                    uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                    uvRect.width = -abs(uvRect.width);
                     row = 4;
                     flip = 0;
                     break;
                 case -17 - 7: //left up
                     currentSprite.y = 3;
-                    uvRect.left = currentSprite.x * uvRect.width;
-                    uvRect.width = abs(uvRect.width);
                     row = 3;
                     flip = 0;
                     break;
                 case 17: //right
                     currentSprite.y = 2;
-                    uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                    uvRect.width = -abs(uvRect.width);
                     row = 2;
                     flip = 1;
                     break;
                 case 7: //down
                     currentSprite.y = 0;
-                    uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
-                    uvRect.width = -abs(uvRect.width);
                     row = 0;
                     flip = 0;
                     break;
                 case -17: //left
                     currentSprite.y = 2;
-                    uvRect.left = currentSprite.x * uvRect.width;
-                    uvRect.width = abs(uvRect.width);
                     row = 2;
                     flip = 0;
                     break;
                 case -7: //up
                     currentSprite.y = 1;
-                    uvRect.left = currentSprite.x * uvRect.width;
-                    uvRect.width = abs(uvRect.width);
                     row = 1;
                     flip = 0;
                     break;
@@ -167,6 +123,14 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
                     break;
             }
             break;
+    }
+    // flip sprite is needed
+    if (flip) {
+        uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
+        uvRect.width = -abs(uvRect.width);
+    } else {
+        uvRect.left = currentSprite.x * uvRect.width;
+        uvRect.width = abs(uvRect.width);
     }
     uvRect.top = currentSprite.y * uvRect.height;
 }
