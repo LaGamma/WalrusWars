@@ -282,15 +282,15 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         fish_circle_test.setTexture(&spriteMapFish);
         if (count == 0) {
             fish_circle_test.setTextureRect(fish_animation1.uvRect);
-            fish_animation1.setCurrentSpritey((*it)->getColor());
+            fish_animation1.setCurrentSpriteY((*it)->getColor());
         }
         else if (count == 1) {
             fish_circle_test.setTextureRect(fish_animation2.uvRect);
-            fish_animation2.setCurrentSpritey((*it)->getColor());
+            fish_animation2.setCurrentSpriteY((*it)->getColor());
         }
         else {
             fish_circle_test.setTextureRect(fish_animation3.uvRect);
-            fish_animation3.setCurrentSpritey((*it)->getColor());
+            fish_animation3.setCurrentSpriteY((*it)->getColor());
         }
 
         window.draw(fish_circle_test);
@@ -438,15 +438,17 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
-    //update fish animation every gam
-    fish_animation1.updateFish(dSec);
-    fish_animation2.updateFish(dSec);
-    fish_animation3.updateFish(dSec);
-
     if (logic.getState() == GameLogic::GameState::playing) {
+        //update animations
+        fish_animation1.updateFish(dSec);
+        fish_animation2.updateFish(dSec);
+        fish_animation3.updateFish(dSec);
+        walrus1_animation.updateWalrus(logic.walrus1.getFacingDir(), logic.walrus1.getState(), dSec);
+        walrus2_animation.updateWalrus(logic.walrus2.getFacingDir(), logic.walrus2.getState(), dSec);
+
         // handle input in instantiated player controllers
-        player1Controller->update(window, logic, dSec, 1, walrus1_animation);
-        player2Controller->update(window, logic, dSec, 2, walrus2_animation);
+        player1Controller->update(window, logic, dSec, 1);
+        player2Controller->update(window, logic, dSec, 2);
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)

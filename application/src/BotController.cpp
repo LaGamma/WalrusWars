@@ -10,7 +10,7 @@ BotController::BotController() {
   state = 0;
 };
 
-void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
+void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 
 
     float bot_handicap = 1.0;  // higher number == slower bot
@@ -127,7 +127,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
 
     }
-    anim.updateMovement(dir, dSec/bot_handicap);
+    //anim.updateMovement(dir, dSec/bot_handicap);
 
     // process events
     sf::Event Event;

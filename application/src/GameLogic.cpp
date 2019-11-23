@@ -92,6 +92,14 @@ void GameLogic::update(float dSec) {
             handlePlayerCollision();
         }
 
+        // player - attack collision
+        if (walrus1.getState() == Player::attacking) {
+            //handlePlayerAttack(1, walrus1.getFacingDir());
+        }
+        if (walrus2.getState() == Player::attacking) {
+            //handlePlayerAttack(2, walrus2.getFacingDir());
+        }
+
         // fish collisions
         //have list of no more than 3 fish
         //check for collision of each fish
@@ -237,7 +245,7 @@ void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
     float w2_mass = walrus2.getMass();
     float w2_radius = w2_mass + 1; //+1 to avoid a regular collision
 
-    if (playerNum == 2){
+    if (playerNum == 2) {
 
         //determine direction of attack, direction conversion copied from animation
         attackCollisionPoint = w2_pos;

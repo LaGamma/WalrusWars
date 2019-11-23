@@ -1,14 +1,13 @@
 #ifndef _Animation_H_
 #define _Animation_H_
 #include <SFML/Graphics.hpp>
+#include "Player.h"
 
 class Animation {
 public:
   Animation();
   void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
-  void updateMovement(sf::Vector2f dir, float dSec);
-  void updateAttack(sf::Vector2f dir, float dSec);
-  void updateSleep(float dSec);
+  void updateWalrus(sf::Vector2f dir, Player::PlayerState state, float dSec);
   void updateFish(float dSec);
 
 
@@ -16,9 +15,9 @@ public:
 
   //reset current sprite when player dies
   void setCurrentSprite(int x, int y);
-  //needed to set begining of attack animation
-  void setCurrentSpritex(int x);
-  void setCurrentSpritey(int y);
+  //needed to set beginning of attack animation
+  void setCurrentSpriteX(int x);
+  void setCurrentSpriteY(int y);
   int row = 0;
   bool flip = 0;
 private:
