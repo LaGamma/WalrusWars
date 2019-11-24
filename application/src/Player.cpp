@@ -46,6 +46,8 @@ void Player::tickUpdate(float dSec) {
             //facing_dir = sf::Vector2f(0,1);
             state = idle;
         }
+    } else if (stamina < 0) {
+        stamina = 0;
     }
 
     // if raising tusks, decrement attack release timer
@@ -101,11 +103,11 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
             break;
         case raising_tusks:
             // two possible strategies here (running cancels the attack OR scaledown movement - commented out)
-            if (force_dir.x != 0 || force_dir.y != 0) {
-                state = running;
-                attack_charge = 0;
-            }
-            //force_dir *= RAISING_TUSKS_MOVEMENT_SCALEDOWN;
+            //if (force_dir.x != 0 || force_dir.y != 0) {
+            //    state = running;
+            //    attack_charge = 0;
+            //}
+            force_dir *= RAISING_TUSKS_MOVEMENT_SCALEDOWN;
             break;
         case attacking:
             force_dir *= ATTACKING_MOVEMENT_SCALEDOWN;
@@ -162,9 +164,10 @@ void Player::raiseTusks(float dSec) {
 
 void Player::slash() {
     std::cout<<"SLASH: "<<attack_charge<<std::endl;
+    stamina -= ATTACK_STAMINA_COST;
+    attack_duration_timer = ATTACK_DURATION_TIMER;
     attack_charge = 0.0f;
     state = attacking;
-    attack_duration_timer = ATTACK_DURATION_TIMER;
 }
 
 void Player::kill() {

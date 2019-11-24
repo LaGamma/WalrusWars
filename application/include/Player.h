@@ -34,6 +34,7 @@ private:
     sf::Vector2f pos;
     sf::Vector2f vel;
     sf::Vector2f facing_dir;
+    sf::Vector2f attack_collision_pt;
     PlayerState state;
     float mass;
     float stamina;

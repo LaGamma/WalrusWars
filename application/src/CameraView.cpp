@@ -332,6 +332,21 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     collision_pt.setFillColor(sf::Color::Red);
     window.draw(collision_pt);
 
+    // draw w1 attack point
+    if (logic.walrus1.getState() == Player::attacking) {
+        collision_pt.setPosition(logic.p1AttackPoint - sf::Vector2f(5,5));
+        collision_pt.setRadius(5);
+        collision_pt.setFillColor(sf::Color::Magenta);
+        window.draw(collision_pt);
+    }
+    // draw w2 attack point
+    if (logic.walrus2.getState() == Player::attacking) {
+        collision_pt.setPosition(logic.p2AttackPoint - sf::Vector2f(5,5));
+        collision_pt.setRadius(5);
+        collision_pt.setFillColor(sf::Color::Magenta);
+        window.draw(collision_pt);
+    }
+
     //draw minimap background
     /*
     minimapbg.setSize(sf::Vector2f(440, 70));
