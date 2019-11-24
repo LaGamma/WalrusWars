@@ -4,6 +4,7 @@
 #include "BotController.h"
 #include <iostream>
 #include <Definitions.h>
+#include <cmath>
 
 CameraView::CameraView() {
 
@@ -24,10 +25,10 @@ void CameraView::init() {
     fish_animation3.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
-
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
+
 
     const GameLogic::GameState state = logic.getState();
     switch (state) {
@@ -191,6 +192,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     {
         //walrus1 won
         walrus1_animation.setCurrentSprite(0,0);
+        player1.setFillColor(logic.walrus1.getColor());
         player1.setTextureRect(walrus1_animation.uvRect);
         window.draw(player1);
         text.setString("Walrus 1 Won!");
@@ -200,6 +202,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     {
         //walrus2 won
         walrus2_animation.setCurrentSprite(0,0);
+        player2.setFillColor(logic.walrus2.getColor());
         player2.setTextureRect(walrus2_animation.uvRect);
         window.draw(player2);
         text.setString("Walrus 2 Won!");
@@ -227,6 +230,31 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
     }
 
+    //draw fish sprite test, used to test fish animation
+    sf::CircleShape fish_circle_test = sf::CircleShape(FISH_SIZE * 2);
+    std::list<std::unique_ptr<Fish>>::iterator it;
+    int count = 0;
+    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
+        sf::Vector2f curr_fish_pos = (*it)->getPosition();
+        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x - FISH_SIZE,curr_fish_pos.y - FISH_SIZE));
+        fish_circle_test.setTexture(&spriteMapFish);
+        if (count == 0) {
+            fish_circle_test.setTextureRect(fish_animation1.uvRect);
+            fish_animation1.setCurrentSpriteY((*it)->getColor());
+        }
+        else if (count == 1) {
+            fish_circle_test.setTextureRect(fish_animation2.uvRect);
+            fish_animation2.setCurrentSpriteY((*it)->getColor());
+        }
+        else {
+            fish_circle_test.setTextureRect(fish_animation3.uvRect);
+            fish_animation3.setCurrentSpriteY((*it)->getColor());
+        }
+
+        window.draw(fish_circle_test);
+        count++;
+    }
+
     /*
     divide the image up in to its individual sprites by using dimensions of
     the image and dividing by the number of images in the rows and columns
@@ -238,19 +266,44 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw Player1
     player1.setSize(sf::Vector2f(logic.walrus1.getMass(), logic.walrus1.getMass()));
-    player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x / 2,
-                        logic.walrus1.getPos().y - player1.getSize().y / 2);
-    //player1.setFillColor(sf::Color(180, 0, 255, 255));
+    //player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x / 2, logic.walrus1.getPos().y - player1.getSize().y / 2);
+    player1.setPosition((logic.walrus1.getPos().x - player1.getSize().x / 2) + rand() % 2*logic.walrus1.getAttackCharge(), (logic.walrus1.getPos().y - player1.getSize().y / 2) + rand() % 2*logic.walrus1.getAttackCharge());
+    player1.setFillColor(logic.walrus1.getColor());
     player1.setTexture(&spriteMapP1);
     player1.setTextureRect(walrus1_animation.uvRect);
 
     // draw Player2
     player2.setSize(sf::Vector2f(logic.walrus2.getMass(), logic.walrus2.getMass()));
-    player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x / 2,
-                        logic.walrus2.getPos().y - player2.getSize().y / 2);
-    player2.setFillColor(sf::Color(150, 150, 255, 255));
+    player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x / 2,logic.walrus2.getPos().y - player2.getSize().y / 2);
+    player2.setPosition((logic.walrus2.getPos().x - player2.getSize().x / 2) + rand() % 2*logic.walrus2.getAttackCharge(), (logic.walrus2.getPos().y - player2.getSize().y / 2) + rand() % 2*logic.walrus2.getAttackCharge());
+    player2.setFillColor(logic.walrus2.getColor());
     player2.setTexture(&spriteMapP2);
     player2.setTextureRect(walrus2_animation.uvRect);
+
+    // draw in order of depth
+    if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
+        if (!logic.walrus2.isDead()) {
+            window.draw(player2);
+            player2.setFillColor(sf::Color(255*sin(15*logic.walrus2.getAttackCharge())+255, 0, 0, 40*logic.walrus2.getAttackCharge()));
+            window.draw(player2);
+        }
+        if (!logic.walrus1.isDead()) {
+            window.draw(player1);
+            player1.setFillColor(sf::Color(255*sin(15*logic.walrus1.getAttackCharge())+255, 0, 0, 40*logic.walrus1.getAttackCharge()));
+            window.draw(player1);
+        }
+    } else {
+        if (!logic.walrus1.isDead()) {
+            window.draw(player1);
+            player1.setFillColor(sf::Color(255*sin(15*logic.walrus1.getAttackCharge())+255, 0, 0, 40*logic.walrus1.getAttackCharge()));
+            window.draw(player1);
+        }
+        if (!logic.walrus2.isDead()) {
+            window.draw(player2);
+            player2.setFillColor(sf::Color(255*sin(15*logic.walrus2.getAttackCharge()+255), 0, 0, 40*logic.walrus2.getAttackCharge()));
+            window.draw(player2);
+        }
+    }
 
     //hitbox.setOutlineThickness(4);
     hitbox.setRadius(logic.walrus1.getMass() * PLAYER_HITBOX_SCALE);
@@ -261,58 +314,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     hitbox.setPosition(logic.walrus2.getPos().x - hitbox.getRadius(), logic.walrus2.getPos().y - hitbox.getRadius());
     window.draw(hitbox);
 
-    //attack hitbox
-    /**attackHitbox.setRadius(logic.walrus1.getMass());
-    attackHitbox.setPosition(logic.getAttackCollisionPoint().x, logic.getAttackCollisionPoint().y);
-    attackHitbox.setFillColor(sf::Color(0, 255, 0));
-    window.draw(attackHitbox);
-    attackHitbox.setRadius(logic.walrus1.getMass());
-    attackHitbox.setPosition(logic.getAttackCollisionPoint().x, logic.getAttackCollisionPoint().y);
-    attackHitbox.setFillColor(sf::Color(0, 255, 0));
-    window.draw(attackHitbox);
-     **/
 
-    //draw fish sprite test, used to test fish animation
-    sf::CircleShape fish_circle_test = sf::CircleShape(FISH_SIZE * 2);
-    std::list<std::unique_ptr<Fish>>::iterator it;
-    int count = 0;
-    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
-        sf::Vector2f curr_fish_pos = (*it)->getPosition();
-        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x - FISH_SIZE,curr_fish_pos.y - FISH_SIZE));
-        fish_circle_test.setTexture(&spriteMapFish);
-        if (count == 0) {
-            fish_circle_test.setTextureRect(fish_animation1.uvRect);
-            fish_animation1.setCurrentSpritey((*it)->getColor());
-        }
-        else if (count == 1) {
-            fish_circle_test.setTextureRect(fish_animation2.uvRect);
-            fish_animation2.setCurrentSpritey((*it)->getColor());
-        }
-        else {
-            fish_circle_test.setTextureRect(fish_animation3.uvRect);
-            fish_animation3.setCurrentSpritey((*it)->getColor());
-        }
-
-        window.draw(fish_circle_test);
-        count++;
-    }
-
-    // draw in order of depth
-    if (logic.walrus1.getPos().y > logic.walrus2.getPos().y) {
-        if (!logic.walrus2.isDead()) {
-            window.draw(player2);
-        }
-        if (!logic.walrus1.isDead()) {
-            window.draw(player1);
-        }
-    } else {
-        if (!logic.walrus1.isDead()) {
-            window.draw(player1);
-        }
-        if (!logic.walrus2.isDead()) {
-            window.draw(player2);
-        }
-    }
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(UI_TEXT_SIZE);
@@ -331,6 +333,21 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     collision_pt.setRadius(5);
     collision_pt.setFillColor(sf::Color::Red);
     window.draw(collision_pt);
+
+    // draw w1 attack point
+    if (logic.walrus1.getState() == Player::attacking) {
+        collision_pt.setRadius(logic.walrus1.getMass()*PLAYER_HITBOX_SCALE);
+        collision_pt.setPosition(logic.p1AttackPoint - sf::Vector2f(collision_pt.getRadius(), collision_pt.getRadius()));
+        collision_pt.setFillColor(sf::Color(255,0,0,100));
+        window.draw(collision_pt);
+    }
+    // draw w2 attack point
+    if (logic.walrus2.getState() == Player::attacking) {
+        collision_pt.setRadius(logic.walrus2.getMass()*PLAYER_HITBOX_SCALE);
+        collision_pt.setPosition(logic.p2AttackPoint - sf::Vector2f(collision_pt.getRadius(), collision_pt.getRadius()));
+        collision_pt.setFillColor(sf::Color(255,0,0,100));
+        window.draw(collision_pt);
+    }
 
     //draw minimap background
     /*
@@ -438,15 +455,17 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
-    //update fish animation every gam
-    fish_animation1.updateFish(dSec);
-    fish_animation2.updateFish(dSec);
-    fish_animation3.updateFish(dSec);
-
     if (logic.getState() == GameLogic::GameState::playing) {
+        //update animations
+        fish_animation1.updateFish(dSec);
+        fish_animation2.updateFish(dSec);
+        fish_animation3.updateFish(dSec);
+        walrus1_animation.updateWalrus(logic.walrus1.getFacingDir(), logic.walrus1.getState(), dSec);
+        walrus2_animation.updateWalrus(logic.walrus2.getFacingDir(), logic.walrus2.getState(), dSec);
+
         // handle input in instantiated player controllers
-        player1Controller->update(window, logic, dSec, 1, walrus1_animation);
-        player2Controller->update(window, logic, dSec, 2, walrus2_animation);
+        player1Controller->update(window, logic, dSec, 1);
+        player2Controller->update(window, logic, dSec, 2);
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)

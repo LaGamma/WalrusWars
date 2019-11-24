@@ -8,7 +8,7 @@
 class Controller {
   public:
     Controller();
-    virtual void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) = 0;
+    virtual void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) = 0;
 };
 
 #endif

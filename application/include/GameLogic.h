@@ -21,7 +21,6 @@ class GameLogic {
     void setMusicVolume(float vol);
     float getSFXVolume();
     float getMusicVolume();
-    sf::Vector2f getAttackCollisionPoint();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu};
     GameState getState();
@@ -33,14 +32,10 @@ class GameLogic {
     Stage stage;
 
     sf::Vector2f playerCollisionPoint;
-
-    sf::Vector2f attackCollisionPoint;
+    sf::Vector2f p1AttackPoint;
+    sf::Vector2f p2AttackPoint;
 
     std::list<std::unique_ptr<Fish>> fish_list;
-    //std::unique_ptr<Fish> fish_list[3];
-
-    //sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView
-
 
 private:
     GameState state;

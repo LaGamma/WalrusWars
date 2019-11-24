@@ -8,7 +8,7 @@
 #define APP_TITLE "Walrus Wars"
 
 // collision variables
-#define SLASH_ATTACK_POWER 400.0f
+#define SLASH_ATTACK_POWER 4.0f
 
 #define COLLISION_KNOCKBACK_TIME 0.04f
 
@@ -26,8 +26,8 @@
 #define ATTACKING_MOVEMENT_SCALEDOWN 0.2f
 
 // powerups
-#define FISH_SPEED_BOOST 0.01
-#define FISH_MASS_BOOST 10
+#define FISH_SPEED_BOOST 0.1
+#define FISH_MASS_BOOST 8
 
 // stamina
 #define MAX_STAMINA 100.0f
@@ -36,8 +36,9 @@
 #define RESTING_STAMINA_REGEN_RATE 20
 #define FISH_STAMINA_GAINED 20.0f
 #define ATTACK_STAMINA_COST 20.0f
-#define ATTACKED_STAMINA_LOST 40.0f
+#define ATTACKED_STAMINA_LOST 1.0f
 #define MOVEMENT_STAMINA_COST_SCALE 30
+#define MAX_ATTACK_CHARGE 5.0f
 
 #define INIT_MASS 80.0f
 
@@ -55,6 +56,10 @@
 
 // text
 #define UI_TEXT_SIZE 100
+
+// animations
+#define ATTACK_RELEASE_TIMER 0.30f
+#define ATTACK_DURATION_TIMER 0.60f
 
 
 // strings

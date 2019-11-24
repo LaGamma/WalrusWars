@@ -64,6 +64,8 @@ void GameLogic::update(float dSec) {
         // *check collisions* //
         sf::Vector2f w1_pos = walrus1.getPos();
         sf::Vector2f w2_pos = walrus2.getPos();
+        float w1_mass = walrus1.getMass();
+        float w2_mass = walrus2.getMass();
 
         // player1 - water collision
         if (stage.getTileDura((w1_pos.x)/ICE_BLOCKS_SIZE_X, (w1_pos.y)/ICE_BLOCKS_SIZE_Y, progression) <= 0) {
@@ -88,8 +90,33 @@ void GameLogic::update(float dSec) {
         // player - player collision
         sf::Vector2f posDiff = w1_pos - w2_pos;
         float dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-        if (dist < PLAYER_HITBOX_SCALE*(walrus1.getMass() + walrus2.getMass()) && !(walrus1.isDead() || walrus2.isDead())) {
+        if (dist < PLAYER_HITBOX_SCALE*(w1_mass + w2_mass) && !(walrus1.isDead() || walrus2.isDead())) {
             handlePlayerCollision();
+        }
+
+        // player1 attack - player 2 collision
+        if (walrus1.getState() == Player::attacking) {
+            //determine direction of attack
+            p1AttackPoint = w1_pos + walrus1.getFacingDir() * (w1_mass / 3);
+
+            posDiff = w2_pos - p1AttackPoint;
+            dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
+            if (dist <= PLAYER_HITBOX_SCALE*(w2_mass + w1_mass)) {
+                // use the unit vector between attack and player to direct knockback
+                handlePlayerAttack(1, posDiff / dist);
+            }
+        }
+        // player2 attack - player 1 collision
+        if (walrus2.getState() == Player::attacking) {
+            //determine direction of attack
+            p2AttackPoint = w2_pos + walrus2.getFacingDir() * (w2_mass / 3);
+
+            posDiff = w1_pos - p2AttackPoint;
+            dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
+            if (dist <= PLAYER_HITBOX_SCALE*(w1_mass + w2_mass)) {
+                // use the unit vector between attack and player to direct knockback
+                handlePlayerAttack(2, posDiff / dist);
+            }
         }
 
         // fish collisions
@@ -101,14 +128,14 @@ void GameLogic::update(float dSec) {
             // fish - player1 collision
             posDiff = w1_pos - fish_pos;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-            if (dist < PLAYER_HITBOX_SCALE*walrus1.getMass() + FISH_SIZE && !walrus1.isDead()) {
+            if (dist < PLAYER_HITBOX_SCALE*w1_mass + FISH_SIZE && !walrus1.isDead()) {
                 handleFishCollision(1, *fish);
                 break;
             }
             // fish - player 2 collision
             posDiff = w2_pos - fish_pos;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-            if (dist < PLAYER_HITBOX_SCALE*walrus2.getMass() + FISH_SIZE && !walrus2.isDead()) {
+            if (dist < PLAYER_HITBOX_SCALE*w2_mass + FISH_SIZE && !walrus2.isDead()) {
                 handleFishCollision(2, *fish);
                 break;
             }
@@ -228,147 +255,13 @@ void GameLogic::handlePlayerCollision() {
   bump = magnitude * BUMP_VOL_SCALE;
 }
 
-void GameLogic::handlePlayerAttack(int playerNum, sf::Vector2f dir) {
-    std::cout << "playerNum" << playerNum << std::endl;
-    sf::Vector2f w1_pos = walrus1.getPos();
-    sf::Vector2f w2_pos = walrus2.getPos();
-    float w1_mass = walrus1.getMass();
-    float w1_radius = w1_mass + 1; //+1 to avoid a regular collision
-    float w2_mass = walrus2.getMass();
-    float w2_radius = w2_mass + 1; //+1 to avoid a regular collision
-
-    if (playerNum == 2){
-
-        //determine direction of attack, direction conversion copied from animation
-        attackCollisionPoint = w2_pos;
-        int acpAdjustment = w2_radius / 2; //range for slash attack
-        sf::Vector2f attackKnockBackDir;
-        float slashAttackPower = SLASH_ATTACK_POWER;
-
-        int hash = dir.x * 17 + dir.y * 7;
-        std::cout << "hash:"<< hash << "\n" << std::endl;
-        switch (hash) {
-            case 17 + 7: //right down
-                //adjust attack hitbox (hit coordinate) based on direction
-                attackCollisionPoint.x += acpAdjustment;
-                attackCollisionPoint.y += acpAdjustment;
-                //variable used to determine knockback direction if hit
-                attackKnockBackDir = (sf::Vector2f(slashAttackPower, slashAttackPower));
-                break;
-            case 17 - 7: //right up
-                attackCollisionPoint.x += acpAdjustment;
-                attackCollisionPoint.y -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(slashAttackPower, -slashAttackPower));
-                break;
-            case -17 + 7: //left down
-                attackCollisionPoint.x -= acpAdjustment;
-                attackCollisionPoint.y += acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, slashAttackPower));
-                break;
-            case -17 - 7: //left up
-                attackCollisionPoint.x -= acpAdjustment;
-                attackCollisionPoint.y -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, -slashAttackPower));
-                break;
-            case 17: //right
-                attackCollisionPoint.x += acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(slashAttackPower, 0));
-                break;
-            case 7: //down
-                attackCollisionPoint.y += acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(0, slashAttackPower));
-                break;
-            case -17: //left
-                attackCollisionPoint.x -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, 0));
-                break;
-            case -7: //up
-                attackCollisionPoint.y -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(0, -slashAttackPower));
-                break;
-            case 0:
-                break;
-        }
-        walrus2.setStamina(walrus2.getStamina() - ATTACK_STAMINA_COST);
-        //if collision point inside other walrus hitbox, apply collision force
-        std::cout << "x:" <<attackCollisionPoint.x <<"\n" << "y:" <<attackCollisionPoint.y <<"\n"<< std::endl;
-        //follow circle formula to determine if point is inside other walrus hitbox
-        if ((attackCollisionPoint.x - w1_pos.x) * (attackCollisionPoint.x - w1_pos.x) +
-            (attackCollisionPoint.y - w1_pos.y) * (attackCollisionPoint.y - w1_pos.y) <= w1_radius * w1_radius) {
-            //knock walrus
-            std::cout << "SLASHED" <<"\n"<< std::endl;
-            walrus1.setVel(walrus1.getVel() + attackKnockBackDir);
-            walrus1.setStamina(walrus1.getStamina() - ATTACKED_STAMINA_LOST);
-        }
-        else{
-            std::cout << "MISSED SLASH" <<"\n"<< std::endl;
-         }
-    }
-    if (playerNum == 1) {
-
-        //determine direction of attack, direction conversion copied from animation
-        attackCollisionPoint = w1_pos;
-        int acpAdjustment = w1_radius / 2; //range for slash attack
-        sf::Vector2f attackKnockBackDir;
-        float slashAttackPower = SLASH_ATTACK_POWER;
-
-        int hash = dir.x * 17 + dir.y * 7;
-        std::cout << "hash:" << hash << "\n" << std::endl;
-        switch (hash) {
-            case 17 + 7: //right down
-                //adjust attack hitbox (hit coordinate) based on direction
-                attackCollisionPoint.x += acpAdjustment;
-                attackCollisionPoint.y += acpAdjustment;
-                //variable used to determine knockback direction if hit
-                attackKnockBackDir = (sf::Vector2f(slashAttackPower, slashAttackPower));
-                break;
-            case 17 - 7: //right up
-                attackCollisionPoint.x += acpAdjustment;
-                attackCollisionPoint.y -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(slashAttackPower, -slashAttackPower));
-                break;
-            case -17 + 7: //left down
-                attackCollisionPoint.x -= acpAdjustment;
-                attackCollisionPoint.y += acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, slashAttackPower));
-                break;
-            case -17 - 7: //left up
-                attackCollisionPoint.x -= acpAdjustment;
-                attackCollisionPoint.y -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, -slashAttackPower));
-                break;
-            case 17: //right
-                attackCollisionPoint.x += acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(slashAttackPower, 0));
-                break;
-            case 7: //down
-                attackCollisionPoint.y += acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(0, slashAttackPower));
-                break;
-            case -17: //left
-                attackCollisionPoint.x -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(-slashAttackPower, 0));
-                break;
-            case -7: //up
-                attackCollisionPoint.y -= acpAdjustment;
-                attackKnockBackDir = (sf::Vector2f(0, -slashAttackPower));
-                break;
-            case 0:
-                break;
-        }
-        walrus1.setStamina(walrus1.getStamina() - ATTACK_STAMINA_COST);
-        //if collision point inside other walrus hitbox, apply collision force
-        std::cout << "x:" << attackCollisionPoint.x << "\n" << "y:" << attackCollisionPoint.y << "\n" << std::endl;
-        //follow circle formula to determine if point is inside other walrus hitbox
-        if ((attackCollisionPoint.x - w2_pos.x) * (attackCollisionPoint.x - w2_pos.x) +
-            (attackCollisionPoint.y - w2_pos.y) * (attackCollisionPoint.y - w2_pos.y) <= w2_radius * w2_radius) {
-            //knock walrus
-            std::cout << "SLASHED" << "\n" << std::endl;
-            walrus2.setVel(walrus2.getVel() + attackKnockBackDir);
-            walrus2.setStamina(walrus2.getStamina() - ATTACKED_STAMINA_LOST);
-        } else {
-            std::cout << "MISSED SLASH" << "\n" << std::endl;
-        }
+void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
+    if (attacker == 2) {
+        walrus1.setVel(walrus1.getVel() + dir * SLASH_ATTACK_POWER * walrus2.getAttackCharge());
+        walrus1.setStamina(walrus1.getStamina() - ATTACKED_STAMINA_LOST * walrus2.getAttackCharge());
+    } else if (attacker == 1) {
+        walrus2.setVel(walrus2.getVel() + dir * SLASH_ATTACK_POWER * walrus1.getAttackCharge());
+        walrus2.setStamina(walrus2.getStamina() - ATTACKED_STAMINA_LOST * walrus1.getAttackCharge());
     }
 }
 
@@ -453,6 +346,8 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
+    walrus2.setColor(sf::Color(150, 150, 255, 255));
+    walrus1.setColor(sf::Color(255, 255, 255, 255));
 }
 
 void GameLogic::handleOptionsMenu() {
@@ -465,7 +360,4 @@ GameLogic::GameState GameLogic::getState() {
 
 int GameLogic::getStageProgression() {
     return progression;
-}
-sf::Vector2f GameLogic::getAttackCollisionPoint() {
-    return attackCollisionPoint;
 }
