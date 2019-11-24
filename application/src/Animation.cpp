@@ -17,6 +17,55 @@ void Animation::init(sf::Texture* texture, sf::Vector2u sprite_count, float swit
 }
 
 void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float dSec) {
+    // handle animation direction
+    // this is the quickest way I could think of converting a unit vector into integers representing all of its component cases, may be a better solution
+    int hash = dir.x * 17 + dir.y * 7;
+    switch (hash) {
+        case 17 + 7: //right down
+            currentSprite.y = 4;
+            row = 4;
+            flip = 1;
+            break;
+        case 17 - 7: //right up
+            currentSprite.y = 3;
+            row = 3;
+            flip = 1;
+            break;
+        case -17 + 7: //left down
+            currentSprite.y = 4;
+            row = 4;
+            flip = 0;
+            break;
+        case -17 - 7: //left up
+            currentSprite.y = 3;
+            row = 3;
+            flip = 0;
+            break;
+        case 17: //right
+            currentSprite.y = 2;
+            row = 2;
+            flip = 1;
+            break;
+        case 7: //down
+            currentSprite.y = 0;
+            row = 0;
+            flip = 0;
+            break;
+        case -17: //left
+            currentSprite.y = 2;
+            row = 2;
+            flip = 0;
+            break;
+        case -7: //up
+            currentSprite.y = 1;
+            row = 1;
+            flip = 0;
+            break;
+        case 0:
+            break;
+    }
+
+    // handle animation progression based on player state
     switch(state) {
         case Player::idle:
             setCurrentSprite(0,0);
@@ -75,55 +124,9 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
                     currentSprite.x = 0;
                 }
             }
-
-            // this is the quickest way I could think of converting a unit vector into integers representing all of its component cases, may be a better solution
-            int hash = dir.x * 17 + dir.y * 7;
-            switch (hash) {
-                case 17 + 7: //right down
-                    currentSprite.y = 4;
-                    row = 4;
-                    flip = 1;
-                    break;
-                case 17 - 7: //right up
-                    currentSprite.y = 3;
-                    row = 3;
-                    flip = 1;
-                    break;
-                case -17 + 7: //left down
-                    currentSprite.y = 4;
-                    row = 4;
-                    flip = 0;
-                    break;
-                case -17 - 7: //left up
-                    currentSprite.y = 3;
-                    row = 3;
-                    flip = 0;
-                    break;
-                case 17: //right
-                    currentSprite.y = 2;
-                    row = 2;
-                    flip = 1;
-                    break;
-                case 7: //down
-                    currentSprite.y = 0;
-                    row = 0;
-                    flip = 0;
-                    break;
-                case -17: //left
-                    currentSprite.y = 2;
-                    row = 2;
-                    flip = 0;
-                    break;
-                case -7: //up
-                    currentSprite.y = 1;
-                    row = 1;
-                    flip = 0;
-                    break;
-                case 0:
-                    break;
-            }
             break;
     }
+
     // flip sprite is needed
     if (flip) {
         uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);

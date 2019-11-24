@@ -43,9 +43,9 @@ void Player::tickUpdate(float dSec) {
 
         // check if not moving and set to idle
         if (state == normal && sqrt((vel.x * vel.x) + (vel.y * vel.y)) < 0.1) {
-            //facing_dir = sf::Vector2f(0,1);
             state = idle;
         }
+    // don't allow negative stamina either
     } else if (stamina < 0) {
         stamina = 0;
     }
@@ -63,6 +63,7 @@ void Player::tickUpdate(float dSec) {
         attack_duration_timer -= dSec;
     } else if (state == attacking && attack_duration_timer <= 0) {
         attack_duration_timer = 0;
+        attack_charge = 0;
         state = normal;
     }
 
@@ -135,12 +136,6 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
     }
 }
 
-void Player::setVel(sf::Vector2f newVel) {
-    vel = newVel;
-}
-void Player::setStamina(float newStamina) {
-    stamina = newStamina;
-}
 
 void Player::handlePowerUp(int powerup) {
     stamina += FISH_STAMINA_GAINED;
@@ -166,7 +161,6 @@ void Player::slash() {
     std::cout<<"SLASH: "<<attack_charge<<std::endl;
     stamina -= ATTACK_STAMINA_COST;
     attack_duration_timer = ATTACK_DURATION_TIMER;
-    attack_charge = 0.0f;
     state = attacking;
 }
 
@@ -176,9 +170,22 @@ void Player::kill() {
 bool Player::isDead() {
     return (state == dead);
 }
+// setters
+void Player::setVel(sf::Vector2f newVel) {
+    vel = newVel;
+}
+void Player::setStamina(float newStamina) {
+    stamina = newStamina;
+}
+void Player::setColor(sf::Color newColor) {
+    color = newColor;
+}
 // getters
 Player::PlayerState Player::getState() {
     return state;
+}
+sf::Color Player::getColor() {
+    return color;
 }
 sf::Vector2f Player::getPos() {
     return pos;
@@ -188,6 +195,9 @@ sf::Vector2f Player::getVel() {
 }
 sf::Vector2f Player::getFacingDir() {
     return facing_dir;
+}
+float Player::getAttackCharge() {
+    return attack_charge;
 }
 float Player::getMass() {
     return mass;

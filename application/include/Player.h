@@ -2,6 +2,7 @@
 #define _Player_H_
 
 #include <SFML/System.hpp>
+#include <SFML/Graphics/Color.hpp>
 
 
 class Player {
@@ -24,10 +25,13 @@ public:
     sf::Vector2f getPos();
     sf::Vector2f getVel();
     sf::Vector2f getFacingDir();
+    sf::Color getColor();
+    float getAttackCharge();
     float getMass();
     float getStamina();
     void setVel(sf::Vector2f);
     void setStamina(float);
+    void setColor(sf::Color);
     bool isDead();
 
 private:
@@ -35,6 +39,7 @@ private:
     sf::Vector2f vel;
     sf::Vector2f facing_dir;
     sf::Vector2f attack_collision_pt;
+    sf::Color color;
     PlayerState state;
     float mass;
     float stamina;

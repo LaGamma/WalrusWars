@@ -18,6 +18,8 @@ GameLogic::GameLogic() {
     //music_volume = SFX_VOLUME_MAX
     sfx_volume = 50.0f;
     music_volume = 50.0f;
+    walrus2.setColor(sf::Color(150, 150, 255, 255));
+    walrus1.setColor(sf::Color(255, 255, 255, 255));
 }
 
 void GameLogic::update(float dSec) {
@@ -97,31 +99,25 @@ void GameLogic::update(float dSec) {
         // player1 attack - player 2 collision
         if (walrus1.getState() == Player::attacking) {
             //determine direction of attack
-            p1AttackPoint = w1_pos + walrus1.getFacingDir() * (w1_mass / 2);
+            p1AttackPoint = w1_pos + walrus1.getFacingDir() * (w1_mass / 3);
 
             posDiff = w2_pos - p1AttackPoint;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-
-            if (dist <= PLAYER_HITBOX_SCALE*w2_mass) {
-                std::cout << "SLASHED" <<"\n"<< std::endl;
-                handlePlayerAttack(1, walrus1.getFacingDir());
-            } else {
-                std::cout << "MISSED" <<"\n"<< std::endl;
+            if (dist <= PLAYER_HITBOX_SCALE*(w2_mass + w1_mass)) {
+                // use the unit vector between attack and player to direct knockback
+                handlePlayerAttack(1, posDiff / dist);
             }
         }
         // player2 attack - player 1 collision
         if (walrus2.getState() == Player::attacking) {
             //determine direction of attack
-            p2AttackPoint = w2_pos + walrus2.getFacingDir() * (w2_mass / 2);
+            p2AttackPoint = w2_pos + walrus2.getFacingDir() * (w2_mass / 3);
 
             posDiff = w1_pos - p2AttackPoint;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-
-            if (dist <= PLAYER_HITBOX_SCALE*w1_mass) {
-                std::cout << "SLASHED" <<"\n"<< std::endl;
-                handlePlayerAttack(2, walrus2.getFacingDir());
-            } else {
-                std::cout << "MISSED" <<"\n"<< std::endl;
+            if (dist <= PLAYER_HITBOX_SCALE*(w1_mass + w2_mass)) {
+                // use the unit vector between attack and player to direct knockback
+                handlePlayerAttack(2, posDiff / dist);
             }
         }
 
@@ -262,14 +258,12 @@ void GameLogic::handlePlayerCollision() {
 }
 
 void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
-    sf::Vector2f attackKnockBackDir = dir * SLASH_ATTACK_POWER;
-
     if (attacker == 2) {
-        walrus1.setVel(walrus1.getVel() + attackKnockBackDir);
-        walrus1.setStamina(walrus1.getStamina() - ATTACKED_STAMINA_LOST);
+        walrus1.setVel(walrus1.getVel() + dir * SLASH_ATTACK_POWER * walrus2.getAttackCharge());
+        walrus1.setStamina(walrus1.getStamina() - ATTACKED_STAMINA_LOST * walrus2.getAttackCharge());
     } else if (attacker == 1) {
-        walrus2.setVel(walrus2.getVel() + attackKnockBackDir);
-        walrus2.setStamina(walrus2.getStamina() - ATTACKED_STAMINA_LOST);
+        walrus2.setVel(walrus2.getVel() + dir * SLASH_ATTACK_POWER * walrus1.getAttackCharge());
+        walrus2.setStamina(walrus2.getStamina() - ATTACKED_STAMINA_LOST * walrus1.getAttackCharge());
     }
 }
 

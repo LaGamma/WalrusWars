@@ -59,7 +59,7 @@
 
 // animations
 #define ATTACK_RELEASE_TIMER 0.30f
-#define ATTACK_DURATION_TIMER 0.30f
+#define ATTACK_DURATION_TIMER 0.60f
 
 
 // strings
