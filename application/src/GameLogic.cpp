@@ -18,8 +18,6 @@ GameLogic::GameLogic() {
     //music_volume = SFX_VOLUME_MAX
     sfx_volume = 50.0f;
     music_volume = 50.0f;
-    walrus2.setColor(sf::Color(150, 150, 255, 255));
-    walrus1.setColor(sf::Color(255, 255, 255, 255));
 }
 
 void GameLogic::update(float dSec) {
@@ -348,6 +346,8 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
+    walrus2.setColor(sf::Color(150, 150, 255, 255));
+    walrus1.setColor(sf::Color(255, 255, 255, 255));
 }
 
 void GameLogic::handleOptionsMenu() {

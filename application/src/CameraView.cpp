@@ -25,10 +25,10 @@ void CameraView::init() {
     fish_animation3.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
-
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
+
 
     const GameLogic::GameState state = logic.getState();
     switch (state) {
@@ -192,6 +192,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     {
         //walrus1 won
         walrus1_animation.setCurrentSprite(0,0);
+        player1.setFillColor(logic.walrus1.getColor());
         player1.setTextureRect(walrus1_animation.uvRect);
         window.draw(player1);
         text.setString("Walrus 1 Won!");
@@ -201,6 +202,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     {
         //walrus2 won
         walrus2_animation.setCurrentSprite(0,0);
+        player2.setFillColor(logic.walrus2.getColor());
         player2.setTextureRect(walrus2_animation.uvRect);
         window.draw(player2);
         text.setString("Walrus 2 Won!");
