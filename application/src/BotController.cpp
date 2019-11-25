@@ -14,7 +14,7 @@ BotController::BotController() {
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
 
 
-    float bot_handicap = .5;  // higher number == slower bot
+    float bot_handicap = 1;  // higher number == slower bot
     sf::Vector2f w1_pos = logic.walrus1.getPos();
     sf::Vector2f w2_pos = logic.walrus2.getPos();
     sf::Vector2f w1_vel = logic.walrus1.getVel();
@@ -24,11 +24,11 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     if (playerNum == 1) {
         //process input for player 1
-        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 0) && (w2_vel.x>=15 || w2_vel.y>=15)){
+        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 0) && (w2_vel.x>=30 || w2_vel.y>=30)){
           changeState(0);
           calculatePath(logic, playerNum);
         }
-        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 1) && (w2_vel.x<15 || w2_vel.y<15)){
+        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 1) && (w2_vel.x<30 || w2_vel.y<30)){
           changeState(1);
           calculatePath(logic, playerNum);
         }
@@ -71,11 +71,11 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
     } else {
         //process input for player 2
-        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) && (state != 0) && (w1_vel.x>=15 || w1_vel.y>=15)){
+        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) && (state != 0) && (w1_vel.x>=30 || w1_vel.y>=30)){
           changeState(0);
           calculatePath(logic, playerNum);
         }
-        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) &&(state != 1)  && (w1_vel.x<15 || w1_vel.y<15)){
+        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) &&(state != 1)  && (w1_vel.x<30 || w1_vel.y<30)){
           changeState(1);
           calculatePath(logic, playerNum);
         }
