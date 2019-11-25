@@ -3,8 +3,8 @@
 /* Contains all game variables for easy tweaking and balancing, and all text strings for easy translation */
 
 // window
-#define WINDOW_HEIGHT 600.0f //900
-#define WINDOW_WIDTH 800.0f //1200
+#define WINDOW_HEIGHT 900.0f //600
+#define WINDOW_WIDTH 1200.0f //800
 #define APP_TITLE "Walrus Wars"
 
 // collision variables
@@ -49,18 +49,15 @@
 #define ICE_BLOCKS_SIZE_Y (WINDOW_HEIGHT / ICE_BLOCKS_HEIGHT)
 
 // fish
-#define FISH_SIZE 15.0f
-
-// volume
-#define BUMP_VOL_SCALE 0.2f
-
-// text
-#define UI_TEXT_SIZE 100
+#define FISH_SIZE 30.0f
+#define MAX_NUM_OF_FISH 8
 
 // animations
 #define ATTACK_RELEASE_TIMER 0.30f
 #define ATTACK_DURATION_TIMER 0.60f
 
+// text
+#define UI_TEXT_SIZE 100
 
 // strings
 #define GO_RIGHT "GO ->"
@@ -76,5 +73,8 @@
 #define SFX_VOLUME_MAX 100.0f;
 #define MUSIC_VOLUME_MAX 100.0f;
 #define VOLUME_BAR_WIDTH 100.0f;
+
+// volume
+#define BUMP_VOL_SCALE 0.2f
 
 #endif /* _Definitions_H_ */

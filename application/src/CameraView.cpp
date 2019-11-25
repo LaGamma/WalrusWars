@@ -12,19 +12,21 @@ CameraView::CameraView() {
 
 void CameraView::init() {
     //load in textures
-    spriteMapP1.loadFromFile("../images/WalrusSS.png");
-    spriteMapP2.loadFromFile("../images/WalrusSS.png");
+    spriteMapWalrus.loadFromFile("../images/WalrusSS.png");
     spriteMapFish.loadFromFile("../images/FishSS.png");
     menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/MinimapPlatform.png");
     stage_progression_active.loadFromFile("../images/MinimapPlatformActive.png");
-    walrus1_animation.init(&spriteMapP1, sf::Vector2u(3,11), 0.15);
-    walrus2_animation.init(&spriteMapP2, sf::Vector2u(3,11), 0.15);
-    fish_animation1.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
-    fish_animation2.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
-    fish_animation3.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
+    walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
+    walrus2_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
+
+    for (int i = 0; i < MAX_NUM_OF_FISH; i++) {
+        fish_animation_list.push_back(std::unique_ptr<Animation>(new Animation()));
+        fish_animation_list.back()->init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
+    }
+
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -215,6 +217,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
 
+    //draw ice blocks
     for (int i = 0; i < ICE_BLOCKS_WIDTH; i++) {
         for (int j = 0; j < ICE_BLOCKS_HEIGHT; j++) {
             float dura = logic.stage.getTileDura(i, j, logic.getStageProgression());
@@ -230,36 +233,24 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
     }
 
-    //draw fish sprite test, used to test fish animation
-    sf::CircleShape fish_circle_test = sf::CircleShape(FISH_SIZE * 2);
-    std::list<std::unique_ptr<Fish>>::iterator it;
-    int count = 0;
-    for (it = logic.fish_list.begin(); it != logic.fish_list.end(); it++) {
-        sf::Vector2f curr_fish_pos = (*it)->getPosition();
-        fish_circle_test.setPosition(sf::Vector2f(curr_fish_pos.x - FISH_SIZE,curr_fish_pos.y - FISH_SIZE));
-        fish_circle_test.setTexture(&spriteMapFish);
-        if (count == 0) {
-            fish_circle_test.setTextureRect(fish_animation1.uvRect);
-            fish_animation1.setCurrentSpriteY((*it)->getColor());
-        }
-        else if (count == 1) {
-            fish_circle_test.setTextureRect(fish_animation2.uvRect);
-            fish_animation2.setCurrentSpriteY((*it)->getColor());
-        }
-        else {
-            fish_circle_test.setTextureRect(fish_animation3.uvRect);
-            fish_animation3.setCurrentSpriteY((*it)->getColor());
-        }
-
-        window.draw(fish_circle_test);
-        count++;
+    // draw fish
+    auto anim = fish_animation_list.begin();
+    for (auto fish = logic.fish_list.begin(); fish != logic.fish_list.end(); fish++, anim++) {
+        // size of drawn fish depends on fish flop - modeled with a simple quadratic to make it look like it's jumping towards screen
+        double size_offset = FISH_SIZE + (-FISH_SIZE*((*fish)->flop_progress_timer-0.5)*((*fish)->flop_progress_timer-0.5) + 1);
+        sf::CircleShape fish_circle = sf::CircleShape(size_offset);
+        fish_circle.setPosition((*fish)->getPosition() - sf::Vector2f(size_offset, size_offset));
+        fish_circle.setTexture(&spriteMapFish);
+        fish_circle.setTextureRect((*anim)->uvRect);
+        (*anim)->setCurrentSpriteY((*fish)->getColor());
+        window.draw(fish_circle);
     }
 
     /*
     divide the image up in to its individual sprites by using dimensions of
     the image and dividing by the number of images in the rows and columns
     */
-    sf::Vector2u textureSize = spriteMapP1.getSize();
+    sf::Vector2u textureSize = spriteMapWalrus.getSize();
     textureSize.x /= 3;
     textureSize.y /= 10;
     //circle.setTextureRect(sf::IntRect(textureSize.x * 2, textureSize.y * 4, textureSize.x, textureSize.y));
@@ -269,7 +260,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     //player1.setPosition(logic.walrus1.getPos().x - player1.getSize().x / 2, logic.walrus1.getPos().y - player1.getSize().y / 2);
     player1.setPosition((logic.walrus1.getPos().x - player1.getSize().x / 2) + rand() % 2*logic.walrus1.getAttackCharge(), (logic.walrus1.getPos().y - player1.getSize().y / 2) + rand() % 2*logic.walrus1.getAttackCharge());
     player1.setFillColor(logic.walrus1.getColor());
-    player1.setTexture(&spriteMapP1);
+    player1.setTexture(&spriteMapWalrus);
     player1.setTextureRect(walrus1_animation.uvRect);
 
     // draw Player2
@@ -277,7 +268,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x / 2,logic.walrus2.getPos().y - player2.getSize().y / 2);
     player2.setPosition((logic.walrus2.getPos().x - player2.getSize().x / 2) + rand() % 2*logic.walrus2.getAttackCharge(), (logic.walrus2.getPos().y - player2.getSize().y / 2) + rand() % 2*logic.walrus2.getAttackCharge());
     player2.setFillColor(logic.walrus2.getColor());
-    player2.setTexture(&spriteMapP2);
+    player2.setTexture(&spriteMapWalrus);
     player2.setTextureRect(walrus2_animation.uvRect);
 
     // draw in order of depth
@@ -457,9 +448,9 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
     if (logic.getState() == GameLogic::GameState::playing) {
         //update animations
-        fish_animation1.updateFish(dSec);
-        fish_animation2.updateFish(dSec);
-        fish_animation3.updateFish(dSec);
+        for (auto anim = fish_animation_list.begin(); anim != fish_animation_list.end(); anim++) {
+            (*anim)->updateFish(dSec);
+        }
         walrus1_animation.updateWalrus(logic.walrus1.getFacingDir(), logic.walrus1.getState(), dSec);
         walrus2_animation.updateWalrus(logic.walrus2.getFacingDir(), logic.walrus2.getState(), dSec);
 
