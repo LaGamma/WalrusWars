@@ -133,6 +133,7 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
     if (stamina < 0) {
         state = resting;
+        attack_charge = 0.0f;
     }
 }
 
