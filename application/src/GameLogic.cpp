@@ -27,7 +27,7 @@ void GameLogic::update(float dSec) {
         // fish power-up generation
         // fish will be generated in water flopping (sometimes landing on ice)
         fish_accumulator += dSec;
-        if (fish_list.size() < MAX_NUM_OF_FISH && fish_accumulator > 1.0) {
+        if (fish_list.size() < MAX_NUM_OF_FISH && fish_accumulator > 3.0) {
             fish_accumulator = 0;
 
             sf::Vector2f rand_spawn = sf::Vector2f(rand() % ((int)(7 * WINDOW_WIDTH / 8)) + (WINDOW_WIDTH / 8), rand() % ((int)(5 * WINDOW_WIDTH / 8)) + (WINDOW_WIDTH / 8));
