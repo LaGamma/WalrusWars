@@ -9,12 +9,13 @@
 BotController::BotController() {
   state = 0;
   dir = sf::Vector2f(0,0);
+  accumulator = sf::Vector2f(0,0);
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum, Animation &anim) {
 
 
-    float bot_handicap = 1;  // higher number == slower bot
+    float bot_handicap = 3;  // higher number == slower bot
     sf::Vector2f w1_pos = logic.walrus1.getPos();
     sf::Vector2f w2_pos = logic.walrus2.getPos();
     sf::Vector2f w1_vel = logic.walrus1.getVel();
@@ -65,9 +66,13 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
             dir.x -=1;
             dir.y -= 1;
           }
-          directionStack.pop();
+          logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
+          accumulator += logic.walrus1.getVel() * (dSec/bot_handicap);
+          if(accumulator.x>=ICE_BLOCKS_SIZE_X || accumulator.y>=ICE_BLOCKS_SIZE_Y){
+            directionStack.pop();
+            accumulator = sf::Vector2f(0,0);
+          }
         }
-        logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
 
     } else {
         //process input for player 2
@@ -112,9 +117,14 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
             dir.x -=1;
             dir.y -= 1;
           }
-          directionStack.pop();
+          logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
+          accumulator += logic.walrus2.getVel() * (dSec/bot_handicap);
+          if(accumulator.x>=ICE_BLOCKS_SIZE_X || accumulator.y>=ICE_BLOCKS_SIZE_Y){
+            directionStack.pop();
+            accumulator = sf::Vector2f(0,0);
+          }
         }
-        logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
+
 
     }
     anim.updateMovement(dir, dSec/bot_handicap);

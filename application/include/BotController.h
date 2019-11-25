@@ -24,6 +24,7 @@ class BotController : public Controller {
       void calculatePath(GameLogic &logic, int playerNum);
       std::stack<int> directionStack;
       sf::Vector2f dir;
+      sf::Vector2f accumulator;
 };
 
 
