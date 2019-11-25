@@ -266,8 +266,10 @@ void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
 }
 
 void GameLogic::returnToMenu() {
-  state = mainMenu;
-  stage.generateMap();
+    state = mainMenu;
+    stage.generateMap();
+    //reset progression
+    progression = 0;
 }
 
 void GameLogic::setSFXVolume(float vol) {
@@ -298,45 +300,38 @@ float GameLogic::getMusicVolume() {
  * 2 param: walrus2 died
  * */
 void GameLogic::handlePlayerDeath(int walrus) {
-
     //check if both are dead (fixes respawn bug)
-  if (walrus2.isDead() && walrus == 1) {
-      resetGame();
-  }
+    if (walrus2.isDead() && walrus == 1) {
+        resetGame();
+    }
 
 	if (walrus == 1) {
-	  // check for game over
-      if (progression == 2) {
-          winner1 = false;
-          state = gameOverMenu;
-          //reset progression
-          progression = 0;
-          if(walrus2.isDead()){
-            progression = 2;
-          }
-      }
-
-
-      walrus1.kill();
-
-	} else if (walrus == 2) {
-	  //check for game over
-      if (progression == -2) {
-          winner1 = true;
-          state = gameOverMenu;
-          //reset progression
-          progression = 0;
-          if(walrus1.isDead()){
-            progression = -2;
-          }
-      }
-
-      walrus2.kill();
-      if(walrus1.isDead()){
-        resetGame();
-      }
-
+	    if (walrus2.isDead()) {
+	        resetGame();
+	    } else {
+            walrus1.kill();
+            // check for game over
+            if (progression == 2) {
+                winner1 = false;
+                state = gameOverMenu;
+            }
+	    }
 	}
+
+
+	else if (walrus == 2) {
+        if (walrus1.isDead()) {
+            resetGame();
+        } else {
+            walrus2.kill();
+            // check for game over
+            if (progression == -2) {
+                winner1 = true;
+                state = gameOverMenu;
+            }
+        }
+    }
+
     splash = 1;
 
 }
