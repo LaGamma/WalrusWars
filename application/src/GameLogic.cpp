@@ -300,9 +300,9 @@ float GameLogic::getMusicVolume() {
 void GameLogic::handlePlayerDeath(int walrus) {
 
     //check if both are dead (fixes respawn bug)
-    if (walrus2.isDead() && walrus == 1) {
-        resetGame();
-    }
+  if (walrus2.isDead() && walrus == 1) {
+      resetGame();
+  }
 
 	if (walrus == 1) {
 	  // check for game over
@@ -311,7 +311,11 @@ void GameLogic::handlePlayerDeath(int walrus) {
           state = gameOverMenu;
           //reset progression
           progression = 0;
+          if(walrus2.isDead()){
+            progression = 2;
+          }
       }
+
 
       walrus1.kill();
 
@@ -322,6 +326,9 @@ void GameLogic::handlePlayerDeath(int walrus) {
           state = gameOverMenu;
           //reset progression
           progression = 0;
+          if(walrus1.isDead()){
+            progression = -2;
+          }
       }
 
       walrus2.kill();
