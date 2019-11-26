@@ -19,8 +19,11 @@ void CameraView::init() {
     stage_progression_active.loadFromFile("../images/MinimapPlatformActive.png");
     player1Select.loadFromFile("../images/Player1Select.png");
     player2Select.loadFromFile("../images/Player2Select.png");
+    playerNeutralSelect.loadFromFile("../images/playerNeutralSelect.png");
     playerPortraitFrame.loadFromFile("../images/PlayerPortraitFrame.png");
     playerPortrait.loadFromFile("../images/PlayerPortrait.png");
+    nameFrame.loadFromFile("../images/nameFrame.png");
+    colorIcon.loadFromFile("../images/colorIcon.png");
 
 
     font.loadFromFile("../fonts/menuFont.ttf");
@@ -230,7 +233,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     window.draw(player1_portrait);
     window.draw(player2_portrait);
 
-    //selection borders
+    //selected borders
     sf::RectangleShape player1_portrait_border = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     sf::RectangleShape player2_portrait_border = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     player1_portrait_border.setTexture(&player1Select);
@@ -238,7 +241,26 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     player1_portrait_border.setPosition(player1_portrait.getPosition());
     player2_portrait_border.setPosition(player2_portrait.getPosition());
 
-    //
+    //selection borders
+    sf::RectangleShape player1_portrait_indicator = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    sf::RectangleShape player2_portrait_indicator = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    player1_portrait_indicator.setTexture(&playerNeutralSelect);
+    player2_portrait_indicator.setTexture(&playerNeutralSelect);
+    player1_portrait_indicator.setPosition(player1_portrait.getPosition());
+    player2_portrait_indicator.setPosition(player2_portrait.getPosition());
+
+
+    //name frame
+    sf::RectangleShape player1_name_bg = sf::RectangleShape();
+    sf::RectangleShape player2_name_bg = sf::RectangleShape();
+    sf::RectangleShape player1_name_border = sf::RectangleShape();
+    sf::RectangleShape player2_name_border = sf::RectangleShape();
+    player1_name_bg.setFillColor(sf::Color(100,100,100));
+    player2_name_bg.setFillColor(sf::Color(100,100,100));
+    player1_name_border.setFillColor(sf::Color(100,100,100));
+    player2_name_border.setFillColor(sf::Color(100,100,100));
+
+    //color icon
 
 
 
@@ -248,6 +270,13 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     }
     if (player2OrBot == 1 ) {
         window.draw(player2_portrait_border);
+    }
+
+    if (player1_menu_selection == '1'){
+        window.draw(player1_portrait_indicator);
+    }
+    if (player1_menu_selection == '2'){
+        window.draw(player2_portrait_indicator);
     }
     if (player1_menu_selection == 'P') {
         play_text.setFillColor(sf::Color::Black);
@@ -673,25 +702,33 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                         if(player1OrBot == -1 && player2OrBot == -1) {
                                             createControllers(0);
                                             logic.resetGame();
-                                        }
-                                        if(player1OrBot == 1 && player2OrBot == -1) {
+                                        }else if(player1OrBot == 1 && player2OrBot == -1) {
                                             createControllers(1);
                                             logic.resetGame();
-                                        }
-                                        if(player1OrBot == -1 && player2OrBot == 1) {
+                                        }else if(player1OrBot == -1 && player2OrBot == 1) {
                                             createControllers(2);
                                             logic.resetGame();
-                                        }
-                                        else{
+                                        }else{
                                             createControllers(3);
                                             logic.resetGame();
                                         }
                                     }
+                                    if(player1_menu_selection == 'Q') {
+                                        player1_menu_selection == 'P';
+                                        logic.returnToMenu();
+                                    }
+
                                     if(player1_menu_selection == '1') {
                                         player1OrBot = -player1OrBot;
+                                        if (player1OrBot == 1){
+                                            //color selection then name
+                                        }
                                     }
                                     if(player1_menu_selection == '2') {
                                         player2OrBot = -player2OrBot;
+                                        if (player2OrBot == 1){
+                                            //color selection then name
+                                        }
                                     }
                                     break;
                             }

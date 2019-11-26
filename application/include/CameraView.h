@@ -52,6 +52,9 @@ class CameraView {
     sf::Texture player1Select;
     sf::Texture player2Select;
     sf::Texture playerPortraitFrame;
+    sf::Texture nameFrame;
+    sf::Texture colorIcon;
+    sf::Texture playerNeutralSelect;
 
     sf::RectangleShape ice;
     sf::RectangleShape player1;
