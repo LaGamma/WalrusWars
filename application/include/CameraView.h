@@ -30,7 +30,9 @@ class CameraView {
     char main_menu_selection = 'P';
     char options_menu_selection = 'S';
     char player1_menu_selection = 'P';
-    char player2_menu_selection = 'P';
+    //char player2_menu_selection = 'P';
+    int player1OrBot = -1;
+    int player2OrBot = -1;
 
     // major InputManager classes
     std::unique_ptr<Controller> player1Controller;
@@ -47,8 +49,9 @@ class CameraView {
     sf::Texture stage_progression;
     sf::Texture stage_progression_active;
     sf::Texture playerPortrait;
-    sf::Texture player1PortraitBorder;
-    sf::Texture player2PortraitBorder;
+    sf::Texture player1Select;
+    sf::Texture player2Select;
+    sf::Texture playerPortraitFrame;
 
     sf::RectangleShape ice;
     sf::RectangleShape player1;

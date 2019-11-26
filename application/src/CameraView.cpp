@@ -17,9 +17,12 @@ void CameraView::init() {
     menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/MinimapPlatform.png");
     stage_progression_active.loadFromFile("../images/MinimapPlatformActive.png");
-    player1PortraitBorder.loadFromFile("../images/Player1PortraitBorder.png");
-    player2PortraitBorder.loadFromFile("../images/Player2PortraitBorder.png");
-    playerPortrait.loadFromFile("../images/PlayerPortraitb.png");
+    player1Select.loadFromFile("../images/Player1Select.png");
+    player2Select.loadFromFile("../images/Player2Select.png");
+    playerPortraitFrame.loadFromFile("../images/PlayerPortraitFrame.png");
+    playerPortrait.loadFromFile("../images/PlayerPortrait.png");
+
+
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
@@ -207,59 +210,50 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     quit_text.setPosition(33 * WINDOW_WIDTH / 75, 475 * WINDOW_HEIGHT / 600);
     quit_text.setString("Quit");
 
+    //Player portrait frame
+    sf::RectangleShape player1_portrait_frame = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    sf::RectangleShape player2_portrait_frame = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    player1_portrait_frame.setTexture(&playerPortraitFrame);
+    player2_portrait_frame.setTexture(&playerPortraitFrame);
+    player1_portrait_frame.setPosition(50*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
+    player2_portrait_frame.setPosition(player1_portrait_frame.getPosition().x + player1_portrait_frame.getSize().x + 50*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
+    window.draw(player1_portrait_frame);
+    window.draw(player2_portrait_frame);
+
     //Player portraits
-    sf::RectangleShape player1_portrait = sf::RectangleShape(sf::Vector2f(250*WINDOW_WIDTH/800, 275*WINDOW_HEIGHT/800));
-    sf::RectangleShape player2_portrait = sf::RectangleShape(sf::Vector2f(250*WINDOW_WIDTH/800, 275*WINDOW_HEIGHT/800));
-   // player1_portrait.setFillColor(sf::Color(255, 100, 100, 255));
-   // player2_portrait.setFillColor(sf::Color(255, 100, 100, 255));
+    sf::RectangleShape player1_portrait = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    sf::RectangleShape player2_portrait = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     player1_portrait.setTexture(&playerPortrait);
     player2_portrait.setTexture(&playerPortrait);
-    player1_portrait.setPosition(90*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
-    player2_portrait.setPosition(player1_portrait.getPosition().x + player1_portrait.getSize().x + 90*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
-
-    //init selection borders
-    sf::RectangleShape player1_portrait_border = sf::RectangleShape(sf::Vector2f(250*WINDOW_WIDTH/800, 275*WINDOW_HEIGHT/800));
-    sf::RectangleShape player2_portrait_border = sf::RectangleShape(sf::Vector2f(250*WINDOW_WIDTH/800, 275*WINDOW_HEIGHT/800));
-    player1_portrait_border.setTexture(&player1PortraitBorder);
-    player2_portrait_border.setTexture(&player2PortraitBorder);
-    /*
-    sf::RectangleShape player1_portrait_border = sf::RectangleShape(sf::Vector2f(260*WINDOW_WIDTH/800, 285*WINDOW_HEIGHT/800));;
-    sf::RectangleShape player2_portrait_border = sf::RectangleShape(sf::Vector2f(260*WINDOW_WIDTH/800, 285*WINDOW_HEIGHT/800));
-    player1_portrait_border.setFillColor(sf::Color(155, 100, 200, 255));
-    player2_portrait_border.setFillColor(sf::Color(155, 100, 200, 255));
-    player1_portrait_border.setPosition(player1_portrait.getPosition());
-    player2_portrait_border.setPosition(player1_portrait.getPosition().x + player1_portrait.getSize().x + 70*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
-    window.draw(player1_portrait_border);
-    window.draw(player2_portrait_border);
-     */
+    player1_portrait.setPosition(player1_portrait_frame.getPosition());
+    player2_portrait.setPosition(player2_portrait_frame.getPosition());
     window.draw(player1_portrait);
     window.draw(player2_portrait);
+
+    //selection borders
+    sf::RectangleShape player1_portrait_border = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    sf::RectangleShape player2_portrait_border = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
+    player1_portrait_border.setTexture(&player1Select);
+    player2_portrait_border.setTexture(&player2Select);
+    player1_portrait_border.setPosition(player1_portrait.getPosition());
+    player2_portrait_border.setPosition(player2_portrait.getPosition());
+
+    //
 
 
 
     //handle coloring of selection for player 1
-    if (player1_menu_selection == '1') {
+    if (player1OrBot == 1 ) {
         window.draw(player1_portrait_border);
     }
-    if (player1_menu_selection == '2') {
-        play_text.setFillColor(sf::Color::Red);
+    if (player2OrBot == 1 ) {
+        window.draw(player2_portrait_border);
     }
-    if (player1_menu_selection == 'P' || player2_menu_selection == 'P') {
+    if (player1_menu_selection == 'P') {
         play_text.setFillColor(sf::Color::Black);
     }
     if (player1_menu_selection == 'Q') {
-        quit_text.setFillColor(sf::Color::Red);
-    }
-    //handle coloring of selection for player 2
-    if (player2_menu_selection == '1') {
-        play_text.setFillColor(sf::Color::Green);
-    }
-    if (player2_menu_selection == '2') {
-        play_text.setFillColor(sf::Color::Green);
-    }
-
-    if (player2_menu_selection == 'Q') {
-        quit_text.setFillColor(sf::Color::Green);
+        quit_text.setFillColor(sf::Color::Black);
     }
 
     window.draw(play_text);
@@ -501,9 +495,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         logic.bump = 0;
     }
 
-
-    //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
-
     //draw stamina boxes: these don't change
     sf::RectangleShape stamina_bar1 = sf::RectangleShape(sf::Vector2f(300*WINDOW_WIDTH/800, 25*WINDOW_HEIGHT/600));
     sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300*WINDOW_WIDTH/800, 25*WINDOW_HEIGHT/600));
@@ -533,6 +524,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
+
 
     if (logic.getState() == GameLogic::GameState::playing) {
         //update animations
@@ -584,7 +576,10 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     player1_menu_selection = 'P';
                             }
                             break;
-
+                        /*
+                         * //tried to add player 2 controls for the player selection but doest work well on one computer
+                         * because the same key, enter, needs to be used for both players. for now, or until gamepad
+                         * compatibility, use arrow keys for player1 selection.
                         case sf::Keyboard::W:
                             if (player2_menu_selection == '1' || player2_menu_selection == '2')
                                 player2_menu_selection = player2_menu_selection;
@@ -593,7 +588,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             else if (player2_menu_selection == 'Q')
                                 player2_menu_selection = 'P';
                             break;
-
+                        */
                         case sf::Keyboard::Down:
                             //track which menu option the player is on
                             if (main_menu_selection == 'O' || main_menu_selection == 'H')
@@ -605,6 +600,12 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     options_menu_selection = 'M';
                                 else if (options_menu_selection == 'M' || options_menu_selection == 'Q')
                                     options_menu_selection = 'Q';
+                            }
+                            if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
+                                if (player1_menu_selection == 'P')
+                                    player1_menu_selection = 'Q';
+                                else if (player1_menu_selection == '1' || player1_menu_selection == '2')
+                                    player1_menu_selection = 'P';
                             }
                             break;
 
@@ -618,6 +619,10 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     logic.setMusicVolume(logic.getMusicVolume() + 10);
                                 }
                             }
+                            if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
+                                if (player1_menu_selection == '1')
+                                    player1_menu_selection = '2';
+                            }
                             break;
                         case sf::Keyboard::Left:
                             if (logic.getState() == GameLogic::GameState::optionsMenu) {
@@ -627,6 +632,10 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 else if (options_menu_selection == 'M') {
                                     logic.setMusicVolume(logic.getMusicVolume() - 10);
                                 }
+                            }
+                            if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
+                                if (player1_menu_selection == '2')
+                                    player1_menu_selection = '1';
                             }
                             break;
                         case sf::Keyboard::Return:
@@ -660,9 +669,29 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     }
                                     break;
                                 case GameLogic::GameState::playerSelectMenu:
-                                    if(player1_menu_selection == 'P' || player2_menu_selection == 'P') {
-                                        createControllers(2);
-                                        logic.resetGame();
+                                    if(player1_menu_selection == 'P') {
+                                        if(player1OrBot == -1 && player2OrBot == -1) {
+                                            createControllers(0);
+                                            logic.resetGame();
+                                        }
+                                        if(player1OrBot == 1 && player2OrBot == -1) {
+                                            createControllers(1);
+                                            logic.resetGame();
+                                        }
+                                        if(player1OrBot == -1 && player2OrBot == 1) {
+                                            createControllers(2);
+                                            logic.resetGame();
+                                        }
+                                        else{
+                                            createControllers(3);
+                                            logic.resetGame();
+                                        }
+                                    }
+                                    if(player1_menu_selection == '1') {
+                                        player1OrBot = -player1OrBot;
+                                    }
+                                    if(player1_menu_selection == '2') {
+                                        player2OrBot = -player2OrBot;
                                     }
                                     break;
                             }
@@ -691,6 +720,10 @@ void CameraView::createControllers(int players) {
             player2Controller = std::unique_ptr<Controller>(new BotController());
             break;
         case 2:
+            player1Controller = std::unique_ptr<Controller>(new BotController());
+            player2Controller = std::unique_ptr<Controller>(new PlayerController());
+            break;
+        case 3:
             player1Controller = std::unique_ptr<Controller>(new PlayerController());
             player2Controller = std::unique_ptr<Controller>(new PlayerController());
             break;
