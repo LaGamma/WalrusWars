@@ -24,24 +24,22 @@ void GameLogic::update(float dSec) {
 
     if (state == playing) {
 
-        //fish powerup generation
-        //need to fine tune these numbers, not sure where we want the fish to be generated
-        //rand_create is just a simple way to randomize when fish are created
+        // fish power-up generation
+        // fish will be generated in water flopping (sometimes landing on ice)
         fish_accumulator += dSec;
-        if (fish_list.size() < 3 && fish_accumulator > 3.0) {
+        if (fish_list.size() < MAX_NUM_OF_FISH && fish_accumulator > 3.0) {
             fish_accumulator = 0;
-            //sf::Vector2f stage_bounds = stage.getFishBounds(progression);
-            //std::cout<<stage_bounds.y;
-            int rand_x = rand() % (7 * (int) WINDOW_WIDTH / 8) + ((int) WINDOW_WIDTH / 8);
-            int rand_y = rand() % (5 * (int) WINDOW_WIDTH / 8) + ((int) WINDOW_WIDTH / 8);
-            //make sure not on water
-            float tile_dur = stage.getTileDura(rand_x / ICE_BLOCKS_SIZE_X, rand_y / ICE_BLOCKS_SIZE_Y, progression);
-            while (tile_dur <= 0) {
-                rand_x = rand() % (7 * (int) WINDOW_WIDTH / 8) + ((int) WINDOW_WIDTH / 8);
-                rand_y = rand() % (5 * (int) WINDOW_WIDTH / 8) + ((int) WINDOW_WIDTH / 8);
-                tile_dur = stage.getTileDura(rand_x / ICE_BLOCKS_SIZE_X, rand_y / ICE_BLOCKS_SIZE_Y, progression);
+
+            sf::Vector2f rand_spawn = sf::Vector2f(rand() % ((int)(7 * WINDOW_WIDTH / 8)) + (WINDOW_WIDTH / 8), rand() % ((int)(5 * WINDOW_WIDTH / 8)) + (WINDOW_WIDTH / 8));
+            sf::Vector2f rand_target = sf::Vector2f(rand() % 160 - 80, rand() % 160 - 80);
+            // make sure first jump is from water onto ice
+            while ((stage.getTileDura((int)(rand_spawn.x / ICE_BLOCKS_SIZE_X), (int)(rand_spawn.y / ICE_BLOCKS_SIZE_Y), progression) > 0) ||
+                    (stage.getTileDura((int)((rand_spawn.x + rand_target.x) / ICE_BLOCKS_SIZE_X), (int)((rand_spawn.y + rand_target.y) / ICE_BLOCKS_SIZE_Y), progression) <= 0)) {
+                rand_spawn = sf::Vector2f(rand() % ((int)(7 * WINDOW_WIDTH / 8)) + (WINDOW_WIDTH / 8), rand() % ((int)(5 * WINDOW_WIDTH / 8)) + (WINDOW_WIDTH / 8));
+                rand_target = sf::Vector2f(rand() % 160 - 80, rand() % 160 - 80);
             }
-            fish_list.push_back(std::unique_ptr<Fish>(new Fish(sf::Vector2f(rand_x, rand_y))));
+
+            fish_list.push_back(std::unique_ptr<Fish>(new Fish(rand_spawn, rand_target)));
         }
 
         // process movement
@@ -120,8 +118,6 @@ void GameLogic::update(float dSec) {
         }
 
         // fish collisions
-        //have list of no more than 3 fish
-        //check for collision of each fish
         std::list<std::unique_ptr<Fish>>::iterator fish;
         for (fish = fish_list.begin(); fish != fish_list.end(); fish++) {
             sf::Vector2f fish_pos = (*fish)->getPosition();
@@ -140,11 +136,15 @@ void GameLogic::update(float dSec) {
                 break;
             }
             // fish - water collision
-            if (stage.getTileDura(fish_pos.x/ICE_BLOCKS_SIZE_X, fish_pos.y/ICE_BLOCKS_SIZE_Y, progression) <= 0) {
+            if (stage.getTileDura(fish_pos.x/ICE_BLOCKS_SIZE_X, fish_pos.y/ICE_BLOCKS_SIZE_Y, progression) <= 0 && !(*fish)->flop_progress_timer) {
                 handleFishCollision(0, *fish);
                 break;
             }
+
+            // tick update for living fish
+            (*fish)->flop(dSec);
         }
+
 
     }
 
@@ -266,8 +266,10 @@ void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
 }
 
 void GameLogic::returnToMenu() {
-  state = mainMenu;
-  stage.generateMap();
+    state = mainMenu;
+    stage.generateMap();
+    //reset progression
+    progression = 0;
 }
 
 void GameLogic::setSFXVolume(float vol) {
@@ -298,45 +300,38 @@ float GameLogic::getMusicVolume() {
  * 2 param: walrus2 died
  * */
 void GameLogic::handlePlayerDeath(int walrus) {
-
     //check if both are dead (fixes respawn bug)
-  if (walrus2.isDead() && walrus == 1) {
-      resetGame();
-  }
+    if (walrus2.isDead() && walrus == 1) {
+        resetGame();
+    }
 
 	if (walrus == 1) {
-	  // check for game over
-      if (progression == 2) {
-          winner1 = false;
-          state = gameOverMenu;
-          //reset progression
-          progression = 0;
-          if(walrus2.isDead()){
-            progression = 2;
-          }
-      }
-
-
-      walrus1.kill();
-
-	} else if (walrus == 2) {
-	  //check for game over
-      if (progression == -2) {
-          winner1 = true;
-          state = gameOverMenu;
-          //reset progression
-          progression = 0;
-          if(walrus1.isDead()){
-            progression = -2;
-          }
-      }
-
-      walrus2.kill();
-      if(walrus1.isDead()){
-        resetGame();
-      }
-
+	    if (walrus2.isDead()) {
+	        resetGame();
+	    } else {
+            walrus1.kill();
+            // check for game over
+            if (progression == 2) {
+                winner1 = false;
+                state = gameOverMenu;
+            }
+	    }
 	}
+
+
+	else if (walrus == 2) {
+        if (walrus1.isDead()) {
+            resetGame();
+        } else {
+            walrus2.kill();
+            // check for game over
+            if (progression == -2) {
+                winner1 = true;
+                state = gameOverMenu;
+            }
+        }
+    }
+
     splash = 1;
 
 }

@@ -106,7 +106,7 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
             // two possible strategies here (running cancels the attack OR scaledown movement - commented out)
             //if (force_dir.x != 0 || force_dir.y != 0) {
             //    state = running;
-            //    attack_charge = 0;
+            //   attack_charge = 0;
             //}
             force_dir *= RAISING_TUSKS_MOVEMENT_SCALEDOWN;
             break;
@@ -133,6 +133,7 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
     if (stamina < 0) {
         state = resting;
+        attack_charge = 0.0f;
     }
 }
 
