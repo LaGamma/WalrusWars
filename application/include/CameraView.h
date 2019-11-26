@@ -23,10 +23,14 @@ class CameraView {
     void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic);
+
 
     sf::Font font;
     char main_menu_selection = 'P';
     char options_menu_selection = 'S';
+    char player1_menu_selection = 'P';
+    char player2_menu_selection = 'P';
 
     // major InputManager classes
     std::unique_ptr<Controller> player1Controller;
@@ -42,6 +46,9 @@ class CameraView {
     sf::Texture menu_background;
     sf::Texture stage_progression;
     sf::Texture stage_progression_active;
+    sf::Texture playerPortrait;
+    sf::Texture player1PortraitBorder;
+    sf::Texture player2PortraitBorder;
 
     sf::RectangleShape ice;
     sf::RectangleShape player1;

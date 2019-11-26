@@ -356,6 +356,10 @@ void GameLogic::handleOptionsMenu() {
     state = optionsMenu;
 }
 
+void GameLogic::handlePlayerSelectMenu() {
+    state = playerSelectMenu;
+}
+
 GameLogic::GameState GameLogic::getState() {
     return state;
 }
