@@ -412,6 +412,14 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         soundManager.playSound(SoundManager::SFX::bump, logic.bump);
         logic.bump = 0;
     }
+    if(logic.splash){
+      soundManager.playSound(SoundManager::SFX::splash, logic.splash);
+      logic.splash = 0;
+    }
+    if(logic.powerup){
+      soundManager.playSound(SoundManager::SFX::fish, logic.powerup);
+      logic.powerup = 0;
+    }
 
 
     //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
@@ -487,6 +495,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 else if (options_menu_selection == 'Q')
                                     options_menu_selection = 'M';
                             }
+                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
                             break;
 
                         case sf::Keyboard::Down:
@@ -501,6 +510,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 else if (options_menu_selection == 'M' || options_menu_selection == 'Q')
                                     options_menu_selection = 'Q';
                             }
+                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
                             break;
 
                         case sf::Keyboard::Right:
@@ -513,6 +523,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     logic.setMusicVolume(logic.getMusicVolume() + 10);
                                 }
                             }
+                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
                             break;
                         case sf::Keyboard::Left:
                             if (logic.getState() == GameLogic::GameState::optionsMenu) {
@@ -523,6 +534,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     logic.setMusicVolume(logic.getMusicVolume() - 10);
                                 }
                             }
+                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
                             break;
                         case sf::Keyboard::Return:
 
@@ -554,10 +566,12 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     }
                                     break;
                             }
+                            soundManager.playSound(SoundManager::SFX::menuSelect,logic.getSFXVolume());
                             break;
 
                         case sf::Keyboard::P:
                             logic.togglePause();
+                            soundManager.playSound(SoundManager::SFX::menuSelect,logic.getSFXVolume());
                             break;
                     }
                     break;
