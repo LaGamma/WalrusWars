@@ -35,7 +35,7 @@ class GameLogic {
     Player walrus1;
     Player walrus2;
     Stage stage;
-    int Round = 1;
+    int round = 1;
     float RoundTimer = 0;
 
     sf::Vector2f playerCollisionPoint;
