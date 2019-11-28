@@ -259,14 +259,6 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     window.draw(player1Type_text);
     window.draw(player2Type_text);
 
-    //player modifying selection
-    sf::Text playerMod_text;
-    playerMod_text.setFont(font);
-    playerMod_text.setCharacterSize(UI_TEXT_SIZE);
-    playerMod_text.setFillColor(sf::Color(255, 255, 255, 255));
-    if (color_selection == true) {
-        playerMod_text.setPosition(player1_portrait_frame.getPosition());
-    }
     //Player portraits
     sf::RectangleShape player1_portrait = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     sf::RectangleShape player2_portrait = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
@@ -303,8 +295,15 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(270,80));
     player1_name_bg.setFillColor(sf::Color(100,100,100));
     player2_name_bg.setFillColor(sf::Color(100,100,100));
-    player1_name_border.setFillColor(sf::Color(200,200,200));
-    player2_name_border.setFillColor(sf::Color(200,200,200));
+    if (enteringNameText == true) {
+        if (player1_menu_selection == '1')
+            player1_name_border.setFillColor(sf::Color(255, 0, 0));
+        else
+            player2_name_border.setFillColor(sf::Color(255, 0, 0));
+    }else{
+        player1_name_border.setFillColor(sf::Color(200, 200, 200));
+        player2_name_border.setFillColor(sf::Color(200, 200, 200));
+    }
     player1_name_bg.setPosition((player1_portrait.getPosition().x+120),player1_portrait.getPosition().y+320);
     player2_name_bg.setPosition((player2_portrait.getPosition().x+120),player2_portrait.getPosition().y+320);
     player1_name_border.setPosition((player1_portrait.getPosition().x+110), player1_portrait.getPosition().y+310);
@@ -910,6 +909,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                         player1OrBot = -player1OrBot;
                                         if (player1OrBot == 1) {
                                             std::cout << "Entering Name" << std::endl;
+                                            enteringNameText = true;
                                             logic.handleNameTextSubMenu();
                                         }
                                     }
@@ -917,12 +917,14 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                         player2OrBot = -player2OrBot;
                                         if (player2OrBot == 1) {
                                             std::cout << "Entering Name" << std::endl;
+                                            enteringNameText = true;
                                             logic.handleNameTextSubMenu();
                                         }
                                     }
                                 }
                                 else if (logic.getState() == GameLogic::GameState::nameTextSubMenu){
                                     std::cout << "Select Color" << std::endl;
+                                    enteringNameText = false;
                                     colorSelector = true;
                                     logic.handleColorSelectSubMenu();
                                 }
