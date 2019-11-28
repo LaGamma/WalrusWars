@@ -17,13 +17,15 @@ class GameLogic {
     void resetGame();
     void handleOptionsMenu();
     void handlePlayerSelectMenu();
+    void handleNameTextSubMenu();
+    void handleColorSelectSubMenu();
     int getStageProgression();
     void setSFXVolume(float vol);
     void setMusicVolume(float vol);
     float getSFXVolume();
     float getMusicVolume();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
-    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu};
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu};
     GameState getState();
     int getRound();
     float getRoundTimer();

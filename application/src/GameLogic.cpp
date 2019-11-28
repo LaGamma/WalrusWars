@@ -360,6 +360,12 @@ void GameLogic::handlePlayerSelectMenu() {
     state = playerSelectMenu;
 }
 
+void GameLogic::handleNameTextSubMenu() {
+    state = nameTextSubMenu;
+}
+void GameLogic::handleColorSelectSubMenu() {
+    state = colorSelectSubMenu;
+}
 GameLogic::GameState GameLogic::getState() {
     return state;
 }

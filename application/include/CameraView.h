@@ -30,6 +30,9 @@ class CameraView {
     char main_menu_selection = 'P';
     char options_menu_selection = 'S';
     char player1_menu_selection = 'P';
+    char color_selection = '1';
+    bool colorSelector = false;
+    bool enteringNameText = false;
     //char player2_menu_selection = 'P';
     int player1OrBot = -1;
     int player2OrBot = -1;
@@ -56,8 +59,10 @@ class CameraView {
     sf::Texture colorIcon;
     sf::Texture playerNeutralSelect;
 
-    sf::String walrus1_name = "player1";
-    sf::String walrus2_name = "player2";
+    std::string walrus1_name_str = "Wally";
+    std::string walrus2_name_str = "Waldo";
+    sf::Text walrus1_name;
+    sf::Text walrus2_name;
 
     sf::RectangleShape ice;
     sf::RectangleShape player1;
