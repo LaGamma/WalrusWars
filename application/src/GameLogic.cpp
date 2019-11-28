@@ -348,8 +348,8 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
-    walrus2.setColor(sf::Color(150, 150, 255, 255));
-    walrus1.setColor(sf::Color(255, 255, 255, 255));
+    walrus2.setColor(walrus1.getColor());
+    walrus1.setColor(walrus2.getColor());
 }
 
 void GameLogic::handleOptionsMenu() {

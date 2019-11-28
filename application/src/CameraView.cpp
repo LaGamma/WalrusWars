@@ -232,12 +232,48 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     window.draw(player1_portrait_frame);
     window.draw(player2_portrait_frame);
 
+    //bot or player text
+    sf::Text player1Type_text;
+    player1Type_text.setFont(font);
+    player1Type_text.setCharacterSize(75);
+    player1Type_text.setFillColor(sf::Color(255, 255, 255, 255));
+    player1Type_text.setPosition(player1_portrait_frame.getPosition().x+200, player1_portrait_frame.getPosition().y -90);
+    sf::Text player2Type_text;
+    player2Type_text.setFont(font);
+    player2Type_text.setCharacterSize(75);
+    player2Type_text.setFillColor(sf::Color(255, 255, 255, 255));
+    player2Type_text.setPosition(player2_portrait_frame.getPosition().x+200, player2_portrait_frame.getPosition().y -90);
+    if (player1OrBot == 1) {
+        player1Type_text.setString("Player 1");
+        //adjust position so centered over portrait
+        player1Type_text.setPosition(player1_portrait_frame.getPosition().x+150, player1_portrait_frame.getPosition().y -90);
+    }
+    else
+        player1Type_text.setString("Bot");
+    if (player2OrBot == 1) {
+        player2Type_text.setString("Player 2");
+        player2Type_text.setPosition(player2_portrait_frame.getPosition().x+150, player2_portrait_frame.getPosition().y -90);
+    }
+    else
+        player2Type_text.setString("Bot");
+    window.draw(player1Type_text);
+    window.draw(player2Type_text);
+
+    //player modifying selection
+    sf::Text playerMod_text;
+    playerMod_text.setFont(font);
+    playerMod_text.setCharacterSize(UI_TEXT_SIZE);
+    playerMod_text.setFillColor(sf::Color(255, 255, 255, 255));
+    if (color_selection == true) {
+        playerMod_text.setPosition(player1_portrait_frame.getPosition());
+    }
     //Player portraits
     sf::RectangleShape player1_portrait = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     sf::RectangleShape player2_portrait = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     player1_portrait.setTexture(&playerPortrait);
-    player1_portrait.setFillColor(sf::Color(0,255,0,255));
+    player1_portrait.setFillColor(logic.walrus1.getColor());
     player2_portrait.setTexture(&playerPortrait);
+    player2_portrait.setFillColor(logic.walrus2.getColor());
     player1_portrait.setPosition(player1_portrait_frame.getPosition());
     player2_portrait.setPosition(player2_portrait_frame.getPosition());
     window.draw(player1_portrait);
@@ -305,46 +341,96 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     ciWhite.setTexture(&colorIcon);
     ciBlack.setTexture(&colorIcon);
     ciGray.setTexture(&colorIcon);
-    //ciBrown.setFillColor(sf::Color(255,255,255,255));
-    ciDBrown.setFillColor(sf::Color(155,155,155,255));
-    ciWhite.setFillColor(sf::Color(255,155,155,255));
-    ciBlack.setFillColor(sf::Color(155,255,155,255));
-    ciGray.setFillColor(sf::Color(155,155,255,255));
-    ciBrown.setPosition(player1_name_bg.getPosition().x-25,player1_name_bg.getPosition().y+65);
+    ciBrown.setFillColor(player_color1);
+    ciDBrown.setFillColor(player_color2);
+    ciWhite.setFillColor(player_color3);
+    ciBlack.setFillColor(player_color4);
+    ciGray.setFillColor(player_color5);
+    if (player1_menu_selection == '1')
+        ciBrown.setPosition(player1_name_bg.getPosition().x-25,player1_name_bg.getPosition().y+65);
+    else
+        ciBrown.setPosition(player2_name_bg.getPosition().x-25,player2_name_bg.getPosition().y+65);
     ciDBrown.setPosition(ciBrown.getPosition().x+60, ciBrown.getPosition().y);
     ciWhite.setPosition(ciBrown.getPosition().x+120, ciBrown.getPosition().y);
     ciBlack.setPosition(ciBrown.getPosition().x+180, ciBrown.getPosition().y);
     ciGray.setPosition(ciBrown.getPosition().x+240, ciBrown.getPosition().y);
-    window.draw(ciBrown);
-    window.draw(ciDBrown);
-    window.draw(ciWhite);
-    window.draw(ciBlack);
-    window.draw(ciGray);
 
     //color icon indicator
     sf::RectangleShape colorSelectionIndicator = sf::RectangleShape(sf::Vector2f(50,50));
     colorSelectionIndicator.setOutlineColor(sf::Color(255,0,0,255));
     colorSelectionIndicator.setOutlineThickness(5);
     colorSelectionIndicator.setFillColor(sf::Color(255,255,255,0));
-    if (color_selection == '1') {
-        colorSelectionIndicator.setPosition(ciBrown.getPosition().x+5, ciBrown.getPosition().y+5);
-        window.draw(colorSelectionIndicator);
-    }
-    if (color_selection == '2') {
-        colorSelectionIndicator.setPosition(ciDBrown.getPosition().x+5, ciDBrown.getPosition().y+5);
-        window.draw(colorSelectionIndicator);
-    }
-    if (color_selection == '3') {
-        colorSelectionIndicator.setPosition(ciWhite.getPosition().x+5, ciWhite.getPosition().y+5);
-        window.draw(colorSelectionIndicator);
-    }
-    if (color_selection == '4') {
-        colorSelectionIndicator.setPosition(ciBlack.getPosition().x+5, ciBlack.getPosition().y+5);
-        window.draw(colorSelectionIndicator);
-    }
-    if (color_selection == '5') {
-        colorSelectionIndicator.setPosition(ciGray.getPosition().x+5, ciGray.getPosition().y+5);
-        window.draw(colorSelectionIndicator);
+    if (colorSelector == true) {
+        window.draw(ciBrown);
+        window.draw(ciDBrown);
+        window.draw(ciWhite);
+        window.draw(ciBlack);
+        window.draw(ciGray);
+        if (color_selection == '1') {
+            colorSelectionIndicator.setPosition(ciBrown.getPosition().x + 5, ciBrown.getPosition().y + 5);
+            window.draw(colorSelectionIndicator);
+            //change player and portrait colors
+            if(player1_menu_selection == '1') {
+                logic.walrus1.setColor(player_color1);
+                player1_portrait.setFillColor(player_color1);
+            }
+            if(player1_menu_selection == '2') {
+                logic.walrus2.setColor(player_color1);
+                player2_portrait.setFillColor(player_color1);
+            }
+        }
+        if (color_selection == '2') {
+            colorSelectionIndicator.setPosition(ciDBrown.getPosition().x + 5, ciDBrown.getPosition().y + 5);
+            window.draw(colorSelectionIndicator);
+            //change player and portrait colors
+            if(player1_menu_selection == '1') {
+                logic.walrus1.setColor(player_color2);
+                player1_portrait.setFillColor(player_color2);
+            }
+            if(player1_menu_selection == '2') {
+                logic.walrus2.setColor(player_color2);
+                player2_portrait.setFillColor(player_color2);
+            }
+        }
+        if (color_selection == '3') {
+            colorSelectionIndicator.setPosition(ciWhite.getPosition().x + 5, ciWhite.getPosition().y + 5);
+            window.draw(colorSelectionIndicator);
+            //change player and portrait colors
+            if(player1_menu_selection == '1') {
+                logic.walrus1.setColor(player_color3);
+                player1_portrait.setFillColor(player_color3);
+            }
+            if(player1_menu_selection == '2') {
+                logic.walrus2.setColor(player_color3);
+                player2_portrait.setFillColor(player_color3);
+            }
+        }
+        if (color_selection == '4') {
+            colorSelectionIndicator.setPosition(ciBlack.getPosition().x + 5, ciBlack.getPosition().y + 5);
+            window.draw(colorSelectionIndicator);
+            //change player and portrait colors
+            if(player1_menu_selection == '1') {
+                logic.walrus1.setColor(player_color4);
+                player1_portrait.setFillColor(player_color4);
+            }
+            if(player1_menu_selection == '2') {
+                logic.walrus2.setColor(player_color4);
+                player2_portrait.setFillColor(player_color4);
+            }
+        }
+        if (color_selection == '5') {
+            colorSelectionIndicator.setPosition(ciGray.getPosition().x + 5, ciGray.getPosition().y + 5);
+            window.draw(colorSelectionIndicator);
+            //change player and portrait colors
+            if(player1_menu_selection == '1') {
+                logic.walrus1.setColor(player_color5);
+                player1_portrait.setFillColor(player_color5);
+            }
+            if(player1_menu_selection == '2') {
+                logic.walrus2.setColor(player_color5);
+                player2_portrait.setFillColor(player_color5);
+            }
+        }
     }
 
 
@@ -837,11 +923,11 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 }
                                 else if (logic.getState() == GameLogic::GameState::nameTextSubMenu){
                                     std::cout << "Select Color" << std::endl;
-                                    color_selection = '1';
+                                    colorSelector = true;
                                     logic.handleColorSelectSubMenu();
                                 }
                                 else if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
-                                    color_selection = '6';
+                                    colorSelector = false;
                                     logic.handlePlayerSelectMenu();
                                 }
 
