@@ -65,6 +65,9 @@ class CameraView {
     sf::RectangleShape mmStageR2i;
     sf::RectangleShape mmStageLi;
     sf::RectangleShape mmStageL2i;
+
+    float screenshake_magnitude;
+    float screenshake_timer;
 };
 
 

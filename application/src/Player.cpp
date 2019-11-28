@@ -150,6 +150,9 @@ void Player::handlePowerUp(int powerup) {
 
 void Player::raiseTusks(float dSec) {
     state = raising_tusks;
+    if (attack_charge < 1) {
+        attack_charge = 1;
+    }
     attack_charge += dSec;
     // cap the charged attack
     if (attack_charge > MAX_ATTACK_CHARGE) {
