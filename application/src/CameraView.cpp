@@ -739,11 +739,11 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     roundCounter_text.setFont(font);
     roundCounter_text.setCharacterSize(UI_TEXT_SIZE / 2);
     roundCounter_text.setFillColor(sf::Color(255, 255, 255, 255));
-    roundCounter_text.setPosition(roundCounterbg.getPosition().x+20,roundCounterbg.getPosition().y-20);
     if (logic.getRound() < 10)
-        roundCounter_text.setString("0" + std::to_string(logic.getRound()));
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x+30,roundCounterbg.getPosition().y-20);
     else
-        roundCounter_text.setString(std::to_string(logic.getRound()));
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x+20,roundCounterbg.getPosition().y-20);
+    roundCounter_text.setString(std::to_string(logic.getRound()));
     window.draw(roundCounterbg);
     window.draw(roundCounter_text);
 
