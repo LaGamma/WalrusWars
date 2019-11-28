@@ -62,6 +62,15 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
         case GameLogic::GameState::playerSelectMenu:
             drawPlayerSelectMenu(window, logic);
             break;
+
+            //player select sub menus
+        case GameLogic::GameState::colorSelectSubMenu:
+            drawPlayerSelectMenu(window, logic);
+            break;
+        case GameLogic::GameState::nameTextSubMenu:
+            drawPlayerSelectMenu(window, logic);
+            break;
+
     }
     // display
     window.display();
@@ -313,20 +322,30 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     window.draw(ciGray);
 
     //color icon indicator
-    sf::RectangleShape colorSelectionIndicator = sf::RectangleShape(sf::Vector2f(60,60));
+    sf::RectangleShape colorSelectionIndicator = sf::RectangleShape(sf::Vector2f(50,50));
     colorSelectionIndicator.setOutlineColor(sf::Color(255,0,0,255));
-    if (color_selection = '1')
-        colorSelectionIndicator.setPosition(ciBrown.getPosition());
-    if (color_selection = '2')
-        colorSelectionIndicator.setPosition(ciDBrown.getPosition());
-    if (color_selection = '3')
-        colorSelectionIndicator.setPosition(ciWhite.getPosition());
-    if (color_selection = '4')
-        colorSelectionIndicator.setPosition(ciBlack.getPosition());
-    if (color_selection = '5')
-        colorSelectionIndicator.setPosition(ciGray.getPosition());
-
-
+    colorSelectionIndicator.setOutlineThickness(5);
+    colorSelectionIndicator.setFillColor(sf::Color(255,255,255,0));
+    if (color_selection == '1') {
+        colorSelectionIndicator.setPosition(ciBrown.getPosition().x+5, ciBrown.getPosition().y+5);
+        window.draw(colorSelectionIndicator);
+    }
+    if (color_selection == '2') {
+        colorSelectionIndicator.setPosition(ciDBrown.getPosition().x+5, ciDBrown.getPosition().y+5);
+        window.draw(colorSelectionIndicator);
+    }
+    if (color_selection == '3') {
+        colorSelectionIndicator.setPosition(ciWhite.getPosition().x+5, ciWhite.getPosition().y+5);
+        window.draw(colorSelectionIndicator);
+    }
+    if (color_selection == '4') {
+        colorSelectionIndicator.setPosition(ciBlack.getPosition().x+5, ciBlack.getPosition().y+5);
+        window.draw(colorSelectionIndicator);
+    }
+    if (color_selection == '5') {
+        colorSelectionIndicator.setPosition(ciGray.getPosition().x+5, ciGray.getPosition().y+5);
+        window.draw(colorSelectionIndicator);
+    }
 
 
     //handle coloring of selection for player 1
@@ -342,11 +361,6 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
         play_text.setFillColor(sf::Color::Black);
     }if (player1_menu_selection == 'Q') {
         quit_text.setFillColor(sf::Color::Black);
-    }
-
-    //handle coloring and drawing of color icons
-    if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
-        window.draw(colorSelectionIndicator);
     }
 
     window.draw(play_text);
@@ -721,6 +735,17 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 if (player1_menu_selection == '1')
                                     player1_menu_selection = '2';
                             }
+                            if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
+                                std::cout << color_selection << std::endl;
+                                if (color_selection == '4' || color_selection == '5')
+                                    color_selection = '5';
+                                if (color_selection == '3')
+                                    color_selection = '4';
+                                if (color_selection == '2')
+                                    color_selection = '3';
+                                if (color_selection == '1')
+                                    color_selection = '2';
+                            }
                             break;
                         case sf::Keyboard::Left:
                             if (logic.getState() == GameLogic::GameState::optionsMenu) {
@@ -734,6 +759,17 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
                                 if (player1_menu_selection == '2')
                                     player1_menu_selection = '1';
+                            }
+                            if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
+                                std::cout << color_selection << std::endl;
+                                if (color_selection == '1' || color_selection == '2')
+                                    color_selection = '1';
+                                if (color_selection == '3')
+                                    color_selection = '2';
+                                if (color_selection == '4')
+                                    color_selection = '3';
+                                if (color_selection == '5')
+                                    color_selection = '4';
                             }
                             break;
                         case sf::Keyboard::Return:
@@ -801,9 +837,11 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 }
                                 else if (logic.getState() == GameLogic::GameState::nameTextSubMenu){
                                     std::cout << "Select Color" << std::endl;
+                                    color_selection = '1';
                                     logic.handleColorSelectSubMenu();
                                 }
                                 else if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
+                                    color_selection = '6';
                                     logic.handlePlayerSelectMenu();
                                 }
 

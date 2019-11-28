@@ -30,7 +30,7 @@ class CameraView {
     char main_menu_selection = 'P';
     char options_menu_selection = 'S';
     char player1_menu_selection = 'P';
-    char color_selection = '1';
+    char color_selection = '6'; //when set to 6, indicator won't be drawn
     bool colorSelector = false;
     bool enteringNameText = false;
     //char player2_menu_selection = 'P';
