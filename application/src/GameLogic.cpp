@@ -168,6 +168,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
     if (walrus == 1 && xpos <= 0) {
         if (walrus2.isDead()) {
             progression--;
+            fish_list.clear();
             walrus1.spawn(sf::Vector2f(15 * WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
             walrus2.spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
         } else {
@@ -182,6 +183,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
     else if (walrus == 2 && xpos >= WINDOW_WIDTH) {
         if (walrus1.isDead()) {
             progression++;
+            fish_list.clear();
             walrus1.spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
             walrus2.spawn(sf::Vector2f(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
         } else {
