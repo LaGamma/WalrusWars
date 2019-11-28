@@ -56,6 +56,9 @@ class CameraView {
     sf::Texture colorIcon;
     sf::Texture playerNeutralSelect;
 
+    sf::String walrus1_name = "player1";
+    sf::String walrus2_name = "player2";
+
     sf::RectangleShape ice;
     sf::RectangleShape player1;
     sf::RectangleShape player2;

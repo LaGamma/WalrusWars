@@ -251,16 +251,65 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
 
 
     //name frame
-    sf::RectangleShape player1_name_bg = sf::RectangleShape();
-    sf::RectangleShape player2_name_bg = sf::RectangleShape();
-    sf::RectangleShape player1_name_border = sf::RectangleShape();
-    sf::RectangleShape player2_name_border = sf::RectangleShape();
+    sf::RectangleShape player1_name_bg = sf::RectangleShape(sf::Vector2f(250,60));
+    sf::RectangleShape player2_name_bg = sf::RectangleShape(sf::Vector2f(250,60));
+    sf::RectangleShape player1_name_border = sf::RectangleShape(sf::Vector2f(270,80));
+    sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(270,80));
     player1_name_bg.setFillColor(sf::Color(100,100,100));
     player2_name_bg.setFillColor(sf::Color(100,100,100));
-    player1_name_border.setFillColor(sf::Color(100,100,100));
-    player2_name_border.setFillColor(sf::Color(100,100,100));
+    player1_name_border.setFillColor(sf::Color(200,200,200));
+    player2_name_border.setFillColor(sf::Color(200,200,200));
+    player1_name_bg.setPosition((player1_portrait.getPosition().x+120),player1_portrait.getPosition().y+320);
+    player2_name_bg.setPosition((player2_portrait.getPosition().x+120),player2_portrait.getPosition().y+320);
+    player1_name_border.setPosition((player1_portrait.getPosition().x+110), player1_portrait.getPosition().y+310);
+    player2_name_border.setPosition((player2_portrait.getPosition().x+110), player2_portrait.getPosition().y+310);
+    window.draw(player1_name_border);
+    window.draw(player2_name_border);
+    window.draw(player1_name_bg);
+    window.draw(player2_name_bg);
 
-    //color icon
+    //name text
+    sf::Text name1_text;
+    sf::Text name2_text;
+    name1_text.setFont(font);
+    name1_text.setCharacterSize(UI_TEXT_SIZE);
+    name1_text.setFillColor(sf::Color(255,255,255,255));
+    name1_text.setPosition(player1_name_bg.getPosition().x+10, player1_name_bg.getPosition().y-55);
+    name1_text.setString(walrus1_name);
+    name2_text.setFont(font);
+    name2_text.setCharacterSize(UI_TEXT_SIZE);
+    name2_text.setFillColor(sf::Color(255,255,255,255));
+    name2_text.setPosition(player2_name_bg.getPosition().x+10, player2_name_bg.getPosition().y-55);
+    name2_text.setString(walrus2_name);
+    window.draw(name2_text);
+    window.draw(name1_text);
+
+    //color icons
+    sf::RectangleShape ciWhite = sf::RectangleShape(sf::Vector2f(60,60));
+    sf::RectangleShape ciBlack = sf::RectangleShape(sf::Vector2f(60,60));
+    sf::RectangleShape ciDBrown  = sf::RectangleShape(sf::Vector2f(60,60));
+    sf::RectangleShape ciBrown = sf::RectangleShape(sf::Vector2f(60,60));
+    sf::RectangleShape ciGray = sf::RectangleShape(sf::Vector2f(60,60));
+    ciWhite.setTexture(&colorIcon);
+    ciBlack.setTexture(&colorIcon);
+    ciDBrown.setTexture(&colorIcon);
+    ciBrown.setTexture(&colorIcon);
+    ciGray.setTexture(&colorIcon);
+    ciWhite.setFillColor(sf::Color(255,255,255,255));
+    ciBlack.setFillColor(sf::Color(255,255,255,255));
+    //ciDBrown.setFillColor(sf::Color(255,255,255,255));
+    ciBrown.setFillColor(sf::Color(255,255,255,255));
+    ciGray.setFillColor(sf::Color(255,255,255,255));
+    ciWhite.setPosition(player1_name_bg.getPosition().x-25,player1_name_bg.getPosition().y+65);
+    ciBlack.setPosition(ciWhite.getPosition().x+60, ciWhite.getPosition().y);
+    ciDBrown.setPosition(ciWhite.getPosition().x+120, ciWhite.getPosition().y);
+    ciBrown.setPosition(ciWhite.getPosition().x+180, ciWhite.getPosition().y);
+    ciGray.setPosition(ciWhite.getPosition().x+240, ciWhite.getPosition().y);
+    window.draw(ciWhite);
+    window.draw(ciBlack);
+    window.draw(ciDBrown);
+    window.draw(ciBrown);
+    window.draw(ciGray);
 
 
 
