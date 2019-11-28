@@ -54,9 +54,9 @@ void GameLogic::update(float dSec) {
 
         // melt stage
         accumulator += dSec;
-        if(accumulator >= 1){
+        if(accumulator >= .6){
           stage.tickMelt(progression);
-          accumulator -= 1;
+          accumulator -= .6;
         }
 
         // *check collisions* //
@@ -69,12 +69,14 @@ void GameLogic::update(float dSec) {
         if (stage.getTileDura((w1_pos.x)/ICE_BLOCKS_SIZE_X, (w1_pos.y)/ICE_BLOCKS_SIZE_Y, progression) <= 0) {
             if (!walrus1.isDead()) {
                 handlePlayerDeath(1);
+                splash = sfx_volume;
             }
         }
         // player2 - water collision
         if (stage.getTileDura((w2_pos.x)/ICE_BLOCKS_SIZE_X, (w2_pos.y)/ICE_BLOCKS_SIZE_Y, progression) <= 0) {
             if (!walrus2.isDead()) {
                 handlePlayerDeath(2);
+                splash = sfx_volume;
             }
         }
 
@@ -163,6 +165,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             newVel.x *= -1;
             walrus1.setVel(newVel);
             walrus1.tickUpdate(COLLISION_KNOCKBACK_TIME);
+            bump = sfx_volume * BUMP_VOL_SCALE;
         }
     }
 
@@ -176,6 +179,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             newVel.x *= -1;
             walrus2.setVel(newVel);
             walrus2.tickUpdate(COLLISION_KNOCKBACK_TIME);
+            bump = sfx_volume * BUMP_VOL_SCALE;
         }
     }
 
@@ -184,6 +188,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
         newVel.x *= -1;
         walrus1.setVel(newVel);
         walrus1.tickUpdate(COLLISION_KNOCKBACK_TIME);
+        bump = sfx_volume * BUMP_VOL_SCALE;
     }
 
     else if (walrus == 2 && xpos <= 0) {
@@ -191,7 +196,9 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
         newVel.x *= -1;
         walrus2.setVel(newVel);
         walrus2.tickUpdate(COLLISION_KNOCKBACK_TIME);
+        bump = sfx_volume * BUMP_VOL_SCALE;
     }
+
 
 }
 
@@ -199,11 +206,14 @@ void GameLogic::handleFishCollision(int player, std::unique_ptr<Fish> &fish) {
 
     if (player == 1) {
         walrus1.handlePowerUp(fish->getColor());
+        powerup = sfx_volume;
     } else if (player == 2) {
         walrus2.handlePowerUp(fish->getColor());
+        powerup = sfx_volume;
     }
 
     fish_list.remove(fish);
+
 }
 
 void GameLogic::handlePlayerCollision() {
@@ -252,7 +262,7 @@ void GameLogic::handlePlayerCollision() {
   // power of collision
   sf::Vector2f velDiff = walrus1.getVel() - walrus2.getVel();
   float magnitude = sqrt((velDiff.x * velDiff.x) + (velDiff.y * velDiff.y));
-  bump = magnitude * BUMP_VOL_SCALE;
+  bump = magnitude * BUMP_VOL_SCALE * sfx_volume;
 }
 
 void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {

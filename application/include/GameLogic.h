@@ -27,6 +27,7 @@ class GameLogic {
     bool winner1;
     float bump;
     float splash;
+    float powerup;
     Player walrus1;
     Player walrus2;
     Stage stage;
