@@ -11,8 +11,6 @@ GameLogic::GameLogic() {
     stage = Stage();
     stage.generateMap();
     accumulator = 0;
-    bump = 0;
-    splash = 0;
     fish_accumulator = 0.0f;
     //sfx_volume = SFX_VOLUME_BASE;
     //music_volume = SFX_VOLUME_MAX
@@ -101,11 +99,17 @@ void GameLogic::update(float dSec) {
 
             posDiff = w2_pos - p1AttackPoint;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-            if (dist <= PLAYER_HITBOX_SCALE*(w2_mass + w1_mass)) {
+            if (!p1_attack_handling_in_progress && dist <= PLAYER_HITBOX_SCALE*(w2_mass + w1_mass)) {
                 // use the unit vector between attack and player to direct knockback
                 handlePlayerAttack(1, posDiff / dist);
+            } else if (dist > PLAYER_HITBOX_SCALE*(w2_mass + w1_mass))  {
+                p1_attack_handling_in_progress = false;
             }
         }
+        else {
+            p1_attack_handling_in_progress = false;
+        }
+
         // player2 attack - player 1 collision
         if (walrus2.getState() == Player::attacking) {
             //determine direction of attack
@@ -113,10 +117,16 @@ void GameLogic::update(float dSec) {
 
             posDiff = w1_pos - p2AttackPoint;
             dist = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
-            if (dist <= PLAYER_HITBOX_SCALE*(w1_mass + w2_mass)) {
+            if (!p2_attack_handling_in_progress && dist <= PLAYER_HITBOX_SCALE*(w1_mass + w2_mass)) {
+                std::cout<<"attack begun!"<<std::endl;
                 // use the unit vector between attack and player to direct knockback
                 handlePlayerAttack(2, posDiff / dist);
+            } else if (dist > PLAYER_HITBOX_SCALE*(w1_mass + w2_mass)) {
+                p2_attack_handling_in_progress = false;
             }
+        }
+        else {
+            p2_attack_handling_in_progress = false;
         }
 
         // fish collisions
@@ -158,6 +168,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
     if (walrus == 1 && xpos <= 0) {
         if (walrus2.isDead()) {
             progression--;
+            fish_list.clear();
             walrus1.spawn(sf::Vector2f(15 * WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
             walrus2.spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
         } else {
@@ -165,13 +176,14 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             newVel.x *= -1;
             walrus1.setVel(newVel);
             walrus1.tickUpdate(COLLISION_KNOCKBACK_TIME);
-            bump = sfx_volume * BUMP_VOL_SCALE;
+            border_bump = sfx_volume * BUMP_VOL_SCALE;
         }
     }
 
     else if (walrus == 2 && xpos >= WINDOW_WIDTH) {
         if (walrus1.isDead()) {
             progression++;
+            fish_list.clear();
             walrus1.spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
             walrus2.spawn(sf::Vector2f(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
         } else {
@@ -179,7 +191,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             newVel.x *= -1;
             walrus2.setVel(newVel);
             walrus2.tickUpdate(COLLISION_KNOCKBACK_TIME);
-            bump = sfx_volume * BUMP_VOL_SCALE;
+            border_bump = sfx_volume * BUMP_VOL_SCALE;
         }
     }
 
@@ -188,7 +200,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
         newVel.x *= -1;
         walrus1.setVel(newVel);
         walrus1.tickUpdate(COLLISION_KNOCKBACK_TIME);
-        bump = sfx_volume * BUMP_VOL_SCALE;
+        border_bump = sfx_volume * BUMP_VOL_SCALE;
     }
 
     else if (walrus == 2 && xpos <= 0) {
@@ -196,7 +208,7 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
         newVel.x *= -1;
         walrus2.setVel(newVel);
         walrus2.tickUpdate(COLLISION_KNOCKBACK_TIME);
-        bump = sfx_volume * BUMP_VOL_SCALE;
+        border_bump = sfx_volume * BUMP_VOL_SCALE;
     }
 
 
@@ -262,16 +274,23 @@ void GameLogic::handlePlayerCollision() {
   // power of collision
   sf::Vector2f velDiff = walrus1.getVel() - walrus2.getVel();
   float magnitude = sqrt((velDiff.x * velDiff.x) + (velDiff.y * velDiff.y));
-  bump = magnitude * BUMP_VOL_SCALE * sfx_volume;
+  player_bump = magnitude * BUMP_VOL_SCALE * (sfx_volume / 100);
 }
 
 void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
+    float attack_charge;
     if (attacker == 2) {
-        walrus1.setVel(walrus1.getVel() + dir * SLASH_ATTACK_POWER * walrus2.getAttackCharge());
-        walrus1.setStamina(walrus1.getStamina() - ATTACKED_STAMINA_LOST * walrus2.getAttackCharge());
+        p2_attack_handling_in_progress = true;
+        attack_charge = walrus2.getAttackCharge();
+        walrus1.setVel(walrus1.getVel() + dir * SLASH_ATTACK_POWER * attack_charge);
+        walrus1.setStamina(walrus1.getStamina() - ATTACKED_STAMINA_LOST * attack_charge);
+        player_hit = sfx_volume * attack_charge;
     } else if (attacker == 1) {
-        walrus2.setVel(walrus2.getVel() + dir * SLASH_ATTACK_POWER * walrus1.getAttackCharge());
-        walrus2.setStamina(walrus2.getStamina() - ATTACKED_STAMINA_LOST * walrus1.getAttackCharge());
+        p1_attack_handling_in_progress = true;
+        attack_charge = walrus1.getAttackCharge();
+        walrus2.setVel(walrus2.getVel() + dir * SLASH_ATTACK_POWER * attack_charge);
+        walrus2.setStamina(walrus2.getStamina() - ATTACKED_STAMINA_LOST * attack_charge);
+        player_hit = sfx_volume * attack_charge;
     }
 }
 

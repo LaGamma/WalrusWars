@@ -25,7 +25,11 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu};
     GameState getState();
     bool winner1;
-    float bump;
+    bool p1_attack_handling_in_progress;
+    bool p2_attack_handling_in_progress;
+    float player_bump;
+    float border_bump;
+    float player_hit;
     float splash;
     float powerup;
     Player walrus1;

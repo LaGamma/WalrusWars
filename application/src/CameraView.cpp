@@ -218,8 +218,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.clear(sf::Color::Blue);
 
     //draw ice blocks
-    for (int i = 0; i < ICE_BLOCKS_WIDTH; i++) {
-        for (int j = 0; j < ICE_BLOCKS_HEIGHT; j++) {
+    for (int i = 0; i < ICE_BLOCKS_WIDTH+1; i++) {
+        for (int j = 0; j < ICE_BLOCKS_HEIGHT+1; j++) {
             float dura = logic.stage.getTileDura(i, j, logic.getStageProgression());
             if (dura > 0) {
                 // draw ice graphics based on melt
@@ -265,7 +265,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw Player2
     player2.setSize(sf::Vector2f(logic.walrus2.getMass(), logic.walrus2.getMass()));
-    player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x / 2,logic.walrus2.getPos().y - player2.getSize().y / 2);
+    //player2.setPosition(logic.walrus2.getPos().x - player2.getSize().x / 2,logic.walrus2.getPos().y - player2.getSize().y / 2);
     player2.setPosition((logic.walrus2.getPos().x - player2.getSize().x / 2) + rand() % 2*logic.walrus2.getAttackCharge(), (logic.walrus2.getPos().y - player2.getSize().y / 2) + rand() % 2*logic.walrus2.getAttackCharge());
     player2.setFillColor(logic.walrus2.getColor());
     player2.setTexture(&spriteMapWalrus);
@@ -408,9 +408,21 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(stage_veil);
     */
 
-    if (logic.bump) {
-        soundManager.playSound(SoundManager::SFX::bump, logic.bump);
-        logic.bump = 0;
+    if (logic.player_hit) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.player_hit);
+        screenshake_magnitude = logic.player_hit;
+        screenshake_timer = 1.0f;
+        logic.player_hit = 0;
+    }
+    if (logic.player_bump) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.player_bump);
+        screenshake_magnitude = logic.player_bump;
+        screenshake_timer = 0.5f;
+        logic.player_bump = 0;
+    }
+    if (logic.border_bump) {
+        soundManager.playSound(SoundManager::SFX::bump, logic.player_bump);
+        logic.border_bump = 0;
     }
     if(logic.splash){
       soundManager.playSound(SoundManager::SFX::splash, logic.splash);
@@ -420,6 +432,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
       soundManager.playSound(SoundManager::SFX::fish, logic.powerup);
       logic.powerup = 0;
     }
+
+
 
 
     //make the rectangle transparent rect that draws on top of the stage on the minimap. Space out stages on minimap better
@@ -454,17 +468,31 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
+    if (screenshake_timer > 0) {
+        screenshake_timer -= dSec;
+        sf::View view = window.getDefaultView();
+        view.setCenter(view.getCenter() + sf::Vector2f(rand() % (1 + (int)(screenshake_magnitude * screenshake_timer * 0.3)), rand() % (1 + (int)(screenshake_magnitude * screenshake_timer * 0.3))) );
+        window.setView(view);
+    } else {
+        screenshake_timer = 0;
+    }
+
+
     if (logic.getState() == GameLogic::GameState::playing) {
         //update animations
         for (auto anim = fish_animation_list.begin(); anim != fish_animation_list.end(); anim++) {
             (*anim)->updateFish(dSec);
         }
-        walrus1_animation.updateWalrus(logic.walrus1.getFacingDir(), logic.walrus1.getState(), dSec);
-        walrus2_animation.updateWalrus(logic.walrus2.getFacingDir(), logic.walrus2.getState(), dSec);
-
         // handle input in instantiated player controllers
-        player1Controller->update(window, logic, dSec, 1);
-        player2Controller->update(window, logic, dSec, 2);
+        if (!logic.walrus1.isDead()) {
+            walrus1_animation.updateWalrus(logic.walrus1.getFacingDir(), logic.walrus1.getState(), dSec);
+            player1Controller->update(window, logic, dSec, 1);
+        }
+        if (!logic.walrus2.isDead()) {
+            walrus2_animation.updateWalrus(logic.walrus2.getFacingDir(), logic.walrus2.getState(), dSec);
+            player2Controller->update(window, logic, dSec, 2);
+        }
+
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
