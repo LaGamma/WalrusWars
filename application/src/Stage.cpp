@@ -102,8 +102,8 @@ void Stage::tickMelt(int stage) {
 	}
 	float sum;
 	int r;
-	for(int i = 0; i < ICE_BLOCKS_WIDTH; i++) {
-		for(int j = 0; j < ICE_BLOCKS_HEIGHT; j++) {
+	for(int i = 0; i < ICE_BLOCKS_WIDTH+1; i++) {
+		for(int j = 0; j < ICE_BLOCKS_HEIGHT+1; j++) {
 			if ((*melting_stage)[i][j] > 0) {
 				r = rand() % 100 + 1;
 				sum = (*melting_stage)[i-1][j] + (*melting_stage)[i+1][j] + (*melting_stage)[i-1][j-1] + (*melting_stage)[i-1][j+1] + (*melting_stage)[i+1][j-1] + (*melting_stage)[i+1][j+1] + (*melting_stage)[i][j+1]+ (*melting_stage)[i][j-1];
