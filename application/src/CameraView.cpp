@@ -21,6 +21,7 @@ void CameraView::init() {
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
+    soundManager.playMusic(SoundManager::Music::title);
 
     for (int i = 0; i < MAX_NUM_OF_FISH; i++) {
         fish_animation_list.push_back(std::unique_ptr<Animation>(new Animation()));
@@ -36,19 +37,24 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
     switch (state) {
         case GameLogic::GameState::mainMenu:
             drawMainMenu(window, logic);
+            soundManager.setMusicVolume(logic.getMusicVolume());
             break;
         case GameLogic::GameState::pauseMenu:
             drawGame(window,logic);
             drawPauseMenu(window, logic);
+            soundManager.setMusicVolume(logic.getMusicVolume()*.5);
             break;
         case GameLogic::GameState::playing:
             drawGame(window, logic);
+            soundManager.setMusicVolume(logic.getMusicVolume());
             break;
         case GameLogic::GameState::gameOverMenu:
             drawGameOverMenu(window, logic);
+            soundManager.setMusicVolume(logic.getMusicVolume());
             break;
         case GameLogic::GameState::optionsMenu:
             drawOptionsMenu(window, logic);
+            soundManager.setMusicVolume(logic.getMusicVolume());
             break;
     }
     // display
@@ -98,6 +104,7 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw transparent screen
+
     sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
@@ -572,10 +579,12 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                         std::cout << "2 player game!" << std::endl;
                                         createControllers(2);
                                         logic.resetGame();
+                                        soundManager.playMusic(SoundManager::Music::battle);
                                     } else if (main_menu_selection == 'S') {
                                         std::cout << "1 player game!" << std::endl;
                                         createControllers(1);
                                         logic.resetGame();
+                                        soundManager.playMusic(SoundManager::Music::battle);
                                     } else if (main_menu_selection == 'O') {
                                         std::cout << "options menu" << std::endl;
                                         logic.handleOptionsMenu();
@@ -586,6 +595,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     break;
                                 case GameLogic::GameState::gameOverMenu:
                                     logic.returnToMenu();
+                                    soundManager.playMusic(SoundManager::Music::title);
                                     break;
                                 case GameLogic::GameState::optionsMenu:
                                     if(options_menu_selection == 'Q') {

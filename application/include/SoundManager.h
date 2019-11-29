@@ -10,6 +10,7 @@ class SoundManager {
     void playSound(SFX, float);
     void playMusic(Music);
     void load();
+    void setMusicVolume(float);
   private:
     sf::SoundBuffer bumpBuffer;
     sf::SoundBuffer splashBuffer;
