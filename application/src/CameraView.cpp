@@ -931,6 +931,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     logic.handleOptionsMenu();
                                 }
                             } else if (logic.getState() == GameLogic::GameState::gameOverMenu) {
+                                soundManager.playMusic(SoundManager::Music::title);
                                 logic.returnToMenu();
                             } else if (logic.getState() == GameLogic::GameState::optionsMenu) {
                                 if (options_menu_selection == 'Q') {
@@ -942,26 +943,37 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     if (player1OrBot == -1 && player2OrBot == -1) {
                                         createControllers(0);
                                         logic.resetGame();
-                                        soundManager.playMusic(SoundManager::Music::battle);
-                                    } else if (main_menu_selection == 'S') {
-                                        std::cout << "1 player game!" << std::endl;
+                                    } else if (player1OrBot == 1 && player2OrBot == -1) {
                                         createControllers(1);
                                         logic.resetGame();
-                                        soundManager.playMusic(SoundManager::Music::battle);
-                                    } else if (main_menu_selection == 'O') {
-                                        std::cout << "options menu" << std::endl;
-                                        logic.handleOptionsMenu();
+                                    } else if (player1OrBot == -1 && player2OrBot == 1) {
+                                        createControllers(2);
+                                        logic.resetGame();
+                                    } else {
+                                        createControllers(3);
+                                        logic.resetGame();
                                     }
+                                    soundManager.playMusic(SoundManager::Music::battle);
                                 }
                                 if (player1_menu_selection == 'Q') {
                                     player1_menu_selection == 'P';
                                     logic.returnToMenu();
-                                    soundManager.playMusic(SoundManager::Music::title);
-                                    break;
-                                case GameLogic::GameState::optionsMenu:
-                                    if(options_menu_selection == 'Q') {
-                                        options_menu_selection = 'S';
-                                        logic.returnToMenu();
+                                }
+
+                                if (player1_menu_selection == '1') {
+                                    player1OrBot = -player1OrBot;
+                                    if (player1OrBot == 1) {
+                                        std::cout << "Entering Name" << std::endl;
+                                        enteringNameText = true;
+                                        logic.handleNameTextSubMenu();
+                                    }
+                                }
+                                if (player1_menu_selection == '2') {
+                                    player2OrBot = -player2OrBot;
+                                    if (player2OrBot == 1) {
+                                        std::cout << "Entering Name" << std::endl;
+                                        enteringNameText = true;
+                                        logic.handleNameTextSubMenu();
                                     }
                                 }
                             } else if (logic.getState() == GameLogic::GameState::nameTextSubMenu) {
@@ -986,6 +998,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
             }
             break;
         }
+
 
     }
 
