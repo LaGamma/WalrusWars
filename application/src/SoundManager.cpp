@@ -10,6 +10,22 @@ void SoundManager::load() {
     std::cout << "Could not load audio\n";
   }
   bumpSound.setBuffer(bumpBuffer);
+  if(!fishBuffer.loadFromFile("../audio/fish.wav")) {
+    std::cout << "Could not load audio\n";
+  }
+  fishSound.setBuffer(fishBuffer);
+  if(!menuMoveBuffer.loadFromFile("../audio/menuMove.wav")) {
+    std::cout << "Could not load audio\n";
+  }
+  menuMoveSound.setBuffer(menuMoveBuffer);
+  if(!menuSelectBuffer.loadFromFile("../audio/menuSelect.wav")) {
+    std::cout << "Could not load audio\n";
+  }
+  menuSelectSound.setBuffer(menuSelectBuffer);
+  if(!splashBuffer.loadFromFile("../audio/splash.wav")) {
+    std::cout << "Could not load audio\n";
+  }
+  splashSound.setBuffer(splashBuffer);
 }
 
 void SoundManager::playSound(SoundManager::SFX sfx, float vol){
@@ -18,16 +34,20 @@ void SoundManager::playSound(SoundManager::SFX sfx, float vol){
     bumpSound.play();
   };
   if(sfx == SoundManager::SFX::splash){
-    //load and play sound
+    splashSound.setVolume(vol*3.5);
+    splashSound.play();
   };
   if(sfx == SoundManager::SFX::menuSelect){
-    //load and play sound
+    menuSelectSound.setVolume(vol);
+    menuSelectSound.play();
   };
   if(sfx == SoundManager::SFX::menuMove){
-    //load and play sound
+    menuMoveSound.setVolume(vol);
+    menuMoveSound.play();
   };
   if(sfx == SoundManager::SFX::fish){
-    //load and play sound
+    fishSound.setVolume(vol);
+    fishSound.play();
   };
 };
 
@@ -37,8 +57,5 @@ void SoundManager::playMusic(SoundManager::Music track){
   };
   if(track == SoundManager::Music::battle){
     //load and play battle music
-  };
-  if(track == SoundManager::Music::victory){
-    //load and play victory music
   };
 };

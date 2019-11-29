@@ -18,16 +18,20 @@ void Player::spawn(sf::Vector2f spawn_pos) {
     vel = sf::Vector2f(0.0f, 0.0f);
     state = normal;
     speed_boost = 1.0f;
-
+    facing_dir = sf::Vector2f(0,1);
+    attack_charge = 0.0f;
+    attack_release_timer = 0.0f;
+    attack_duration_timer = 0.0f;
 }
 
-// update movement and stamina recovery
 void Player::tickUpdate(float dSec) {
     float tmpx = pos.x;
     float tmpy = pos.y;
+    // update movement
     pos += vel * dSec;
     distance_travelled += abs(tmpx - pos.x) + abs(tmpy - pos.y);
 
+    // regenerate stamina
     switch (state) {
         case resting:
             stamina += RESTING_STAMINA_REGEN_RATE * dSec;
@@ -43,7 +47,33 @@ void Player::tickUpdate(float dSec) {
     // cap stamina
     if (stamina > MAX_STAMINA) {
         stamina = MAX_STAMINA;
+
+        // check if not moving and set to idle
+        if (state == normal && sqrt((vel.x * vel.x) + (vel.y * vel.y)) < 0.1) {
+            state = idle;
+        }
+    // don't allow negative stamina either
+    } else if (stamina < 0) {
+        stamina = 0;
     }
+
+    // if raising tusks, decrement attack release timer
+    if (attack_release_timer > 0) {
+        attack_release_timer -= dSec;
+    } else if (state == raising_tusks && attack_release_timer <= 0) {
+        attack_release_timer = 0;
+        slash();
+    }
+
+    // if attacking, decrement attack duration timer
+    if (attack_duration_timer > 0) {
+        attack_duration_timer -= dSec;
+    } else if (state == attacking && attack_duration_timer <= 0) {
+        attack_duration_timer = 0;
+        attack_charge = 0;
+        state = normal;
+    }
+
 
 }
 
@@ -68,38 +98,52 @@ void Player::applyPassiveForce(float dSec) {
 
 void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
+    if (force_dir.x != 0 || force_dir.y != 0) {
+        facing_dir = force_dir;
+    }
+
     switch (state) {
         case dead:
-            force_dir = force_dir * DEAD_MOVEMENT_SCALEDOWN;
+            force_dir *= DEAD_MOVEMENT_SCALEDOWN;
             break;
         case resting:
-            force_dir = force_dir * RESTING_MOVEMENT_SCALEDOWN;
+            force_dir *= RESTING_MOVEMENT_SCALEDOWN;
             break;
         case raising_tusks:
-            force_dir = force_dir * RAISING_TUSKS_MOVEMENT_SCALEDOWN;
+            // two possible strategies here (running cancels the attack OR scaledown movement - commented out)
+            //if (force_dir.x != 0 || force_dir.y != 0) {
+            //    state = running;
+            //   attack_charge = 0;
+            //}
+            force_dir *= RAISING_TUSKS_MOVEMENT_SCALEDOWN;
             break;
         case attacking:
-            force_dir = force_dir * ATTACKING_MOVEMENT_SCALEDOWN;
+            force_dir *= ATTACKING_MOVEMENT_SCALEDOWN;
             break;
+        case idle:
+            facing_dir = sf::Vector2f(0,1);
+            if (force_dir.x != 0 || force_dir.y != 0) {
+                state = running;
+            }
+            break;
+        default:
+            if (force_dir.x == 0 && force_dir.y == 0) {
+                state = normal;
+            } else {
+                state = running;
+            }
     }
-    force_dir *= speed_boost;
 
-    vel += force_dir * dSec * ACCELERATE_STRENGTH;
     stamina -= sqrt((force_dir.x * force_dir.x) + (force_dir.y * force_dir.y)) * dSec * MOVEMENT_STAMINA_COST_SCALE;
+    force_dir *= speed_boost;
+    vel += force_dir * dSec * ACCELERATE_STRENGTH;
 
     if (stamina < 0) {
         state = resting;
+        attack_charge = 0.0f;
     }
 }
-void Player::setVel(sf::Vector2f newVel) {
-    vel = newVel;
-}
-void Player::setMass(float newMass) {
-    mass = newMass;
-}
-void Player::setStamina(float newStamina) {
-    stamina = newStamina;
-}
+
 
 void Player::handlePowerUp(int powerup) {
     powerups_collected++;
@@ -112,32 +156,63 @@ void Player::handlePowerUp(int powerup) {
     }
 }
 
-void Player::raiseTusks() {
+void Player::raiseTusks(float dSec) {
     state = raising_tusks;
+    if (attack_charge < 1) {
+        attack_charge = 1;
+    }
+    attack_charge += dSec;
+    // cap the charged attack
+    if (attack_charge > MAX_ATTACK_CHARGE) {
+        attack_charge = MAX_ATTACK_CHARGE;
+    }
+    attack_release_timer = ATTACK_RELEASE_TIMER;
 }
 
 void Player::slash() {
     state = normal;
     slash_attack_num++;
+    std::cout<<"SLASH: "<<attack_charge<<std::endl;
+    stamina -= ATTACK_STAMINA_COST;
+    attack_duration_timer = ATTACK_DURATION_TIMER;
+    state = attacking;
 }
 
 void Player::kill() {
     state = dead;
     deaths++;
 }
-
 bool Player::isDead() {
     return (state == dead);
+}
+// setters
+void Player::setVel(sf::Vector2f newVel) {
+    vel = newVel;
+}
+void Player::setStamina(float newStamina) {
+    stamina = newStamina;
+}
+void Player::setColor(sf::Color newColor) {
+    color = newColor;
 }
 // getters
 Player::PlayerState Player::getState() {
     return state;
+}
+sf::Color Player::getColor() {
+    return color;
 }
 sf::Vector2f Player::getPos() {
     return pos;
 }
 sf::Vector2f Player::getVel() {
     return vel;
+}
+sf::Vector2f Player::getFacingDir() {
+    return facing_dir;
+}
+float Player::getAttackCharge() {
+    return attack_charge;
 }
 float Player::getMass() {
     return mass;

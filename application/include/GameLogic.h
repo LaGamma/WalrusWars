@@ -16,32 +16,42 @@ class GameLogic {
     void returnToMenu();
     void resetGame();
     void handleOptionsMenu();
+
     void handleStatsMenu();
+    void handlePlayerSelectMenu();
+    void handleNameTextSubMenu();
+    void handleColorSelectSubMenu();
+
     int getStageProgression();
     void setSFXVolume(float vol);
     void setMusicVolume(float vol);
     float getSFXVolume();
     float getMusicVolume();
-    sf::Vector2f getAttackCollisionPoint();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, statsMenu};
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu};
     GameState getState();
+    int getRound();
+    float getRoundTimer();
     bool winner1;
-    float bump;
+    bool p1_attack_handling_in_progress;
+    bool p2_attack_handling_in_progress;
+    float player_bump;
+    float border_bump;
+    float player_hit;
     float splash;
+    float powerup;
     Player walrus1;
     Player walrus2;
     Stage stage;
+    int round = 1;
+    float RoundTimer = 0;
 
     sf::Vector2f playerCollisionPoint;
-
-    sf::Vector2f attackCollisionPoint;
+    sf::Vector2f p1AttackPoint;
+    sf::Vector2f p2AttackPoint;
 
     std::list<std::unique_ptr<Fish>> fish_list;
-    //std::unique_ptr<Fish> fish_list[3];
-
-    //sf::Vector2f curr_fish_pos; //coordinates to draw fish for CameraView
-
 
 private:
     GameState state;

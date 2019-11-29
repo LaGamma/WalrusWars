@@ -5,7 +5,7 @@
 class SoundManager {
   public:
     SoundManager();
-    enum Music{title,battle,victory};
+    enum Music{title,battle};
     enum SFX{bump,splash,menuSelect,menuMove,fish};
     void playSound(SFX, float);
     void playMusic(Music);
@@ -19,7 +19,6 @@ class SoundManager {
 
     sf::Music menuMusic;
     sf::Music battleMusic;
-    sf::Music victoryMusic;
     sf::Sound bumpSound;
     sf::Sound splashSound;
     sf::Sound menuSelectSound;
