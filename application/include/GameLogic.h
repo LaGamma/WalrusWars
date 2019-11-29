@@ -28,8 +28,7 @@ class GameLogic {
     float getSFXVolume();
     float getMusicVolume();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
-    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, statsMenu};
-    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu};
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu, statsMenu};
     GameState getState();
     int getRound();
     float getRoundTimer();

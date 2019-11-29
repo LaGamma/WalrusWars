@@ -943,10 +943,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
-    //update fish animation every game
-    fish_animation1.updateFish(dSec);
-    fish_animation2.updateFish(dSec);
-    fish_animation3.updateFish(dSec);
     if (screenshake_timer > 0) {
         screenshake_timer -= dSec;
         sf::View view = window.getDefaultView();

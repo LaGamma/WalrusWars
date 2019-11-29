@@ -348,36 +348,11 @@ void GameLogic::handlePlayerDeath(int walrus) {
     }
 
 	if (walrus == 1) {
-	    walrus2.kills++;
-	  // check for game over
-      if (progression == 2) {
-          winner1 = false;
-          state = gameOverMenu;
-          //reset progression
-          progression = 0;
-      }
-
-      walrus1.kill();
-
-	} else if (walrus == 2) {
-	    walrus1.kills++;
-	  //check for game over
-      if (progression == -2) {
-          winner1 = true;
-          state = gameOverMenu;
-          //reset progression
-          progression = 0;
-      }
-
-      walrus2.kill();
-      if(walrus1.isDead()){
-        resetGame();
-      }
-
 	    if (walrus2.isDead()) {
 	        resetGame();
 	    } else {
             walrus1.kill();
+            walrus2.kills++;
             // check for game over
             if (progression == 2) {
                 winner1 = false;
@@ -386,12 +361,12 @@ void GameLogic::handlePlayerDeath(int walrus) {
 	    }
 	}
 
-
 	else if (walrus == 2) {
         if (walrus1.isDead()) {
             resetGame();
         } else {
             walrus2.kill();
+            walrus1.kills++;
             // check for game over
             if (progression == -2) {
                 winner1 = true;
