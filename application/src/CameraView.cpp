@@ -999,7 +999,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 else if (options_menu_selection == 'Q')
                                     options_menu_selection = 'M';
                             }
-                        
+
                             else if (logic.getState() == GameLogic::GameState::gameOverMenu) {
                                 if (game_over_menu_selection == 'P' || game_over_menu_selection == 'S')
                                     game_over_menu_selection = 'P';
@@ -1153,6 +1153,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 if (options_menu_selection == 'Q') {
                                     options_menu_selection = 'S';
                                     logic.returnToMenu();
+                                    soundManager.playMusic(SoundManager::Music::title);
                                 }
                             } else if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
                                 if (player1_menu_selection == 'P') {
@@ -1169,14 +1170,16 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                         createControllers(3);
                                         logic.resetGame();
                                     }
-
+                                    soundManager.playMusic(SoundManager::Music::battle);
                                     break;
                                 case GameLogic::GameState::pauseMenu:
                                     logic.togglePause();
                                     break;
                                 case GameLogic::GameState::gameOverMenu:
-                                    if (game_over_menu_selection == 'P')
+                                    if (game_over_menu_selection == 'P'){
                                         logic.returnToMenu();
+                                        soundManager.playMusic(SoundManager::Music::title);
+                                      }
                                     else if (game_over_menu_selection == 'S')
                                         logic.handleStatsMenu();
                                     else
@@ -1186,12 +1189,14 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                     if(options_menu_selection == 'Q') {
                                         options_menu_selection = 'S';
                                         logic.returnToMenu();
+                                        soundManager.playMusic(SoundManager::Music::title);
                                     }
                                     break;
                                 case GameLogic::GameState::statsMenu:
                                     logic.returnToMenu();
+                                    soundManager.playMusic(SoundManager::Music::title);
                                     break;
-                                    soundManager.playMusic(SoundManager::Music::battle);
+
                                 }
                                 if (player1_menu_selection == 'Q') {
                                     player1_menu_selection == 'P';
