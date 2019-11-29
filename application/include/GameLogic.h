@@ -16,6 +16,7 @@ class GameLogic {
     void returnToMenu();
     void resetGame();
     void handleOptionsMenu();
+    void handleStatsMenu();
     int getStageProgression();
     void setSFXVolume(float vol);
     void setMusicVolume(float vol);
@@ -23,7 +24,7 @@ class GameLogic {
     float getMusicVolume();
     sf::Vector2f getAttackCollisionPoint();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
-    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu};
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, statsMenu};
     GameState getState();
     bool winner1;
     float bump;

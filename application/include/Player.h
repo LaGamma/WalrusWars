@@ -29,6 +29,15 @@ public:
     void setMass(float);
     void setStamina(float);
     bool isDead();
+    void resetStats();
+
+    //stats: kills, deaths, powerups collected, slash attacks used, meters travelled (need to figure out a way to do this)
+    //will be private, public now for testing
+    int kills;
+    int deaths;
+    int powerups_collected;
+    int slash_attack_num;
+    float distance_travelled;
 
 private:
     sf::Vector2f pos;

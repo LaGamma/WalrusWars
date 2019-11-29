@@ -4,7 +4,11 @@
 #include "Player.h"
 
 Player::Player() {
-
+    kills = 0;
+    deaths = 0;
+    powerups_collected = 0;
+    slash_attack_num = 0;
+    distance_travelled = 0.0f;
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
@@ -14,11 +18,15 @@ void Player::spawn(sf::Vector2f spawn_pos) {
     vel = sf::Vector2f(0.0f, 0.0f);
     state = normal;
     speed_boost = 1.0f;
+
 }
 
 // update movement and stamina recovery
 void Player::tickUpdate(float dSec) {
+    float tmpx = pos.x;
+    float tmpy = pos.y;
     pos += vel * dSec;
+    distance_travelled += abs(tmpx - pos.x) + abs(tmpy - pos.y);
 
     switch (state) {
         case resting:
@@ -94,6 +102,7 @@ void Player::setStamina(float newStamina) {
 }
 
 void Player::handlePowerUp(int powerup) {
+    powerups_collected++;
     stamina += FISH_STAMINA_GAINED;
     if (powerup == 0) {
         speed_boost += FISH_SPEED_BOOST;
@@ -109,10 +118,12 @@ void Player::raiseTusks() {
 
 void Player::slash() {
     state = normal;
+    slash_attack_num++;
 }
 
 void Player::kill() {
     state = dead;
+    deaths++;
 }
 
 bool Player::isDead() {
@@ -133,4 +144,12 @@ float Player::getMass() {
 }
 float Player::getStamina() {
     return stamina;
+}
+
+void Player::resetStats() {
+    kills = 0;
+    deaths = 0;
+    powerups_collected = 0;
+    slash_attack_num = 0;
+    distance_travelled = 0.0f;
 }

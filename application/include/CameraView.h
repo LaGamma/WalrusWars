@@ -23,10 +23,12 @@ class CameraView {
     void drawPauseMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawStatsMenu(sf::RenderWindow &window, GameLogic &logic);
 
     sf::Font font;
     char main_menu_selection = 'P';
     char options_menu_selection = 'S';
+    char game_over_menu_selection = 'P';
 
     // major InputManager classes
     std::unique_ptr<Controller> player1Controller;
