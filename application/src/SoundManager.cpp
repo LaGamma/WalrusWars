@@ -26,6 +26,14 @@ void SoundManager::load() {
     std::cout << "Could not load audio\n";
   }
   splashSound.setBuffer(splashBuffer);
+  if(!menuMusic.openFromFile("../audio/menuMusic.wav")){
+    std::cout << "Could not load audio\n";
+  }
+  if(!battleMusic.openFromFile("../audio/battleMusic.wav")){
+    std::cout << "Could not load audio\n";
+  }
+  menuMusic.setLoop(true);
+  battleMusic.setLoop(true);
 }
 
 void SoundManager::playSound(SoundManager::SFX sfx, float vol){
@@ -53,9 +61,16 @@ void SoundManager::playSound(SoundManager::SFX sfx, float vol){
 
 void SoundManager::playMusic(SoundManager::Music track){
   if(track == SoundManager::Music::title){
-    //load and play title music
+    battleMusic.stop();
+    menuMusic.play();
   };
   if(track == SoundManager::Music::battle){
-    //load and play battle music
+    menuMusic.stop();
+    battleMusic.play();
   };
 };
+
+void SoundManager::setMusicVolume(float volume){
+  battleMusic.setVolume(volume);
+  menuMusic.setVolume(volume);
+}
