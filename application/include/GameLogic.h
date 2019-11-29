@@ -16,14 +16,19 @@ class GameLogic {
     void returnToMenu();
     void resetGame();
     void handleOptionsMenu();
+    void handlePlayerSelectMenu();
+    void handleNameTextSubMenu();
+    void handleColorSelectSubMenu();
     int getStageProgression();
     void setSFXVolume(float vol);
     void setMusicVolume(float vol);
     float getSFXVolume();
     float getMusicVolume();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
-    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu};
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu};
     GameState getState();
+    int getRound();
+    float getRoundTimer();
     bool winner1;
     bool p1_attack_handling_in_progress;
     bool p2_attack_handling_in_progress;
@@ -35,6 +40,8 @@ class GameLogic {
     Player walrus1;
     Player walrus2;
     Stage stage;
+    int round = 1;
+    float RoundTimer = 0;
 
     sf::Vector2f playerCollisionPoint;
     sf::Vector2f p1AttackPoint;
