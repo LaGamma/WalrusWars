@@ -793,10 +793,10 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                 case sf::Event::KeyPressed:
 
                     // which key was pressed?
-                    switch(Event.key.code) {
+                    switch (Event.key.code) {
 
                         case sf::Keyboard::Up:
-                            if(logic.getState() ==  GameLogic::GameState::mainMenu) {
+                            if (logic.getState() == GameLogic::GameState::mainMenu) {
                                 //track which menu option the player is on
                                 if (main_menu_selection == 'P' || main_menu_selection == 'H')
                                     main_menu_selection = 'P';
@@ -817,24 +817,24 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 else if (player1_menu_selection == 'Q')
                                     player1_menu_selection = 'P';
                             }
-                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
+                            soundManager.playSound(SoundManager::SFX::menuMove, logic.getSFXVolume());
                             break;
 
-                        /*
-                         * //tried to add player 2 controls for the player selection but doest work well on one computer
-                         * because the same key, enter, needs to be used for both players. for now, or until gamepad
-                         * compatibility, use arrow keys for player1 selection.
-                        case sf::Keyboard::W:
-                            if (player2_menu_selection == '1' || player2_menu_selection == '2')
-                                player2_menu_selection = player2_menu_selection;
-                            else if (player1_menu_selection == 'P')
-                                player2_menu_selection = '2';
-                            else if (player2_menu_selection == 'Q')
-                                player2_menu_selection = 'P';
-                            break;
-                        */
+                            /*
+                             * //tried to add player 2 controls for the player selection but doest work well on one computer
+                             * because the same key, enter, needs to be used for both players. for now, or until gamepad
+                             * compatibility, use arrow keys for player1 selection.
+                            case sf::Keyboard::W:
+                                if (player2_menu_selection == '1' || player2_menu_selection == '2')
+                                    player2_menu_selection = player2_menu_selection;
+                                else if (player1_menu_selection == 'P')
+                                    player2_menu_selection = '2';
+                                else if (player2_menu_selection == 'Q')
+                                    player2_menu_selection = 'P';
+                                break;
+                            */
                         case sf::Keyboard::Down:
-                            if(logic.getState() ==  GameLogic::GameState::mainMenu) {
+                            if (logic.getState() == GameLogic::GameState::mainMenu) {
                                 //track which menu option the player is on
                                 if (main_menu_selection == 'O' || main_menu_selection == 'H')
                                     main_menu_selection = 'O';
@@ -853,16 +853,15 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 else if (player1_menu_selection == '1' || player1_menu_selection == '2')
                                     player1_menu_selection = 'P';
                             }
-                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
+                            soundManager.playSound(SoundManager::SFX::menuMove, logic.getSFXVolume());
                             break;
 
                         case sf::Keyboard::Right:
                             if (logic.getState() == GameLogic::GameState::optionsMenu) {
                                 if (options_menu_selection == 'S') {
                                     logic.setSFXVolume(logic.getSFXVolume() + 10);
-                                    std::cout<<logic.getSFXVolume();
-                                }
-                                else if (options_menu_selection == 'M') {
+                                    std::cout << logic.getSFXVolume();
+                                } else if (options_menu_selection == 'M') {
                                     logic.setMusicVolume(logic.getMusicVolume() + 10);
                                 }
                             }
@@ -870,7 +869,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 if (player1_menu_selection == '1')
                                     player1_menu_selection = '2';
                             }
-                            if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
+                            if (logic.getState() == GameLogic::GameState::colorSelectSubMenu) {
                                 std::cout << color_selection << std::endl;
                                 if (color_selection == '4' || color_selection == '5')
                                     color_selection = '5';
@@ -881,14 +880,13 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 if (color_selection == '1')
                                     color_selection = '2';
                             }
-                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
+                            soundManager.playSound(SoundManager::SFX::menuMove, logic.getSFXVolume());
                             break;
                         case sf::Keyboard::Left:
                             if (logic.getState() == GameLogic::GameState::optionsMenu) {
                                 if (options_menu_selection == 'S') {
                                     logic.setSFXVolume(logic.getSFXVolume() - 10);
-                                }
-                                else if (options_menu_selection == 'M') {
+                                } else if (options_menu_selection == 'M') {
                                     logic.setMusicVolume(logic.getMusicVolume() - 10);
                                 }
                             }
@@ -896,7 +894,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 if (player1_menu_selection == '2')
                                     player1_menu_selection = '1';
                             }
-                            if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
+                            if (logic.getState() == GameLogic::GameState::colorSelectSubMenu) {
                                 std::cout << color_selection << std::endl;
                                 if (color_selection == '1' || color_selection == '2')
                                     color_selection = '1';
@@ -907,96 +905,89 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 if (color_selection == '5')
                                     color_selection = '4';
                             }
-                            soundManager.playSound(SoundManager::SFX::menuMove,logic.getSFXVolume());
+                            soundManager.playSound(SoundManager::SFX::menuMove, logic.getSFXVolume());
                             break;
                         case sf::Keyboard::Return:
 
-                                if(logic.getState() ==  GameLogic::GameState::mainMenu) {
-                                    if (main_menu_selection == 'P') {
-                                        std::cout << "play game" << std::endl;
-                                        logic.handlePlayerSelectMenu();
-                                        //createControllers(2);
-                                        //logic.resetGame();
-                                    } else if (main_menu_selection == 'H') {
-                                        std::cout << "help menu" << std::endl;
-                                        //createControllers(1);
-                                        //logic.resetGame();
-                                    } else if (main_menu_selection == 'O') {
-                                        std::cout << "options menu" << std::endl;
-                                        logic.handleOptionsMenu();
-                                    }
-                                }
-
-                                else if(logic.getState() ==  GameLogic::GameState::gameOverMenu){
-                                     logic.returnToMenu();
-                                    }
-                                else if(logic.getState() ==  GameLogic::GameState::optionsMenu){
-                                    if (options_menu_selection == 'Q') {
-                                        options_menu_selection = 'S';
-                                        logic.returnToMenu();
-                                    }
-                                }
-                                else if(logic.getState() == GameLogic::GameState::playerSelectMenu) {
-                                    if (player1_menu_selection == 'P') {
-                                        if (player1OrBot == -1 && player2OrBot == -1) {
-                                            createControllers(0);
-                                            logic.resetGame();
-                                        } else if (player1OrBot == 1 && player2OrBot == -1) {
-                                            createControllers(1);
-                                            logic.resetGame();
-                                        } else if (player1OrBot == -1 && player2OrBot == 1) {
-                                            createControllers(2);
-                                            logic.resetGame();
-                                        } else {
-                                            createControllers(3);
-                                            logic.resetGame();
-                                        }
-                                    }
-                                    if (player1_menu_selection == 'Q') {
-                                        player1_menu_selection == 'P';
-                                        logic.returnToMenu();
-                                    }
-
-                                    if (player1_menu_selection == '1') {
-                                        player1OrBot = -player1OrBot;
-                                        if (player1OrBot == 1) {
-                                            std::cout << "Entering Name" << std::endl;
-                                            enteringNameText = true;
-                                            logic.handleNameTextSubMenu();
-                                        }
-                                    }
-                                    if (player1_menu_selection == '2') {
-                                        player2OrBot = -player2OrBot;
-                                        if (player2OrBot == 1) {
-                                            std::cout << "Entering Name" << std::endl;
-                                            enteringNameText = true;
-                                            logic.handleNameTextSubMenu();
-                                        }
-                                    }
-                                }
-                                else if (logic.getState() == GameLogic::GameState::nameTextSubMenu){
-                                    std::cout << "Select Color" << std::endl;
-                                    enteringNameText = false;
-                                    colorSelector = true;
-                                    logic.handleColorSelectSubMenu();
-                                }
-                                else if (logic.getState() == GameLogic::GameState::colorSelectSubMenu){
-                                    colorSelector = false;
+                            if (logic.getState() == GameLogic::GameState::mainMenu) {
+                                if (main_menu_selection == 'P') {
+                                    std::cout << "play game" << std::endl;
                                     logic.handlePlayerSelectMenu();
+                                    //createControllers(2);
+                                    //logic.resetGame();
+                                } else if (main_menu_selection == 'H') {
+                                    std::cout << "help menu" << std::endl;
+                                    //createControllers(1);
+                                    //logic.resetGame();
+                                } else if (main_menu_selection == 'O') {
+                                    std::cout << "options menu" << std::endl;
+                                    logic.handleOptionsMenu();
                                 }
-                                    break;
-                            }
-                            soundManager.playSound(SoundManager::SFX::menuSelect,logic.getSFXVolume());
-                            break;
+                            } else if (logic.getState() == GameLogic::GameState::gameOverMenu) {
+                                logic.returnToMenu();
+                            } else if (logic.getState() == GameLogic::GameState::optionsMenu) {
+                                if (options_menu_selection == 'Q') {
+                                    options_menu_selection = 'S';
+                                    logic.returnToMenu();
+                                }
+                            } else if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
+                                if (player1_menu_selection == 'P') {
+                                    if (player1OrBot == -1 && player2OrBot == -1) {
+                                        createControllers(0);
+                                        logic.resetGame();
+                                    } else if (player1OrBot == 1 && player2OrBot == -1) {
+                                        createControllers(1);
+                                        logic.resetGame();
+                                    } else if (player1OrBot == -1 && player2OrBot == 1) {
+                                        createControllers(2);
+                                        logic.resetGame();
+                                    } else {
+                                        createControllers(3);
+                                        logic.resetGame();
+                                    }
+                                }
+                                if (player1_menu_selection == 'Q') {
+                                    player1_menu_selection == 'P';
+                                    logic.returnToMenu();
+                                }
 
-                                break;
-                        case sf::Keyboard::P:
-                            logic.togglePause();
-                            soundManager.playSound(SoundManager::SFX::menuSelect,logic.getSFXVolume());
+                                if (player1_menu_selection == '1') {
+                                    player1OrBot = -player1OrBot;
+                                    if (player1OrBot == 1) {
+                                        std::cout << "Entering Name" << std::endl;
+                                        enteringNameText = true;
+                                        logic.handleNameTextSubMenu();
+                                    }
+                                }
+                                if (player1_menu_selection == '2') {
+                                    player2OrBot = -player2OrBot;
+                                    if (player2OrBot == 1) {
+                                        std::cout << "Entering Name" << std::endl;
+                                        enteringNameText = true;
+                                        logic.handleNameTextSubMenu();
+                                    }
+                                }
+                            } else if (logic.getState() == GameLogic::GameState::nameTextSubMenu) {
+                                std::cout << "Select Color" << std::endl;
+                                enteringNameText = false;
+                                colorSelector = true;
+                                logic.handleColorSelectSubMenu();
+                            } else if (logic.getState() == GameLogic::GameState::colorSelectSubMenu) {
+                                colorSelector = false;
+                                logic.handlePlayerSelectMenu();
+                            }
                             break;
                     }
+                    soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
+                    break;
+
+                    break;
+                case sf::Keyboard::P:
+                    logic.togglePause();
+                    soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
                     break;
             }
+            break;
         }
 
     }
