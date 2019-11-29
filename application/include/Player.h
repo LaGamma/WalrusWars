@@ -39,7 +39,7 @@ private:
     sf::Vector2f vel;
     sf::Vector2f facing_dir;
     sf::Vector2f attack_collision_pt;
-    sf::Color color;
+    sf::Color color = sf::Color(255,255,255,255);
     PlayerState state;
     float mass;
     float stamina;

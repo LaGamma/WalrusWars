@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <cfloat>
+#include <cmath>
 
 //for ai, generally move towards center if player near edge shortest path towards where player is headed or is depending on difficulty
 // , if in close proximity to fish or closer to fish than player shortest path to fish.

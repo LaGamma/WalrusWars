@@ -168,6 +168,8 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
     if (walrus == 1 && xpos <= 0) {
         if (walrus2.isDead()) {
             progression--;
+            std::cout<<"Round Number: " << round<< "\n";
+            round += 1;
             fish_list.clear();
             walrus1.spawn(sf::Vector2f(15 * WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
             walrus2.spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
@@ -183,6 +185,8 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
     else if (walrus == 2 && xpos >= WINDOW_WIDTH) {
         if (walrus1.isDead()) {
             progression++;
+            std::cout<<"Round Number: " << round<< "\n";
+            round += 1;
             fish_list.clear();
             walrus1.spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
             walrus2.spawn(sf::Vector2f(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
@@ -299,6 +303,8 @@ void GameLogic::returnToMenu() {
     stage.generateMap();
     //reset progression
     progression = 0;
+    //reset rounds
+    round = 1;
 }
 
 void GameLogic::setSFXVolume(float vol) {
@@ -377,18 +383,31 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
-    walrus2.setColor(sf::Color(150, 150, 255, 255));
-    walrus1.setColor(sf::Color(255, 255, 255, 255));
+    walrus2.setColor(walrus1.getColor());
+    walrus1.setColor(walrus2.getColor());
 }
 
 void GameLogic::handleOptionsMenu() {
     state = optionsMenu;
 }
 
+void GameLogic::handlePlayerSelectMenu() {
+    state = playerSelectMenu;
+}
+
+void GameLogic::handleNameTextSubMenu() {
+    state = nameTextSubMenu;
+}
+void GameLogic::handleColorSelectSubMenu() {
+    state = colorSelectSubMenu;
+}
 GameLogic::GameState GameLogic::getState() {
     return state;
 }
 
 int GameLogic::getStageProgression() {
     return progression;
+}
+int GameLogic::getRound(){
+    return round;
 }
