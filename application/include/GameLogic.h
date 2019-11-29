@@ -16,15 +16,19 @@ class GameLogic {
     void returnToMenu();
     void resetGame();
     void handleOptionsMenu();
+
+    void handleStatsMenu();
     void handlePlayerSelectMenu();
     void handleNameTextSubMenu();
     void handleColorSelectSubMenu();
+
     int getStageProgression();
     void setSFXVolume(float vol);
     void setMusicVolume(float vol);
     float getSFXVolume();
     float getMusicVolume();
     void handlePlayerAttack(int playerNum, sf::Vector2f dir);
+    enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, statsMenu};
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu};
     GameState getState();
     int getRound();
