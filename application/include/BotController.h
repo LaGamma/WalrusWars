@@ -16,12 +16,14 @@ class BotController : public Controller {
   public:
       BotController();
       void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum);
-      void changeState(int);
-      int state;
+  private:
+      void calculatePath(GameLogic &logic, int playerNum);
+      enum ControllerState {defensive, aggressive, transition};
+      ControllerState state;
       std::queue<cell> openList;
       bool closedList[40][30];
       cell cellDetails[40][30];
-      void calculatePath(GameLogic &logic, int playerNum);
+
       std::stack<int> directionStack;
       sf::Vector2f dir;
       sf::Vector2f accumulator;

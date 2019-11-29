@@ -24,8 +24,6 @@ void CameraView::init() {
     playerPortrait.loadFromFile("../images/playerPortrait.png");
     nameFrame.loadFromFile("../images/nameFrame.png");
     colorIcon.loadFromFile("../images/colorIcon.png");
-
-
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
@@ -87,32 +85,30 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     //main menu items
     sf::Text Play("Play", font, 75);
-    sf::Text Stats("Help", font, 75);
+    sf::Text Help("Help", font, 75);
     sf::Text Options("Options", font, 75);
     Play.setPosition(33 * WINDOW_WIDTH / 75, 325 * WINDOW_HEIGHT / 600);
-    Stats.setPosition(33 * WINDOW_WIDTH / 75, 2 * WINDOW_HEIGHT / 3);
+    Help.setPosition(33 * WINDOW_WIDTH / 75, 2 * WINDOW_HEIGHT / 3);
     Options.setPosition(33 * WINDOW_WIDTH / 80, 475 * WINDOW_HEIGHT / 600);
 
     //handle coloring of selection
     if (main_menu_selection == 'P'){
-        Stats.setFillColor(sf::Color::White);
+        Help.setFillColor(sf::Color::White);
         Play.setFillColor(sf::Color::Black);
     }
     if (main_menu_selection == 'H'){
         Play.setFillColor(sf::Color::White);
         Options.setFillColor(sf::Color::White);
-        Stats.setFillColor(sf::Color::Black);
+        Help.setFillColor(sf::Color::Black);
     }
     if (main_menu_selection == 'O'){
-        Stats.setFillColor(sf::Color::White);
+        Help.setFillColor(sf::Color::White);
         Options.setFillColor(sf::Color::Black);
     }
 
     window.draw(Play);
-    window.draw(Stats);
+    window.draw(Help);
     window.draw(Options);
-//settings could contain controls, difficulty, toggle music on off, toggle sound effects, ect.
-
 
 }
 
@@ -211,8 +207,6 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     play_text.setFillColor(sf::Color(255, 255, 255, 255));
     play_text.setPosition(33 * WINDOW_WIDTH / 75, 2 * WINDOW_HEIGHT / 3);
     play_text.setString("Play");
-
-    window.draw(play_text);
 
     //quit text
     sf::Text quit_text;
@@ -753,17 +747,20 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
+    // screen shake view transformation
     if (screenshake_timer > 0) {
         screenshake_timer -= dSec;
         sf::View view = window.getDefaultView();
-        view.setCenter(view.getCenter() + sf::Vector2f(rand() % (1 + (int)(screenshake_magnitude * screenshake_timer * 0.3)), rand() % (1 + (int)(screenshake_magnitude * screenshake_timer * 0.3))) );
+        view.setCenter(view.getCenter() +
+                       sf::Vector2f(rand() % (1 + (int) (screenshake_magnitude * screenshake_timer * 0.3)),
+                                    rand() % (1 + (int) (screenshake_magnitude * screenshake_timer * 0.3))));
         window.setView(view);
     } else {
         screenshake_timer = 0;
     }
 
     if (logic.getState() == GameLogic::GameState::playing) {
-        //update animations
+        // update fish animations
         for (auto anim = fish_animation_list.begin(); anim != fish_animation_list.end(); anim++) {
             (*anim)->updateFish(dSec);
         }
@@ -777,9 +774,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
             player2Controller->update(window, logic, dSec, 2);
         }
 
-
-    } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
+    } else {
 
         // process events
         sf::Event Event;
@@ -976,22 +972,21 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                                 colorSelector = false;
                                 logic.handlePlayerSelectMenu();
                             }
+
+                            soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
+                            break;
+
+                        case sf::Keyboard::P:
+                            logic.togglePause();
+                            soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
                             break;
                     }
-                    soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
-                    break;
-
-                    break;
-                case sf::Keyboard::P:
-                    logic.togglePause();
-                    soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
                     break;
             }
-            break;
+
         }
 
     }
-
 }
 
 void CameraView::createControllers(int players) {

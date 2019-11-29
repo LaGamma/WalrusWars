@@ -8,127 +8,69 @@
 // , if in close proximity to fish or closer to fish than player shortest path to fish.
 
 BotController::BotController() {
-  state = 0;
+  state = defensive;
   dir = sf::Vector2f(0,0);
   accumulator = sf::Vector2f(0,0);
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 
-
     float bot_handicap = 3;  // higher number == slower bot
-    sf::Vector2f w1_pos = logic.walrus1.getPos();
-    sf::Vector2f w2_pos = logic.walrus2.getPos();
-    sf::Vector2f w1_vel = logic.walrus1.getVel();
-    sf::Vector2f w2_vel = logic.walrus2.getVel();
+
+    bool opponent_dead = (playerNum == 1) ? logic.walrus2.isDead() : logic.walrus1.isDead();
+    sf::Vector2f opponent_vel = (playerNum == 1) ? logic.walrus2.getVel() : logic.walrus1.getVel();
+    sf::Vector2f self_vel = (playerNum == 1) ? logic.walrus1.getVel() : logic.walrus2.getVel();
+
+    if(!opponent_dead && (state != defensive) && (opponent_vel.x>=30 || opponent_vel.y>=30)){
+        state = defensive;
+        calculatePath(logic, playerNum);
+    }
+    if(!opponent_dead && (state != aggressive) && (opponent_vel.x<30 || opponent_vel.y<30)){
+        state = aggressive;
+        calculatePath(logic, playerNum);
+    }
+    if(opponent_dead && (state != transition)){
+        state = transition;
+        calculatePath(logic, playerNum);
+    }
+
     dir = sf::Vector2f(0,0);
 
+    if(!directionStack.empty()) {
+        if (directionStack.top() == 1) {
+            dir.y += 1;
+            dir.x += 1;
+        } else if (directionStack.top() == 2) {
+            dir.y += 1;
+        } else if (directionStack.top() == 3) {
+            dir.x -= 1;
+            dir.y += 1;
+        } else if (directionStack.top() == 4) {
+            dir.x += 1;
+        } else if (directionStack.top() == 5) {
+            dir.x -= 1;
+        } else if (directionStack.top() == 6) {
+            dir.x += 1;
+            dir.y -= 1;
+        } else if (directionStack.top() == 7) {
+            dir.y -= 1;
+        } else if (directionStack.top() == 8) {
+            dir.x -= 1;
+            dir.y -= 1;
+        }
+    }
 
     if (playerNum == 1) {
-        //process input for player 1
-        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 0) && (w2_vel.x>=30 || w2_vel.y>=30)){
-          changeState(0);
-          calculatePath(logic, playerNum);
-        }
-        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 1) && (w2_vel.x<30 || w2_vel.y<30)){
-          changeState(1);
-          calculatePath(logic, playerNum);
-        }
-        if(logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 2)){
-          changeState(2);
-          calculatePath(logic, playerNum);
-        }
-        if(!directionStack.empty()){
-          if(directionStack.top()==1){
-            dir.y +=1;
-            dir.x += 1;
-          }
-          else if(directionStack.top()==2){
-            dir.y +=1;
-          }
-          else if(directionStack.top()==3){
-            dir.x -= 1;
-            dir.y +=1;
-          }
-          else if(directionStack.top()==4){
-            dir.x +=1;
-          }
-          else if(directionStack.top()==5){
-            dir.x -=1;
-          }
-          else if(directionStack.top()==6){
-            dir.x +=1;
-            dir.y-=1;
-          }
-          else if(directionStack.top()==7){
-            dir.y-=1;
-          }
-          else if(directionStack.top()==8){
-            dir.x -=1;
-            dir.y -= 1;
-          }
-          logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
-          accumulator += logic.walrus1.getVel() * (dSec/bot_handicap);
-          if(accumulator.x>=ICE_BLOCKS_SIZE_X || accumulator.y>=ICE_BLOCKS_SIZE_Y){
-            directionStack.pop();
-            accumulator = sf::Vector2f(0,0);
-          }
-        }
-
+        logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
     } else {
-        //process input for player 2
-        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) && (state != 0) && (w1_vel.x>=30 || w1_vel.y>=30)){
-          changeState(0);
-          calculatePath(logic, playerNum);
-        }
-        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) &&(state != 1)  && (w1_vel.x<30 || w1_vel.y<30)){
-          changeState(1);
-          calculatePath(logic, playerNum);
-        }
-        if(logic.walrus1.isDead() && (!logic.walrus2.isDead()) &&(state != 2)){
-          changeState(2);
-          calculatePath(logic, playerNum);
-        }
-        if(!directionStack.empty()){
-          if(directionStack.top()==1){
-            dir.y +=1;
-            dir.x += 1;
-          }
-          else if(directionStack.top()==2){
-            dir.y +=1;
-          }
-          else if(directionStack.top()==3){
-            dir.x -= 1;
-            dir.y +=1;
-          }
-          else if(directionStack.top()==4){
-            dir.x +=1;
-          }
-          else if(directionStack.top()==5){
-            dir.x -=1;
-          }
-          else if(directionStack.top()==6){
-            dir.x +=1;
-            dir.y-=1;
-          }
-          else if(directionStack.top()==7){
-            dir.y-=1;
-          }
-          else if(directionStack.top()==8){
-            dir.x -=1;
-            dir.y -= 1;
-          }
-          logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
-          accumulator += logic.walrus2.getVel() * (dSec/bot_handicap);
-          if(accumulator.x>=ICE_BLOCKS_SIZE_X || accumulator.y>=ICE_BLOCKS_SIZE_Y){
-            directionStack.pop();
-            accumulator = sf::Vector2f(0,0);
-          }
-        }
-
-
+        logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
     }
-    //anim.updateMovement(dir, dSec/bot_handicap);
+
+    accumulator += self_vel * (dSec/bot_handicap);
+    if (accumulator.x >= ICE_BLOCKS_SIZE_X || accumulator.y >= ICE_BLOCKS_SIZE_Y){
+        directionStack.pop();
+        accumulator = sf::Vector2f(0,0);
+    }
 
     // process events
     sf::Event Event;
@@ -151,52 +93,33 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
                 break;
         }
     }
-};
+}
+
 
 void BotController::calculatePath(GameLogic &logic, int playerNum){
-  sf::Vector2f w_pos;
-  sf::Vector2f w_vel;
-  if(playerNum==1){
-    w_pos = logic.walrus1.getPos();
-    w_vel = logic.walrus1.getVel();
-  }
-  else{
-    w_pos = logic.walrus2.getPos();
-    w_vel = logic.walrus2.getVel();
-  }
+  sf::Vector2f w_pos = (playerNum == 1) ? logic.walrus1.getPos() : logic.walrus2.getPos();
+  sf::Vector2f w_vel = (playerNum == 1) ? logic.walrus1.getVel() : logic.walrus2.getVel();
+
+  sf::Vector2f opponent_pos = (playerNum == 1) ? logic.walrus2.getPos() : logic.walrus1.getPos();
+
   memset(closedList, false, sizeof (closedList));
-  int i, j, x, y;
+  int i, j;
+  sf::Vector2i target;
   int newCost;
+
+  std::cout<<state<<"\n";
+
   if(state == 0){
     //calculate safe positions, for now middle of the stage.
-
-    std::cout<<state<<"\n";
-    x = 20;
-    y = 15;
+    target = sf::Vector2i(20, 15);
   }
   else if(state == 1){
-
-    std::cout<<state<<"\n";
-    if(playerNum==1){
-      x = int(logic.walrus2.getPos().x/ICE_BLOCKS_SIZE_X);
-      y = int(logic.walrus2.getPos().y/ICE_BLOCKS_SIZE_Y);
-    }
-    else {
-      x = int(logic.walrus1.getPos().x/ICE_BLOCKS_SIZE_X);
-      y = int(logic.walrus1.getPos().y/ICE_BLOCKS_SIZE_Y);
-    }
+    target = sf::Vector2i(int(opponent_pos.x/ICE_BLOCKS_SIZE_X), int(opponent_pos.y/ICE_BLOCKS_SIZE_Y));
   }
   else{
-    std::cout<<state<<"\n";
-    if(playerNum==1){
-      x = 0;
-      y = 15;
-    }
-    else {
-      x = 39;
-      y = 15;
-    }
+    target = (playerNum == 1) ? sf::Vector2i(0, 15) : sf::Vector2i(39, 15);
   }
+
   for (i=0; i<ICE_BLOCKS_WIDTH; i++)
   {
       for (j=0; j<ICE_BLOCKS_HEIGHT; j++)
@@ -229,13 +152,13 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     openList.pop();
     closedList[i][j] = true;
 
-    if (i == x && j == y){
+    if (i == target.x && j == target.y){
       break;
-    }; //if destination, end search
+    } //if destination, end search
     newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i-1][j-1] && newCost<cellDetails[i-1][j-1].g && logic.stage.getTileDura(i-1,j-1,logic.getStageProgression())>=.5){
       cellDetails[i-1][j-1].g = newCost;
-      cellDetails[i-1][j-1].h = std::abs((i-1)-(x))+std::abs((j-1)-(y));
+      cellDetails[i-1][j-1].h = std::abs((i-1)-(target.x))+std::abs((j-1)-(target.y));
       cellDetails[i-1][j-1].f = cellDetails[i-1][j-1].h + cellDetails[i-1][j-1].g;
       cellDetails[i-1][j-1].pi = i;
       cellDetails[i-1][j-1].pj = j;
@@ -244,7 +167,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i][j-1] && newCost<cellDetails[i][j-1].g && logic.stage.getTileDura(i,j-1,logic.getStageProgression())>=.5){
       cellDetails[i][j-1].g = newCost;
-      cellDetails[i][j-1].h = std::abs((i)-(x))+std::abs((j-1)-(y));
+      cellDetails[i][j-1].h = std::abs((i)-(target.x))+std::abs((j-1)-(target.y));
       cellDetails[i][j-1].f = cellDetails[i][j-1].h + cellDetails[i][j-1].g;
       cellDetails[i][j-1].pi = i;
       cellDetails[i][j-1].pj = j;
@@ -253,7 +176,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i-1][j] && newCost<cellDetails[i-1][j].g && logic.stage.getTileDura(i-1,j,logic.getStageProgression())>=.5){
       cellDetails[i-1][j].g = newCost;
-      cellDetails[i-1][j].h = std::abs((i-1)-(x))+std::abs((j)-(y));
+      cellDetails[i-1][j].h = std::abs((i-1)-(target.x))+std::abs((j)-(target.y));
       cellDetails[i-1][j].f = cellDetails[i-1][j].h + cellDetails[i-1][j].g;
       cellDetails[i-1][j].pi = i;
       cellDetails[i-1][j].pj = j;
@@ -262,7 +185,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i-1][j+1] && newCost<cellDetails[i-1][j+1].g && logic.stage.getTileDura(i-1,j+1,logic.getStageProgression())>=.5){
       cellDetails[i-1][j+1].g = newCost;
-      cellDetails[i-1][j+1].h = std::abs((i-1)-(x))+std::abs((j+1)-(y));
+      cellDetails[i-1][j+1].h = std::abs((i-1)-(target.x))+std::abs((j+1)-(target.y));
       cellDetails[i-1][j+1].f = cellDetails[i-1][j+1].h + cellDetails[i-1][j+1].g;
       cellDetails[i-1][j+1].pi = i;
       cellDetails[i-1][j+1].pj = j;
@@ -271,7 +194,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
       cellDetails[i][j+1].g = newCost;
-      cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
+      cellDetails[i][j+1].h = std::abs((i)-(target.x))+std::abs((j+1)-(target.y));
       cellDetails[i][j+1].f = cellDetails[i][j+1].h + cellDetails[i][j+1].g;
       cellDetails[i][j+1].pi = i;
       cellDetails[i][j+1].pj = j;
@@ -280,7 +203,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i+1][j+1] && newCost<cellDetails[i+1][j+1].g && logic.stage.getTileDura(i+1,j+1,logic.getStageProgression())>=.5){
       cellDetails[i+1][j+1].g = newCost;
-      cellDetails[i+1][j+1].h = std::abs((i+1)-(x))+std::abs((j+1)-(y));
+      cellDetails[i+1][j+1].h = std::abs((i+1)-(target.x))+std::abs((j+1)-(target.y));
       cellDetails[i+1][j+1].f = cellDetails[i+1][j+1].h + cellDetails[i+1][j+1].g;
       cellDetails[i+1][j+1].pi = i;
       cellDetails[i+1][j+1].pj = j;
@@ -289,7 +212,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i+1][j-1] && newCost<cellDetails[i+1][j-1].g && logic.stage.getTileDura(i+1,j-1,logic.getStageProgression())>=.5){
       cellDetails[i+1][j-1].g = newCost;
-      cellDetails[i+1][j-1].h = std::abs((i+1)-(x))+std::abs((j-1)-(y));
+      cellDetails[i+1][j-1].h = std::abs((i+1)-(target.x))+std::abs((j-1)-(target.y));
       cellDetails[i+1][j-1].f = cellDetails[i+1][j-1].h + cellDetails[i+1][j-1].g;
       cellDetails[i+1][j-1].pi = i;
       cellDetails[i+1][j-1].pj = j;
@@ -298,7 +221,7 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
     if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
       cellDetails[i][j+1].g = newCost;
-      cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
+      cellDetails[i][j+1].h = std::abs((i)-(target.x))+std::abs((j+1)-(target.y));
       cellDetails[i][j+1].f = cellDetails[i][j+1].h + cellDetails[i][j+1].g;
       cellDetails[i][j+1].pi = i;
       cellDetails[i][j+1].pj = j;
@@ -350,7 +273,3 @@ void BotController::calculatePath(GameLogic &logic, int playerNum){
     }
   }
 }
-
-void BotController::changeState(int x){
-  state = x;
-};
