@@ -17,11 +17,11 @@ void CameraView::init() {
     menu_background.loadFromFile("../images/menu_title.png");
     stage_progression.loadFromFile("../images/MinimapPlatform.png");
     stage_progression_active.loadFromFile("../images/MinimapPlatformActive.png");
-    player1Select.loadFromFile("../images/Player1Select.png");
-    player2Select.loadFromFile("../images/Player2Select.png");
+    player1Select.loadFromFile("../images/player1Select.png");
+    player2Select.loadFromFile("../images/player2Select.png");
     playerNeutralSelect.loadFromFile("../images/playerNeutralSelect.png");
-    playerPortraitFrame.loadFromFile("../images/PlayerPortraitFrame.png");
-    playerPortrait.loadFromFile("../images/PlayerPortrait.png");
+    playerPortraitFrame.loadFromFile("../images/playerPortraitFrame.png");
+    playerPortrait.loadFromFile("../images/playerPortrait.png");
     nameFrame.loadFromFile("../images/nameFrame.png");
     colorIcon.loadFromFile("../images/colorIcon.png");
 
