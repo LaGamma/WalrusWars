@@ -935,9 +935,9 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     roundCounterbg20.setTexture(&roundCounter20);
     roundCounterbg10.setTextureRect(roundCounter10_animation.uvRect);
     roundCounterbg20.setTextureRect(roundCounter20_animation.uvRect);
-    roundCounterbg.setPosition((WINDOW_WIDTH/2)-30, 110);
+    roundCounterbg.setPosition((WINDOW_WIDTH/2)-65, 50);
     roundCounterbg10.setPosition((WINDOW_WIDTH/2)-65, 50);
-    roundCounterbg20.setPosition((WINDOW_WIDTH/2)-30, 110);
+    roundCounterbg20.setPosition((WINDOW_WIDTH/2)-65, 50);
     sf::Text round_text;
     round_text.setFont(font);
     round_text.setCharacterSize(UI_TEXT_SIZE / 3);
