@@ -26,6 +26,12 @@ class CameraView {
     void drawStatsMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic);
 
+    void menuUp(sf::RenderWindow &window, GameLogic &logic);
+    void menuDown(sf::RenderWindow &window, GameLogic &logic);
+    void menuLeft(sf::RenderWindow &window, GameLogic &logic);
+    void menuRight(sf::RenderWindow &window, GameLogic &logic);
+    void menuSelect(sf::RenderWindow &window, GameLogic &logic);
+
     sf::Font font;
     char main_menu_selection = 'P';
     char options_menu_selection = 'S';
