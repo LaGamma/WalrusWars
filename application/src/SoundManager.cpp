@@ -3,7 +3,7 @@
 
 SoundManager::SoundManager(){
 
-};
+}
 
 void SoundManager::load() {
   if(!bumpBuffer.loadFromFile("../audio/bump.wav")) {
@@ -26,17 +26,25 @@ void SoundManager::load() {
     std::cout << "Could not load audio\n";
   }
   splashSound.setBuffer(splashBuffer);
+  if(!menuMusic.openFromFile("../audio/menuMusic.wav")){
+    std::cout << "Could not load audio\n";
+  }
+  if(!battleMusic.openFromFile("../audio/battleMusic.wav")){
+    std::cout << "Could not load audio\n";
+  }
+  menuMusic.setLoop(true);
+  battleMusic.setLoop(true);
 }
 
 void SoundManager::playSound(SoundManager::SFX sfx, float vol){
   if(sfx == SoundManager::SFX::bump){
     bumpSound.setVolume(vol);
     bumpSound.play();
-  };
+  }
   if(sfx == SoundManager::SFX::splash){
     splashSound.setVolume(vol*3.5);
     splashSound.play();
-  };
+  }
   if(sfx == SoundManager::SFX::menuSelect){
     menuSelectSound.setVolume(vol);
     menuSelectSound.play();
@@ -44,18 +52,25 @@ void SoundManager::playSound(SoundManager::SFX sfx, float vol){
   if(sfx == SoundManager::SFX::menuMove){
     menuMoveSound.setVolume(vol);
     menuMoveSound.play();
-  };
+  }
   if(sfx == SoundManager::SFX::fish){
     fishSound.setVolume(vol);
     fishSound.play();
-  };
-};
+  }
+}
 
 void SoundManager::playMusic(SoundManager::Music track){
   if(track == SoundManager::Music::title){
-    //load and play title music
-  };
+    battleMusic.stop();
+    menuMusic.play();
+  }
   if(track == SoundManager::Music::battle){
-    //load and play battle music
-  };
-};
+    menuMusic.stop();
+    battleMusic.play();
+  }
+}
+
+void SoundManager::setMusicVolume(float volume){
+  battleMusic.setVolume(volume);
+  menuMusic.setVolume(volume);
+}

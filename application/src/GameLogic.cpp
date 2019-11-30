@@ -7,6 +7,8 @@ GameLogic::GameLogic() {
     state = mainMenu;
     walrus1 = Player();
     walrus2 = Player();
+    walrus1.resetStats();
+    walrus2.resetStats();
     progression = 0;
     stage = Stage();
     stage.generateMap();
@@ -300,11 +302,15 @@ void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
 
 void GameLogic::returnToMenu() {
     state = mainMenu;
+    //may not work if game is replayed, need to test later.
+    walrus1.resetStats();
+    walrus2.resetStats();
     stage.generateMap();
     //reset progression
     progression = 0;
     //reset rounds
     round = 1;
+
 }
 
 void GameLogic::setSFXVolume(float vol) {
@@ -345,6 +351,7 @@ void GameLogic::handlePlayerDeath(int walrus) {
 	        resetGame();
 	    } else {
             walrus1.kill();
+            walrus2.kills++;
             // check for game over
             if (progression == 2) {
                 winner1 = false;
@@ -353,12 +360,12 @@ void GameLogic::handlePlayerDeath(int walrus) {
 	    }
 	}
 
-
 	else if (walrus == 2) {
         if (walrus1.isDead()) {
             resetGame();
         } else {
             walrus2.kill();
+            walrus1.kills++;
             // check for game over
             if (progression == -2) {
                 winner1 = true;
@@ -383,18 +390,18 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
-    walrus2.setColor(walrus1.getColor());
-    walrus1.setColor(walrus2.getColor());
+    walrus1.resetStats();
+    walrus2.resetStats();
 }
-
 void GameLogic::handleOptionsMenu() {
     state = optionsMenu;
 }
-
+void GameLogic::handleStatsMenu() {
+    state = statsMenu;
+}
 void GameLogic::handlePlayerSelectMenu() {
     state = playerSelectMenu;
 }
-
 void GameLogic::handleNameTextSubMenu() {
     state = nameTextSubMenu;
 }
@@ -404,7 +411,6 @@ void GameLogic::handleColorSelectSubMenu() {
 GameLogic::GameState GameLogic::getState() {
     return state;
 }
-
 int GameLogic::getStageProgression() {
     return progression;
 }

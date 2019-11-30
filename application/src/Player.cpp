@@ -4,7 +4,11 @@
 #include "Player.h"
 
 Player::Player() {
-
+    kills = 0;
+    deaths = 0;
+    powerups_collected = 0;
+    slash_attack_num = 0;
+    distance_travelled = 0.0f;
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
@@ -21,8 +25,11 @@ void Player::spawn(sf::Vector2f spawn_pos) {
 }
 
 void Player::tickUpdate(float dSec) {
+    float tmpx = pos.x;
+    float tmpy = pos.y;
     // update movement
     pos += vel * dSec;
+    distance_travelled += abs(tmpx - pos.x) + abs(tmpy - pos.y);
 
     // regenerate stamina
     switch (state) {
@@ -139,6 +146,7 @@ void Player::applyActiveForce(sf::Vector2f force_dir, float dSec) {
 
 
 void Player::handlePowerUp(int powerup) {
+    powerups_collected++;
     stamina += FISH_STAMINA_GAINED;
     if (powerup == 0) {
         speed_boost += FISH_SPEED_BOOST;
@@ -162,6 +170,8 @@ void Player::raiseTusks(float dSec) {
 }
 
 void Player::slash() {
+    state = normal;
+    slash_attack_num++;
     std::cout<<"SLASH: "<<attack_charge<<std::endl;
     stamina -= ATTACK_STAMINA_COST;
     attack_duration_timer = ATTACK_DURATION_TIMER;
@@ -170,6 +180,7 @@ void Player::slash() {
 
 void Player::kill() {
     state = dead;
+    deaths++;
 }
 bool Player::isDead() {
     return (state == dead);
@@ -183,6 +194,13 @@ void Player::setStamina(float newStamina) {
 }
 void Player::setColor(sf::Color newColor) {
     color = newColor;
+}
+void Player::resetStats() {
+    kills = 0;
+    deaths = 0;
+    powerups_collected = 0;
+    slash_attack_num = 0;
+    distance_travelled = 0.0f;
 }
 // getters
 Player::PlayerState Player::getState() {
