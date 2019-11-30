@@ -25,6 +25,25 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) && logic.walrus1.getStamina() >= 30) {
             logic.walrus1.raiseTusks(dSec);
         }
+        if(sf::Joystick::isConnected(0)){
+          if(sf::Joystick::isButtonPressed(0, 0)){
+            logic.walrus1.raiseTusks(dSec);
+          }
+          float x = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
+          float y = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+          if(x>50){
+            dir.x+=1;
+          }
+          if(x<-50){
+            dir.x-=1;
+          }
+          if(y>50){
+            dir.y+=1;
+          }
+          if(y<-50){
+            dir.y-=1;
+          }
+        }
         logic.walrus1.applyActiveForce(dir, dSec);
 
     } else {
@@ -43,6 +62,25 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::RShift) && logic.walrus2.getStamina() >= 30) {
            logic.walrus2.raiseTusks(dSec);
+        }
+        if(sf::Joystick::isConnected(1)){
+          if(sf::Joystick::isButtonPressed(1, 0)){
+            logic.walrus1.raiseTusks(dSec);
+          }
+          float x = sf::Joystick::getAxisPosition(1, sf::Joystick::X);
+          float y = sf::Joystick::getAxisPosition(1, sf::Joystick::Y);
+          if(x>50){
+            dir.x+=1;
+          }
+          if(x<-50){
+            dir.x-=1;
+          }
+          if(y>50){
+            dir.y+=1;
+          }
+          if(y<-50){
+            dir.y-=1;
+          }
         }
         logic.walrus2.applyActiveForce(dir, dSec);
     }
