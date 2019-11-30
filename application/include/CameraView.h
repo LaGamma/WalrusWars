@@ -52,6 +52,8 @@ class CameraView {
     SoundManager soundManager;
     Animation walrus1_animation;
     Animation walrus2_animation;
+    Animation roundCounter10_animation;
+    Animation roundCounter20_animation;
     std::list<std::unique_ptr<Animation>> fish_animation_list;
     sf::Texture spriteMapWalrus;
     sf::Texture spriteMapFish;
@@ -65,6 +67,8 @@ class CameraView {
     sf::Texture nameFrame;
     sf::Texture colorIcon;
     sf::Texture playerNeutralSelect;
+    sf::Texture roundCounter10;
+    sf::Texture roundCounter20;
 
     //player names
     std::string walrus1_name_str = "Wally";

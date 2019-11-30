@@ -24,12 +24,16 @@ void CameraView::init() {
     playerPortrait.loadFromFile("../images/playerPortrait.png");
     nameFrame.loadFromFile("../images/nameFrame.png");
     colorIcon.loadFromFile("../images/colorIcon.png");
+    roundCounter10.loadFromFile("../images/roundCounter10.png");
+    roundCounter20.loadFromFile("../images/roundCounter20.png");
 
 
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
+    roundCounter10_animation.init(&roundCounter10, sf::Vector2u(3,1), 0.3);
+    roundCounter20_animation.init(&roundCounter20, sf::Vector2u(3,1), 0.3);
     soundManager.playMusic(SoundManager::Music::title);
 
     for (int i = 0; i < MAX_NUM_OF_FISH; i++) {
@@ -922,20 +926,41 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(stamina_left2);
 
     //draw round counter
-    sf::RectangleShape roundCounterbg = sf::RectangleShape(sf::Vector2f(80,80));
-    roundCounterbg.setFillColor(sf::Color(0,0,0,255));
+    sf::RectangleShape roundCounterbg = sf::RectangleShape(sf::Vector2f(150,150));
+    sf::RectangleShape roundCounterbg10 = sf::RectangleShape(sf::Vector2f(150,150));
+    sf::RectangleShape roundCounterbg20 = sf::RectangleShape(sf::Vector2f(150,150));
+    //roundCounterbg.setFillColor(sf::Color(0,0,0,255));
+    roundCounterbg.setTexture(&roundCounter10);
+    roundCounterbg10.setTexture(&roundCounter10);
+    roundCounterbg20.setTexture(&roundCounter20);
+    roundCounterbg10.setTextureRect(roundCounter10_animation.uvRect);
+    roundCounterbg20.setTextureRect(roundCounter20_animation.uvRect);
     roundCounterbg.setPosition((WINDOW_WIDTH/2)-30, 110);
+    roundCounterbg10.setPosition((WINDOW_WIDTH/2)-65, 50);
+    roundCounterbg20.setPosition((WINDOW_WIDTH/2)-30, 110);
+    sf::Text round_text;
+    round_text.setFont(font);
+    round_text.setCharacterSize(UI_TEXT_SIZE / 3);
+    round_text.setFillColor(sf::Color(255, 255, 255, 255));
+    round_text.setPosition(roundCounterbg.getPosition().x+10,roundCounterbg.getPosition().y-20);
+    round_text.setString("Round");
     sf::Text roundCounter_text;
     roundCounter_text.setFont(font);
     roundCounter_text.setCharacterSize(UI_TEXT_SIZE / 2);
     roundCounter_text.setFillColor(sf::Color(255, 255, 255, 255));
-    roundCounter_text.setPosition(roundCounterbg.getPosition().x+20,roundCounterbg.getPosition().y-20);
-    if (logic.getRound() < 10)
-        roundCounter_text.setString("0" + std::to_string(logic.getRound()));
-    else
-        roundCounter_text.setString(std::to_string(logic.getRound()));
-    window.draw(roundCounterbg);
+    if (logic.getRound() < 10) {
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x + 30, roundCounterbg.getPosition().y);
+        window.draw(roundCounterbg10);
+    }else if (logic.getRound() <20) {
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x + 20, roundCounterbg.getPosition().y);
+        window.draw(roundCounterbg10);
+    } else{
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x + 20, roundCounterbg.getPosition().y);
+        window.draw(roundCounterbg20);
+    }
+    roundCounter_text.setString(std::to_string(logic.getRound()));
     window.draw(roundCounter_text);
+    window.draw(round_text);
 
 }
 
@@ -1172,6 +1197,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
     if (logic.getState() == GameLogic::GameState::playing) {
         //update animations
+
         for (auto anim = fish_animation_list.begin(); anim != fish_animation_list.end(); anim++) {
             (*anim)->updateFish(dSec);
         }
@@ -1184,6 +1210,11 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
             walrus2_animation.updateWalrus(logic.walrus2.getFacingDir(), logic.walrus2.getState(), dSec);
             player2Controller->update(window, logic, dSec, 2);
         }
+
+        //round counter flames
+        roundCounter10_animation.updateroundFire(dSec);
+        roundCounter20_animation.updateroundFire(dSec);
+
 
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
