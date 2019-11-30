@@ -195,6 +195,13 @@ void Player::setStamina(float newStamina) {
 void Player::setColor(sf::Color newColor) {
     color = newColor;
 }
+void Player::resetStats() {
+    kills = 0;
+    deaths = 0;
+    powerups_collected = 0;
+    slash_attack_num = 0;
+    distance_travelled = 0.0f;
+}
 // getters
 Player::PlayerState Player::getState() {
     return state;
@@ -219,12 +226,4 @@ float Player::getMass() {
 }
 float Player::getStamina() {
     return stamina;
-}
-
-void Player::resetStats() {
-    kills = 0;
-    deaths = 0;
-    powerups_collected = 0;
-    slash_attack_num = 0;
-    distance_travelled = 0.0f;
 }

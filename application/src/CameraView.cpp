@@ -1185,7 +1185,6 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
             player2Controller->update(window, logic, dSec, 2);
         }
 
-
     } else {
         //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
 

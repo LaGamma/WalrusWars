@@ -18,7 +18,6 @@ GameLogic::GameLogic() {
     //music_volume = SFX_VOLUME_MAX
     sfx_volume = 50.0f;
     music_volume = 50.0f;
-
 }
 
 void GameLogic::update(float dSec) {
@@ -302,7 +301,7 @@ void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
 }
 
 void GameLogic::returnToMenu() {
-  state = mainMenu;
+    state = mainMenu;
     //may not work if game is replayed, need to test later.
     walrus1.resetStats();
     walrus2.resetStats();
@@ -393,21 +392,16 @@ void GameLogic::resetGame() {
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus1.resetStats();
     walrus2.resetStats();
-    walrus2.setColor(walrus1.getColor());
-    walrus1.setColor(walrus2.getColor());
 }
-
 void GameLogic::handleOptionsMenu() {
     state = optionsMenu;
 }
 void GameLogic::handleStatsMenu() {
     state = statsMenu;
 }
-
 void GameLogic::handlePlayerSelectMenu() {
     state = playerSelectMenu;
 }
-
 void GameLogic::handleNameTextSubMenu() {
     state = nameTextSubMenu;
 }
@@ -417,7 +411,6 @@ void GameLogic::handleColorSelectSubMenu() {
 GameLogic::GameState GameLogic::getState() {
     return state;
 }
-
 int GameLogic::getStageProgression() {
     return progression;
 }

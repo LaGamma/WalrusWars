@@ -3,7 +3,7 @@
 
 SoundManager::SoundManager(){
 
-};
+}
 
 void SoundManager::load() {
   if(!bumpBuffer.loadFromFile("../audio/bump.wav")) {
@@ -40,11 +40,11 @@ void SoundManager::playSound(SoundManager::SFX sfx, float vol){
   if(sfx == SoundManager::SFX::bump){
     bumpSound.setVolume(vol);
     bumpSound.play();
-  };
+  }
   if(sfx == SoundManager::SFX::splash){
     splashSound.setVolume(vol*3.5);
     splashSound.play();
-  };
+  }
   if(sfx == SoundManager::SFX::menuSelect){
     menuSelectSound.setVolume(vol);
     menuSelectSound.play();
@@ -52,23 +52,23 @@ void SoundManager::playSound(SoundManager::SFX sfx, float vol){
   if(sfx == SoundManager::SFX::menuMove){
     menuMoveSound.setVolume(vol);
     menuMoveSound.play();
-  };
+  }
   if(sfx == SoundManager::SFX::fish){
     fishSound.setVolume(vol);
     fishSound.play();
-  };
-};
+  }
+}
 
 void SoundManager::playMusic(SoundManager::Music track){
   if(track == SoundManager::Music::title){
     battleMusic.stop();
     menuMusic.play();
-  };
+  }
   if(track == SoundManager::Music::battle){
     menuMusic.stop();
     battleMusic.play();
-  };
-};
+  }
+}
 
 void SoundManager::setMusicVolume(float volume){
   battleMusic.setVolume(volume);
