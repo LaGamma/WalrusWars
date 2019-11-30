@@ -929,13 +929,28 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     roundCounter_text.setFont(font);
     roundCounter_text.setCharacterSize(UI_TEXT_SIZE / 2);
     roundCounter_text.setFillColor(sf::Color(255, 255, 255, 255));
-    roundCounter_text.setPosition(roundCounterbg.getPosition().x+20,roundCounterbg.getPosition().y-20);
     if (logic.getRound() < 10)
-        roundCounter_text.setString("0" + std::to_string(logic.getRound()));
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x+30,roundCounterbg.getPosition().y-20);
     else
-        roundCounter_text.setString(std::to_string(logic.getRound()));
+        roundCounter_text.setPosition(roundCounterbg.getPosition().x+20,roundCounterbg.getPosition().y-20);
+    roundCounter_text.setString(std::to_string(logic.getRound()));
     window.draw(roundCounterbg);
     window.draw(roundCounter_text);
+
+    //draw walrus names above stamina bars
+    walrus1_name.setString(walrus1_name_str);
+    walrus2_name.setString(walrus2_name_str);
+    walrus1_name.setFont(font);
+    walrus2_name.setFont(font);
+    walrus1_name.setCharacterSize(UI_TEXT_SIZE);
+    walrus2_name.setCharacterSize(UI_TEXT_SIZE);
+    walrus1_name.setFillColor(sf::Color(255,255,255,255));
+    walrus1_name.setPosition(stamina_bar1.getPosition().x+5, stamina_bar1.getPosition().y-40);
+    walrus2_name.setFillColor(sf::Color(255,255,255,255));
+    walrus2_name.setPosition(stamina_bar2.getPosition().x, stamina_bar2.getPosition().y-40);
+    window.draw(walrus1_name);
+    window.draw(walrus2_name);
+
 
 }
 
@@ -1233,7 +1248,6 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
 
         }
-
     }
 }
 
