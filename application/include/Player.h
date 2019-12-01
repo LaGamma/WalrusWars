@@ -1,6 +1,5 @@
 #ifndef _Player_H_
 #define _Player_H_
-
 #include <SFML/System.hpp>
 #include <SFML/Graphics/Color.hpp>
 
@@ -26,12 +25,14 @@ public:
     sf::Vector2f getVel();
     sf::Vector2f getFacingDir();
     sf::Color getColor();
+    std::string getName();
     float getAttackCharge();
     float getMass();
     float getStamina();
     void setVel(sf::Vector2f);
     void setStamina(float);
     void setColor(sf::Color);
+    void setName(std::string);
     bool isDead();
     void resetStats();
 
@@ -49,6 +50,7 @@ private:
     sf::Vector2f facing_dir;
     sf::Vector2f attack_collision_pt;
     sf::Color color = sf::Color(255,255,255,255);
+    char name[100];
     PlayerState state;
     float mass;
     float stamina;

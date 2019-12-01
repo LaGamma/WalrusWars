@@ -7,6 +7,7 @@
 class GameLogic {
   public:
     GameLogic();
+    void init();
     void update(float);
     void handlePlayerDeath(int);
     void handlePlayerCollision();
