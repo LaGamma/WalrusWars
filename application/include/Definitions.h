@@ -75,6 +75,7 @@
 #define WALRUS_1_NAME "Wally"
 #define WALRUS_2_NAME "Wahlberg"
 #define MAIN_MENU "Main Menu"
+#define PAUSED "Paused"
 
 //volume
 #define SFX_VOLUME_BASE 50.0f;
