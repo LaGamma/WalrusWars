@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <cstring>
 #include "Definitions.h"
 #include "Player.h"
 
@@ -195,6 +196,9 @@ void Player::setStamina(float newStamina) {
 void Player::setColor(sf::Color newColor) {
     color = newColor;
 }
+void Player::setName(std::string newName) {
+    strcpy(name, newName.c_str());
+}
 void Player::resetStats() {
     kills = 0;
     deaths = 0;
@@ -205,6 +209,9 @@ void Player::resetStats() {
 // getters
 Player::PlayerState Player::getState() {
     return state;
+}
+std::string Player::getName() {
+    return name;
 }
 sf::Color Player::getColor() {
     return color;

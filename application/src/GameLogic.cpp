@@ -4,18 +4,26 @@
 #include "GameLogic.h"
 
 GameLogic::GameLogic() {
+
+}
+
+void GameLogic::init() {
     state = mainMenu;
     walrus1 = Player();
     walrus2 = Player();
     walrus1.resetStats();
     walrus2.resetStats();
-    progression = 0;
     stage = Stage();
     stage.generateMap();
+    progression = 0;
     accumulator = 0;
     fish_accumulator = 0.0f;
     sfx_volume = SFX_VOLUME_BASE;
     music_volume = MUSIC_VOLUME_BASE;
+    walrus1.setColor(sf::Color(255,255,255,255));
+    walrus2.setColor(sf::Color(155,155,155,255));
+    walrus1.setName("Wally");
+    walrus2.setName("Wahlberg");
 }
 
 void GameLogic::update(float dSec) {
@@ -159,7 +167,6 @@ void GameLogic::update(float dSec) {
 
 
     }
-
 
 }
 
@@ -308,7 +315,6 @@ void GameLogic::returnToMenu() {
     progression = 0;
     //reset rounds
     round = 1;
-
 }
 
 void GameLogic::setSFXVolume(float vol) {
@@ -388,8 +394,6 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1.spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2.spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
-    walrus1.resetStats();
-    walrus2.resetStats();
 }
 void GameLogic::handleOptionsMenu() {
     state = optionsMenu;

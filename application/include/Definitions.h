@@ -66,14 +66,15 @@
 // strings
 #define GO_RIGHT "GO ->"
 #define GO_LEFT "<- GO"
-#define OPTIONS_STRING "OPTIONS:"
+#define OPTIONS_TITLE_STRING "OPTIONS:"
 #define SFX_VOLUME_STRING "SFX Volume: "
 #define MUSIC_VOLUME_STRING "Music Volume: "
+#define PLAY_STRING "Play"
+#define HELP_STRING "Help"
+#define OPTIONS_STRING "Options"
 #define QUIT_STRING "Quit"
 #define REPLAY "Play Again"
 #define STATS_TEXT "Stats"
-#define WALRUS_1_NAME "Wally"
-#define WALRUS_2_NAME "Wahlberg"
 #define MAIN_MENU "Main Menu"
 #define PAUSED "Paused"
 

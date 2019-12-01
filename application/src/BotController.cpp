@@ -102,7 +102,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         dir = sf::Vector2f(unit_vec.x, unit_vec.y);
     } else {
         //slow down?
-        std::cout<<"low angst: "<<angst_magnitude<<std::endl;
+        //std::cout<<"low angst: "<<angst_magnitude<<std::endl;
         sf::Vector2<double> unit_vec = sf::Vector2<double>(dir.x / angst_magnitude, dir.y / angst_magnitude);
         dir = sf::Vector2f(unit_vec.x / 4, unit_vec.y / 4);
     }
