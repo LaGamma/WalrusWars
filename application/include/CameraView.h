@@ -37,6 +37,7 @@ class CameraView {
     char options_menu_selection = 'S';
     char game_over_menu_selection = 'P';
     char player1_menu_selection = 'P';
+    char pause_menu_selection = 'Q';
     char color_selection = '1';
     bool colorSelector = false;
     bool enteringNameText = false;

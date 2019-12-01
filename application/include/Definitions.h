@@ -85,6 +85,7 @@
 #define POWERUPS "Powerups: "
 #define SLASH_ATTACKS "Slash Attacks: "
 #define DIST "Distance (m): "
+#define PAUSED "Paused"
 
 //volume
 #define SFX_VOLUME_BASE 50.0f;

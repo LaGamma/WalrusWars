@@ -128,6 +128,34 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
+    sf::Text pauseText;
+    pauseText.setFont(font);
+    pauseText.setCharacterSize(UI_TEXT_SIZE);
+    pauseText.setFillColor(sf::Color(255, 255, 255, 255));
+    pauseText.setPosition(WINDOW_WIDTH / 2 - 75, 150);
+    pauseText.setString(PAUSED);
+    window.draw(pauseText);
+    sf::Text quit_text;
+    quit_text.setFont(font);
+    quit_text.setCharacterSize(UI_TEXT_SIZE);
+    quit_text.setFillColor(sf::Color(255, 255, 255, 255));
+    quit_text.setPosition(WINDOW_WIDTH / 2 - 35, 250);
+    quit_text.setString(QUIT_STRING);
+    if (pause_menu_selection == 'Q') {
+        quit_text.setFillColor(sf::Color::Black);
+    }
+    sf::Text resumeText;
+    resumeText.setFont(font);
+    resumeText.setCharacterSize(UI_TEXT_SIZE);
+    resumeText.setFillColor(sf::Color(255, 255, 255, 255));
+    resumeText.setPosition(WINDOW_WIDTH / 2 - 150, 300);
+    resumeText.setString("Press P to Resume");
+
+
+
+
+    window.draw(resumeText);
+    window.draw(quit_text);
 
 }
 
@@ -929,7 +957,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     walrus2_name.setPosition(stamina_bar2.getPosition().x, stamina_bar2.getPosition().y-40);
     window.draw(walrus1_name);
     window.draw(walrus2_name);
-  
+
     // draw bot rays
     if (debug_mode) {
         if (!logic.walrus1.isDead()) {player1Controller->update(window, logic, 0.0, 1);}
@@ -1137,7 +1165,10 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
             }
         }
     } else if (logic.getState() == GameLogic::GameState::pauseMenu) {
-        logic.togglePause();
+        if(pause_menu_selection == 'Q'){
+          logic.returnToMenu();
+          soundManager.playMusic(SoundManager::Music::title);
+        }
     } else if (logic.getState() == GameLogic::GameState::statsMenu) {
         logic.returnToMenu();
         soundManager.playMusic(SoundManager::Music::title);
