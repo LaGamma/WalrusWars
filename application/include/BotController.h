@@ -5,9 +5,9 @@
 
 class BotController : public Controller {
 
-  struct ray {
-      sf::Vector2f dir;
-      float dist;
+  struct Ray {
+      sf::Vector2<double> dir;
+      double dist;
       int obj;
   };
 
@@ -21,7 +21,7 @@ class BotController : public Controller {
       enum ControllerState {defensive, aggressive, transition};
       ControllerState state;
 
-      std::list<ray> rays;
+      std::list<Ray> rays;
       sf::Vector2f dir;
       sf::Vector2f accumulator;
 };

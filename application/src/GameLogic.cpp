@@ -14,10 +14,8 @@ GameLogic::GameLogic() {
     stage.generateMap();
     accumulator = 0;
     fish_accumulator = 0.0f;
-    //sfx_volume = SFX_VOLUME_BASE;
-    //music_volume = SFX_VOLUME_MAX
-    sfx_volume = 50.0f;
-    music_volume = 50.0f;
+    sfx_volume = SFX_VOLUME_BASE;
+    music_volume = MUSIC_VOLUME_BASE;
 }
 
 void GameLogic::update(float dSec) {

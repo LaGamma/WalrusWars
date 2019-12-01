@@ -783,7 +783,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     collision_pt.setFillColor(sf::Color::Red);
     window.draw(collision_pt);
 
-    // draw w1 attack point
+    /*// draw w1 attack point
     if (logic.walrus1.getState() == Player::attacking) {
         collision_pt.setRadius(logic.walrus1.getMass()*PLAYER_HITBOX_SCALE);
         collision_pt.setPosition(logic.p1AttackPoint - sf::Vector2f(collision_pt.getRadius(), collision_pt.getRadius()));
@@ -796,7 +796,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         collision_pt.setPosition(logic.p2AttackPoint - sf::Vector2f(collision_pt.getRadius(), collision_pt.getRadius()));
         collision_pt.setFillColor(sf::Color(255,0,0,100));
         window.draw(collision_pt);
-    }
+    }*/
 
     //draw minimap background
     /*
@@ -930,6 +930,9 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         roundCounter_text.setString(std::to_string(logic.getRound()));
     window.draw(roundCounterbg);
     window.draw(roundCounter_text);
+
+    //float dSec = 0.5;
+    //player2Controller->update(window, logic, dSec, 2);
 
 }
 
