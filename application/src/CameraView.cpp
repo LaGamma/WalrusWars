@@ -208,7 +208,7 @@ void CameraView::drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic) {
 }
 
 void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic) {
-    window.clear(sf::Color::Blue);
+    window.clear(sf::Color(50,50,50));
 
     //play text
     sf::Text play_text;
@@ -292,25 +292,26 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     player2_portrait_indicator.setPosition(player2_portrait.getPosition());
 
     //name frame
-    sf::RectangleShape player1_name_bg = sf::RectangleShape(sf::Vector2f(250,60));
-    sf::RectangleShape player2_name_bg = sf::RectangleShape(sf::Vector2f(250,60));
-    sf::RectangleShape player1_name_border = sf::RectangleShape(sf::Vector2f(270,80));
-    sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(270,80));
+    sf::RectangleShape player1_name_bg = sf::RectangleShape(sf::Vector2f(300,60));
+    sf::RectangleShape player2_name_bg = sf::RectangleShape(sf::Vector2f(300,60));
+    sf::RectangleShape player1_name_border = sf::RectangleShape(sf::Vector2f(330,90));
+    sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(330,90));
     player1_name_bg.setFillColor(sf::Color(100,100,100));
     player2_name_bg.setFillColor(sf::Color(100,100,100));
     if (enteringNameText) {
-        if (player1_menu_selection == '1')
+        if (player1_menu_selection == '1') {
             player1_name_border.setFillColor(sf::Color(255, 0, 0));
-        else
+        } else {
             player2_name_border.setFillColor(sf::Color(255, 0, 0));
-    }else{
+        }
+    } else {
         player1_name_border.setFillColor(sf::Color(200, 200, 200));
         player2_name_border.setFillColor(sf::Color(200, 200, 200));
     }
-    player1_name_bg.setPosition((player1_portrait.getPosition().x+120),player1_portrait.getPosition().y+320);
-    player2_name_bg.setPosition((player2_portrait.getPosition().x+120),player2_portrait.getPosition().y+320);
-    player1_name_border.setPosition((player1_portrait.getPosition().x+110), player1_portrait.getPosition().y+310);
-    player2_name_border.setPosition((player2_portrait.getPosition().x+110), player2_portrait.getPosition().y+310);
+    player1_name_bg.setPosition((player1_portrait.getPosition().x+115),player1_portrait.getPosition().y+320);
+    player2_name_bg.setPosition((player2_portrait.getPosition().x+115),player2_portrait.getPosition().y+320);
+    player1_name_border.setPosition((player1_portrait.getPosition().x+100), player1_portrait.getPosition().y+310);
+    player2_name_border.setPosition((player2_portrait.getPosition().x+100), player2_portrait.getPosition().y+310);
     window.draw(player1_name_border);
     window.draw(player2_name_border);
     window.draw(player1_name_bg);
@@ -530,6 +531,7 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     //stats: kills, deaths, powerups collected, slash attacks used, meters travelled (need to figure out a way to do this)
     //divide screen in half, walrus 1 and walrus 2 stats:
     window.clear(sf::Color::Blue);
+
     //draw walrus 1 header
     sf::Text walrus1header;
     walrus1header.setFont(font);
@@ -537,16 +539,15 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     walrus1header.setFillColor(sf::Color(255, 255, 255, 255));
     walrus1header.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10);
     walrus1header.setString(logic.walrus1.getName());
-
     window.draw(walrus1header);
+
     //draw walrus 2 header
     sf::Text walrus2header;
     walrus2header.setFont(font);
     walrus2header.setCharacterSize(UI_TEXT_SIZE);
     walrus2header.setFillColor(sf::Color(255, 255, 255, 255));
-    walrus2header.setPosition(walrus1header.getPosition().x + walrus1header.getLocalBounds().width + 125, WINDOW_HEIGHT / 10);
+    walrus2header.setPosition(walrus1header.getPosition().x + walrus1header.getLocalBounds().width + WINDOW_WIDTH/3, WINDOW_HEIGHT / 10);
     walrus2header.setString(logic.walrus2.getName());
-
     window.draw(walrus2header);
 
     sf::Text kills_text1;
@@ -556,7 +557,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     kills_text1.setPosition(walrus1header.getPosition().x, walrus1header.getPosition().y + 100);
     std::string kills_string = KILLS + std::to_string(logic.walrus1.kills);
     kills_text1.setString(kills_string);
-
     window.draw(kills_text1);
 
     sf::Text kills_text2;
@@ -566,7 +566,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     kills_text2.setPosition(walrus2header.getPosition().x, walrus1header.getPosition().y + 100);
     std::string kills_string2 = KILLS + std::to_string(logic.walrus2.kills);
     kills_text2.setString(kills_string2);
-
     window.draw(kills_text2);
 
     sf::Text deaths_text1;
@@ -576,7 +575,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     deaths_text1.setPosition(walrus1header.getPosition().x, kills_text1.getPosition().y + 50);
     std::string death_string1 = DEATHS + std::to_string(logic.walrus1.deaths);
     deaths_text1.setString(death_string1);
-
     window.draw(deaths_text1);
 
     sf::Text deaths_text2;
@@ -586,9 +584,7 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     deaths_text2.setPosition(walrus2header.getPosition().x, kills_text2.getPosition().y + 50);
     std::string death_string2 = DEATHS + std::to_string(logic.walrus2.deaths);
     deaths_text2.setString(death_string2);
-
     window.draw(deaths_text2);
-
 
     sf::Text powerup_text1;
     powerup_text1.setFont(font);
@@ -597,7 +593,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     powerup_text1.setPosition(walrus1header.getPosition().x, deaths_text1.getPosition().y + 50);
     std::string powerup_string1 = POWERUPS + std::to_string(logic.walrus1.powerups_collected);
     powerup_text1.setString(powerup_string1);
-
     window.draw(powerup_text1);
 
     sf::Text powerup_text2;
@@ -607,7 +602,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     powerup_text2.setPosition(walrus2header.getPosition().x, deaths_text2.getPosition().y + 50);
     std::string powerup_string2 = POWERUPS + std::to_string(logic.walrus2.powerups_collected);
     powerup_text2.setString(powerup_string2);
-
     window.draw(powerup_text2);
 
     sf::Text slash_attacks_text1;
@@ -617,7 +611,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     slash_attacks_text1.setPosition(walrus1header.getPosition().x, powerup_text1.getPosition().y + 50);
     std::string slash_string1 = SLASH_ATTACKS + std::to_string(logic.walrus1.slash_attack_num);
     slash_attacks_text1.setString(slash_string1);
-
     window.draw(slash_attacks_text1);
 
     sf::Text slash_attacks_text2;
@@ -627,9 +620,7 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     slash_attacks_text2.setPosition(walrus2header.getPosition().x, powerup_text2.getPosition().y + 50);
     std::string slash_string2 = SLASH_ATTACKS + std::to_string(logic.walrus2.slash_attack_num);
     slash_attacks_text2.setString(slash_string2);
-
     window.draw(slash_attacks_text2);
-
 
 
     int distance1 = int(logic.walrus1.distance_travelled) / 10;
@@ -640,7 +631,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     meter_text1.setPosition(walrus1header.getPosition().x, slash_attacks_text1.getPosition().y + 50);
     std::string meter_string1 = DIST + std::to_string(distance1);
     meter_text1.setString(meter_string1);
-
     window.draw(meter_text1);
 
 
@@ -652,7 +642,6 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     meter_text2.setPosition(walrus2header.getPosition().x, slash_attacks_text2.getPosition().y + 50);
     std::string meter_string2 = DIST + std::to_string(distance2);
     meter_text2.setString(meter_string2);
-
     window.draw(meter_text2);
 
     //Main Menu text
@@ -660,9 +649,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     quit_text.setFont(font);
     quit_text.setCharacterSize(UI_TEXT_SIZE / 2);
     quit_text.setFillColor(sf::Color::Black);
-    quit_text.setPosition(WINDOW_WIDTH / 3, WINDOW_HEIGHT - 100);
+    quit_text.setPosition(2*WINDOW_WIDTH / 5, WINDOW_HEIGHT - 100);
     quit_text.setString(MAIN_MENU);
-
     window.draw(quit_text);
 
 }

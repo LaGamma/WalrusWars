@@ -315,7 +315,6 @@ void GameLogic::returnToMenu() {
     progression = 0;
     //reset rounds
     round = 1;
-
 }
 
 void GameLogic::setSFXVolume(float vol) {
