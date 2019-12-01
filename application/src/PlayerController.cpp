@@ -65,7 +65,7 @@ void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float 
         }
         if(sf::Joystick::isConnected(1)){
           if(sf::Joystick::isButtonPressed(1, 0)){
-            logic.walrus1.raiseTusks(dSec);
+            logic.walrus2.raiseTusks(dSec);
           }
           float x = sf::Joystick::getAxisPosition(1, sf::Joystick::X);
           float y = sf::Joystick::getAxisPosition(1, sf::Joystick::Y);
