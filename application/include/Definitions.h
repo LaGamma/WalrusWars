@@ -76,6 +76,15 @@
 #define REPLAY "Play Again"
 #define STATS_TEXT "Stats"
 #define MAIN_MENU "Main Menu"
+#define P1 "Player 1"
+#define P2 "Player 2"
+#define BOT "Bot"
+#define WON " Won!"
+#define KILLS "Kills: "
+#define DEATHS "Deaths: "
+#define POWERUPS "Powerups: "
+#define SLASH_ATTACKS "Slash Attacks: "
+#define DIST "Distance (m): "
 #define PAUSED "Paused"
 
 //volume
