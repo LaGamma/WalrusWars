@@ -18,12 +18,16 @@ class BotController : public Controller {
       void calculateRays(GameLogic &logic, int playerNum);
       void calculateForce(GameLogic &logic, int playerNum);
 
-      enum ControllerState {defensive, aggressive, transition};
+      enum ControllerState {fighting, exiting};
       ControllerState state;
 
       std::list<Ray> rays;
       sf::Vector2f dir;
-      sf::Vector2f accumulator;
+
+    float top_wall_y;
+    float bottom_wall_y;
+    float left_wall_x;
+    float right_wall_x;
 };
 
 

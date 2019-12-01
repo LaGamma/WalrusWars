@@ -35,6 +35,7 @@ void CameraView::init() {
         fish_animation_list.back()->init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     }
 
+    debug_mode = false;
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -931,9 +932,11 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(roundCounterbg);
     window.draw(roundCounter_text);
 
-    //float dSec = 0.5;
-    //player2Controller->update(window, logic, dSec, 2);
-
+    // draw bot rays
+    if (debug_mode) {
+        if (!logic.walrus1.isDead()) {player1Controller->update(window, logic, 0.0, 1);}
+        if (!logic.walrus2.isDead()) {player2Controller->update(window,logic,0.0,2);}
+    }
 }
 
 
@@ -1215,6 +1218,9 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                         case sf::Keyboard::P:
                             logic.togglePause();
                             soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
+                            break;
+                        case sf::Keyboard::Tilde:
+                            debug_mode = !debug_mode;
                             break;
                         /*case sf::Keyboard::W:
                             if (player2_menu_selection == '1' || player2_menu_selection == '2')

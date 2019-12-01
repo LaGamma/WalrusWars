@@ -26,7 +26,7 @@
 #define ATTACKING_MOVEMENT_SCALEDOWN 0.2f
 
 // bot
-#define NUM_OF_RAYS_CAST 32
+#define NUM_OF_RAYS_CAST 16
 #define PI 3.14159265
 
 // powerups
