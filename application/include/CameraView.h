@@ -67,8 +67,9 @@ class CameraView {
     sf::Texture playerNeutralSelect;
 
     //player names
-    std::string walrus1_name_str = "Wally";
-    std::string walrus2_name_str = "Waldo";
+    std::string player_name1 = "Wally";
+    std::string player_name2 = "Waldo";
+    std::string player_name3 = "Wahlberg";
     sf::Text walrus1_name;
     sf::Text walrus2_name;
 
@@ -104,6 +105,8 @@ class CameraView {
 
     float screenshake_magnitude;
     float screenshake_timer;
+
+    bool debug_mode;
 };
 
 

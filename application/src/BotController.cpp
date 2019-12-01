@@ -1,134 +1,114 @@
 #include "BotController.h"
 #include <iostream>
-#include <cstring>
-#include <cfloat>
 #include <cmath>
 
-//for ai, generally move towards center if player near edge shortest path towards where player is headed or is depending on difficulty
-// , if in close proximity to fish or closer to fish than player shortest path to fish.
-
 BotController::BotController() {
-  state = 0;
-  dir = sf::Vector2f(0,0);
-  accumulator = sf::Vector2f(0,0);
+  state = fighting;
 };
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 
+    sf::Vector2f self_pos = (playerNum == 1) ? logic.walrus1.getPos() : logic.walrus2.getPos();
+    bool opponent_dead = (playerNum == 1) ? logic.walrus2.isDead() : logic.walrus1.isDead();
 
-    float bot_handicap = 3;  // higher number == slower bot
-    sf::Vector2f w1_pos = logic.walrus1.getPos();
-    sf::Vector2f w2_pos = logic.walrus2.getPos();
-    sf::Vector2f w1_vel = logic.walrus1.getVel();
-    sf::Vector2f w2_vel = logic.walrus2.getVel();
-    dir = sf::Vector2f(0,0);
+    float bot_handicap = 1;  // higher number == slower bot
 
-
-    if (playerNum == 1) {
-        //process input for player 1
-        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 0) && (w2_vel.x>=30 || w2_vel.y>=30)){
-          changeState(0);
-          calculatePath(logic, playerNum);
-        }
-        if(!logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 1) && (w2_vel.x<30 || w2_vel.y<30)){
-          changeState(1);
-          calculatePath(logic, playerNum);
-        }
-        if(logic.walrus2.isDead() && !logic.walrus1.isDead() &&(state != 2)){
-          changeState(2);
-          calculatePath(logic, playerNum);
-        }
-        if(!directionStack.empty()){
-          if(directionStack.top()==1){
-            dir.y +=1;
-            dir.x += 1;
-          }
-          else if(directionStack.top()==2){
-            dir.y +=1;
-          }
-          else if(directionStack.top()==3){
-            dir.x -= 1;
-            dir.y +=1;
-          }
-          else if(directionStack.top()==4){
-            dir.x +=1;
-          }
-          else if(directionStack.top()==5){
-            dir.x -=1;
-          }
-          else if(directionStack.top()==6){
-            dir.x +=1;
-            dir.y-=1;
-          }
-          else if(directionStack.top()==7){
-            dir.y-=1;
-          }
-          else if(directionStack.top()==8){
-            dir.x -=1;
-            dir.y -= 1;
-          }
-          logic.walrus1.applyActiveForce(dir, dSec/bot_handicap);
-          accumulator += logic.walrus1.getVel() * (dSec/bot_handicap);
-          if(accumulator.x>=ICE_BLOCKS_SIZE_X || accumulator.y>=ICE_BLOCKS_SIZE_Y){
-            directionStack.pop();
-            accumulator = sf::Vector2f(0,0);
-          }
-        }
-
+    if(!opponent_dead) {
+        state = fighting;
+        // reset repel walls
+        top_wall_y = -50;
+        bottom_wall_y = WINDOW_HEIGHT+50;
+        left_wall_x = -50;
+        right_wall_x = WINDOW_WIDTH+50;
     } else {
-        //process input for player 2
-        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) && (state != 0) && (w1_vel.x>=30 || w1_vel.y>=30)){
-          changeState(0);
-          calculatePath(logic, playerNum);
-        }
-        if(!logic.walrus1.isDead() && (!logic.walrus2.isDead()) &&(state != 1)  && (w1_vel.x<30 || w1_vel.y<30)){
-          changeState(1);
-          calculatePath(logic, playerNum);
-        }
-        if(logic.walrus1.isDead() && (!logic.walrus2.isDead()) &&(state != 2)){
-          changeState(2);
-          calculatePath(logic, playerNum);
-        }
-        if(!directionStack.empty()){
-          if(directionStack.top()==1){
-            dir.y +=1;
-            dir.x += 1;
-          }
-          else if(directionStack.top()==2){
-            dir.y +=1;
-          }
-          else if(directionStack.top()==3){
-            dir.x -= 1;
-            dir.y +=1;
-          }
-          else if(directionStack.top()==4){
-            dir.x +=1;
-          }
-          else if(directionStack.top()==5){
-            dir.x -=1;
-          }
-          else if(directionStack.top()==6){
-            dir.x +=1;
-            dir.y-=1;
-          }
-          else if(directionStack.top()==7){
-            dir.y-=1;
-          }
-          else if(directionStack.top()==8){
-            dir.x -=1;
-            dir.y -= 1;
-          }
-          logic.walrus2.applyActiveForce(dir, dSec/bot_handicap);
-          accumulator += logic.walrus2.getVel() * (dSec/bot_handicap);
-          if(accumulator.x>=ICE_BLOCKS_SIZE_X || accumulator.y>=ICE_BLOCKS_SIZE_Y){
-            directionStack.pop();
-            accumulator = sf::Vector2f(0,0);
-          }
-        }
+        state = exiting;
 
+        if (self_pos.y < top_wall_y) {
+            top_wall_y = self_pos.y - 150.0f;
+        }
+        if (self_pos.y > bottom_wall_y) {
+            bottom_wall_y = self_pos.y + 150.0f;
+        }
+        if (self_pos.x < left_wall_x) {
+            left_wall_x = self_pos.x - 150.0f;
+        }
+        if (self_pos.x > right_wall_x) {
+            right_wall_x = self_pos.x + 150.0f;
+        }
+        // enclose repel walls
+        if (bottom_wall_y > 17*WINDOW_HEIGHT/30+ICE_BLOCKS_HEIGHT) {
+            bottom_wall_y -= dSec*120;
+        }
+        if (top_wall_y < 13*WINDOW_HEIGHT/30+ICE_BLOCKS_HEIGHT) {
+            top_wall_y += dSec*120;
+        }
+        if (playerNum == 1 && right_wall_x > 0) {
+            right_wall_x -= dSec*120;
+        } else if (playerNum == 2 && left_wall_x < WINDOW_WIDTH) {
+            left_wall_x += dSec*120;
+        }
 
     }
-    //anim.updateMovement(dir, dSec/bot_handicap);
+
+    // draw repel border
+    sf::Vertex line[] = {
+            sf::Vertex(sf::Vector2f(left_wall_x, bottom_wall_y)),
+            sf::Vertex(sf::Vector2f(right_wall_x,bottom_wall_y)),
+            sf::Vertex(sf::Vector2f(right_wall_x, top_wall_y)),
+            sf::Vertex(sf::Vector2f(left_wall_x, top_wall_y)),
+            sf::Vertex(sf::Vector2f(left_wall_x,bottom_wall_y))
+    };
+    for(int i = 0; i < 5; i++) {
+        line[i].color = sf::Color::Black;
+    }
+    window.draw(line, 5, sf::LinesStrip);
+
+    calculateRays(logic, playerNum);
+
+    // draw rays
+    for (auto r = rays.begin(); r != rays.end(); r++) {
+
+        sf::Vertex line[] = {
+                sf::Vertex(self_pos + sf::Vector2f((float)(*r).dir.x, (float)(*r).dir.y) * (float)(*r).dist),
+                sf::Vertex(self_pos)
+        };
+        line[0].color = sf::Color::Blue;
+        line[1].color = sf::Color::Blue;
+
+        window.draw(line, 2, sf::Lines);
+    }
+
+    calculateForce(logic, playerNum);
+
+    // draw direction line
+    sf::Vertex direction_line[] = {
+            sf::Vertex(self_pos + dir),
+            sf::Vertex(self_pos)
+    };
+    direction_line[0].color = sf::Color::Red;
+    direction_line[1].color = sf::Color::Red;
+    window.draw(direction_line, 2, sf::Lines);
+
+
+    double angst_magnitude = sqrt((dir.x * dir.x) + (dir.y * dir.y));
+
+    if (angst_magnitude > 30 && state == fighting) {
+        // set target movement direction
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(dir.x / angst_magnitude, dir.y / angst_magnitude);
+        dir = sf::Vector2f(unit_vec.x, unit_vec.y);
+    } else if (angst_magnitude > 60) {
+        // set target movement direction
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(dir.x / angst_magnitude, dir.y / angst_magnitude);
+        dir = sf::Vector2f(unit_vec.x, unit_vec.y);
+    } else {
+        //slow down?
+        //std::cout<<"low angst: "<<angst_magnitude<<std::endl;
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(dir.x / angst_magnitude, dir.y / angst_magnitude);
+        dir = sf::Vector2f(unit_vec.x / 4, unit_vec.y / 4);
+    }
+
+    // apply movement force
+    (playerNum == 1) ? logic.walrus1.applyActiveForce(dir, dSec / bot_handicap) : logic.walrus2.applyActiveForce(dir, dSec / bot_handicap);
 
     // process events
     sf::Event Event;
@@ -151,206 +131,135 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
                 break;
         }
     }
-};
-
-void BotController::calculatePath(GameLogic &logic, int playerNum){
-  sf::Vector2f w_pos;
-  sf::Vector2f w_vel;
-  if(playerNum==1){
-    w_pos = logic.walrus1.getPos();
-    w_vel = logic.walrus1.getVel();
-  }
-  else{
-    w_pos = logic.walrus2.getPos();
-    w_vel = logic.walrus2.getVel();
-  }
-  memset(closedList, false, sizeof (closedList));
-  int i, j, x, y;
-  int newCost;
-  if(state == 0){
-    //calculate safe positions, for now middle of the stage.
-
-    std::cout<<state<<"\n";
-    x = 20;
-    y = 15;
-  }
-  else if(state == 1){
-
-    std::cout<<state<<"\n";
-    if(playerNum==1){
-      x = int(logic.walrus2.getPos().x/ICE_BLOCKS_SIZE_X);
-      y = int(logic.walrus2.getPos().y/ICE_BLOCKS_SIZE_Y);
-    }
-    else {
-      x = int(logic.walrus1.getPos().x/ICE_BLOCKS_SIZE_X);
-      y = int(logic.walrus1.getPos().y/ICE_BLOCKS_SIZE_Y);
-    }
-  }
-  else{
-    std::cout<<state<<"\n";
-    if(playerNum==1){
-      x = 0;
-      y = 15;
-    }
-    else {
-      x = 39;
-      y = 15;
-    }
-  }
-  for (i=0; i<ICE_BLOCKS_WIDTH; i++)
-  {
-      for (j=0; j<ICE_BLOCKS_HEIGHT; j++)
-      {
-          cellDetails[i][j].f = FLT_MAX;
-          cellDetails[i][j].g = FLT_MAX;
-          cellDetails[i][j].h = FLT_MAX;
-          cellDetails[i][j].pos_x = i;
-          cellDetails[i][j].pos_y = j;
-          cellDetails[i][j].pi = -1;
-          cellDetails[i][j].pj = -1;
-      }
-  }
-  i = w_pos.x/ICE_BLOCKS_SIZE_X;
-  j = w_pos.y/ICE_BLOCKS_SIZE_Y;
-  while(!openList.empty()){
-    openList.pop();
-  } //crucial to start with an empty list!!
-
-  cellDetails[i][j].f = 0;
-  cellDetails[i][j].g = 0;
-  cellDetails[i][j].h = 0;
-  cellDetails[i][j].pi = i;
-  cellDetails[i][j].pj = j;
-  openList.push(cellDetails[i][j]);
-  while(!openList.empty()){
-    cell n = openList.front();
-    i = n.pos_x;
-    j = n.pos_y;
-    openList.pop();
-    closedList[i][j] = true;
-
-    if (i == x && j == y){
-      break;
-    }; //if destination, end search
-    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i-1][j-1] && newCost<cellDetails[i-1][j-1].g && logic.stage.getTileDura(i-1,j-1,logic.getStageProgression())>=.5){
-      cellDetails[i-1][j-1].g = newCost;
-      cellDetails[i-1][j-1].h = std::abs((i-1)-(x))+std::abs((j-1)-(y));
-      cellDetails[i-1][j-1].f = cellDetails[i-1][j-1].h + cellDetails[i-1][j-1].g;
-      cellDetails[i-1][j-1].pi = i;
-      cellDetails[i-1][j-1].pj = j;
-      openList.push(cellDetails[i-1][j-1]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i][j-1] && newCost<cellDetails[i][j-1].g && logic.stage.getTileDura(i,j-1,logic.getStageProgression())>=.5){
-      cellDetails[i][j-1].g = newCost;
-      cellDetails[i][j-1].h = std::abs((i)-(x))+std::abs((j-1)-(y));
-      cellDetails[i][j-1].f = cellDetails[i][j-1].h + cellDetails[i][j-1].g;
-      cellDetails[i][j-1].pi = i;
-      cellDetails[i][j-1].pj = j;
-      openList.push(cellDetails[i][j-1]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i-1][j] && newCost<cellDetails[i-1][j].g && logic.stage.getTileDura(i-1,j,logic.getStageProgression())>=.5){
-      cellDetails[i-1][j].g = newCost;
-      cellDetails[i-1][j].h = std::abs((i-1)-(x))+std::abs((j)-(y));
-      cellDetails[i-1][j].f = cellDetails[i-1][j].h + cellDetails[i-1][j].g;
-      cellDetails[i-1][j].pi = i;
-      cellDetails[i-1][j].pj = j;
-      openList.push(cellDetails[i-1][j]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i-1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i-1][j+1] && newCost<cellDetails[i-1][j+1].g && logic.stage.getTileDura(i-1,j+1,logic.getStageProgression())>=.5){
-      cellDetails[i-1][j+1].g = newCost;
-      cellDetails[i-1][j+1].h = std::abs((i-1)-(x))+std::abs((j+1)-(y));
-      cellDetails[i-1][j+1].f = cellDetails[i-1][j+1].h + cellDetails[i-1][j+1].g;
-      cellDetails[i-1][j+1].pi = i;
-      cellDetails[i-1][j+1].pj = j;
-      openList.push(cellDetails[i-1][j+1]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
-      cellDetails[i][j+1].g = newCost;
-      cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
-      cellDetails[i][j+1].f = cellDetails[i][j+1].h + cellDetails[i][j+1].g;
-      cellDetails[i][j+1].pi = i;
-      cellDetails[i][j+1].pj = j;
-      openList.push(cellDetails[i][j+1]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i+1][j+1] && newCost<cellDetails[i+1][j+1].g && logic.stage.getTileDura(i+1,j+1,logic.getStageProgression())>=.5){
-      cellDetails[i+1][j+1].g = newCost;
-      cellDetails[i+1][j+1].h = std::abs((i+1)-(x))+std::abs((j+1)-(y));
-      cellDetails[i+1][j+1].f = cellDetails[i+1][j+1].h + cellDetails[i+1][j+1].g;
-      cellDetails[i+1][j+1].pi = i;
-      cellDetails[i+1][j+1].pj = j;
-      openList.push(cellDetails[i+1][j+1]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i+1)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j-1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i+1][j-1] && newCost<cellDetails[i+1][j-1].g && logic.stage.getTileDura(i+1,j-1,logic.getStageProgression())>=.5){
-      cellDetails[i+1][j-1].g = newCost;
-      cellDetails[i+1][j-1].h = std::abs((i+1)-(x))+std::abs((j-1)-(y));
-      cellDetails[i+1][j-1].f = cellDetails[i+1][j-1].h + cellDetails[i+1][j-1].g;
-      cellDetails[i+1][j-1].pi = i;
-      cellDetails[i+1][j-1].pj = j;
-      openList.push(cellDetails[i+1][j-1]);
-    }
-    newCost = cellDetails[i][j].g+std::abs((i)-(w_pos.x/ICE_BLOCKS_SIZE_X))+std::abs((j+1)-(w_pos.y/ICE_BLOCKS_SIZE_Y));
-    if(!closedList[i][j+1] && newCost<cellDetails[i][j+1].g && logic.stage.getTileDura(i,j+1,logic.getStageProgression())>=.5){
-      cellDetails[i][j+1].g = newCost;
-      cellDetails[i][j+1].h = std::abs((i)-(x))+std::abs((j+1)-(y));
-      cellDetails[i][j+1].f = cellDetails[i][j+1].h + cellDetails[i][j+1].g;
-      cellDetails[i][j+1].pi = i;
-      cellDetails[i][j+1].pj = j;
-      openList.push(cellDetails[i][j+1]);
-    }
-
-
-  }
-  while(!directionStack.empty()){
-    directionStack.pop();
-  }
-  i = w_pos.x/ICE_BLOCKS_SIZE_X;
-  j = w_pos.y/ICE_BLOCKS_SIZE_Y;
-  if(!logic.walrus2.isDead()){
-    while((i!=x)||(j!=y)){
-      //std::cout<<"i = "<<i<<"\n";
-      //std::cout<<"j = "<<j<<"\n";
-      //std::cout<<"x = "<<x<<"\n";
-      //std::cout<<"y = "<<y<<"\n";
-      if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj<y)) {  // top left corner (1)
-        directionStack.push(1);
-      }
-      else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj<y)) {  // top center (2)
-        directionStack.push(2);
-      }
-      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj<y)) {  // top right corner (3)
-        directionStack.push(3);
-      }
-      else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj==y)) {  // left (4)
-        directionStack.push(4);
-      }
-      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj==y)) {  // right (5)
-        directionStack.push(5);
-      }
-      else if((cellDetails[x][y].pi<x)&&(cellDetails[x][y].pj>y)) {  // bottom left (6)
-        directionStack.push(6);
-      }
-      else if((cellDetails[x][y].pi==x)&&(cellDetails[x][y].pj>y)) {  // bottom center (7)
-        directionStack.push(7);
-      }
-      else if((cellDetails[x][y].pi>x)&&(cellDetails[x][y].pj>y)) {  // bottom center (8)
-        directionStack.push(8);
-      }
-      x = cellDetails[x][y].pi;
-      y = cellDetails[x][y].pj;
-      if(x==-1||y==-1){
-        break;
-      }
-    }
-  }
 }
 
-void BotController::changeState(int x){
-  state = x;
-};
+
+void BotController::calculateRays(GameLogic &logic, int playerNum) {
+
+    sf::Vector2<double> opponent_pos = (playerNum == 1) ? static_cast<sf::Vector2<double>>(logic.walrus2.getPos()) : static_cast<sf::Vector2<double>>(logic.walrus1.getPos());
+    sf::Vector2<double> self_pos = (playerNum == 1) ? static_cast<sf::Vector2<double>>(logic.walrus1.getPos()) : static_cast<sf::Vector2<double>>(logic.walrus2.getPos());
+
+    rays.clear();
+
+    for (int i = 0; i < NUM_OF_RAYS_CAST; i++) {
+
+        // calculate unit vector direction
+        double angle = (360.0 / NUM_OF_RAYS_CAST) * i;
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(cos(angle*PI/180.0), sin(angle*PI/180.0));
+
+        // project unit vector outwards until colliding with water
+        sf::Vector2<double> projection = self_pos + (unit_vec / 10.0);
+
+        if (state == fighting) {
+            while (logic.stage.getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4) {
+                projection += (unit_vec / 10.0);
+            }
+            projection -= self_pos;
+            // calculate length of projection
+            double magnitude = sqrt(projection.x*projection.x + projection.y*projection.y);
+            // create ray to water (1) and add to ray list
+            Ray r {unit_vec, magnitude, 1};
+            rays.push_back(r);
+
+        } else {
+            while (logic.stage.getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4 && projection.x > left_wall_x && projection.x < right_wall_x && projection.y > top_wall_y && projection.y < bottom_wall_y) {
+                projection += (unit_vec / 10.0);
+            }
+            if (logic.stage.getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4) {
+                projection -= self_pos;
+                double magnitude = sqrt(projection.x*projection.x + projection.y*projection.y);
+                // create ray to water (1) and add to ray list
+                Ray r {unit_vec, magnitude, 1};
+                rays.push_back(r);
+            } else {
+                projection -= self_pos;
+                double magnitude = sqrt(projection.x*projection.x + projection.y*projection.y);
+                // create ray to repel border (4) and add to ray list
+                Ray r {unit_vec, magnitude, 4};
+                rays.push_back(r);
+            }
+
+        }
+    }
+
+    // calculate and add fish rays to list
+    for (auto fish = logic.fish_list.begin(); fish != logic.fish_list.end(); fish++) {
+
+        sf::Vector2<double> fish_pos = static_cast<sf::Vector2<double>>((*fish)->getPosition());
+        sf::Vector2<double> posDiff = fish_pos - self_pos;
+        double magnitude = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(posDiff.x / magnitude, posDiff.y / magnitude);
+
+        // create ray to fish (2) and add to ray list
+        Ray r {unit_vec, magnitude, 2};
+        rays.push_back(r);
+    }
+
+    // calculate and add opponent ray to list
+    if (state == fighting) {
+        sf::Vector2<double> posDiff = opponent_pos - self_pos;
+        double magnitude = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(posDiff.x / magnitude, posDiff.y / magnitude);
+
+        // create ray to opponent (3) and add to ray list
+        Ray r {unit_vec, magnitude, 3};
+        rays.push_back(r);
+    } else {
+        sf::Vector2<double> posDiff = opponent_pos - self_pos;
+        double magnitude = sqrt((posDiff.x * posDiff.x) + (posDiff.y * posDiff.y));
+        sf::Vector2<double> unit_vec = sf::Vector2<double>(posDiff.x / magnitude, posDiff.y / magnitude);
+
+        // create ray to opponent (3) and add to ray list
+        Ray r {unit_vec, magnitude, 4};
+        rays.push_back(r);
+    }
+}
+
+void BotController::calculateForce(GameLogic &logic, int playerNum) {
+
+    sf::Vector2f opponent_vel = (playerNum == 1) ? logic.walrus2.getVel() : logic.walrus1.getVel();
+    sf::Vector2f self_vel = (playerNum == 1) ? logic.walrus1.getVel() : logic.walrus2.getVel();
+
+    sf::Vector2<double> pop_vec = sf::Vector2<double>(0,0);
+
+    sf::Vector2f opponent_force_component;
+    sf::Vector2f self_force_component;
+    sf::Vector2f force_diff_advantage;
+
+    // provide the forces as functions of distance to calculate a population vector that guides movement
+    for (auto r = rays.begin(); r != rays.end(); r++) {
+        // which object type is it?
+        switch ((*r).obj) {
+            case 1: // water
+                // repel from water direction
+                pop_vec -= (*r).dir * ((100.0*pow(0.99, (*r).dist)) + 10.0);
+                break;
+            case 2: // fish
+                // attract to fish direction
+                pop_vec += (*r).dir * ((100.0*pow(0.97, (*r).dist)) + 10.0);
+                break;
+            case 3: // opponent
+                opponent_force_component = sf::Vector2f(opponent_vel.x * -(*r).dir.x, opponent_vel.y * -(*r).dir.y);
+                self_force_component = sf::Vector2f(self_vel.x * (*r).dir.x, self_vel.y * (*r).dir.y);
+                force_diff_advantage = self_force_component - opponent_force_component;
+
+                if (force_diff_advantage.x > 30.0 || force_diff_advantage.y > 30.0) {
+                    //std::cout<<"advantage, attack!"<<std::endl;
+                    pop_vec += (*r).dir * ((100.0*pow(0.99, (*r).dist)) + 10.0);
+                }
+
+                else if (force_diff_advantage.x < -30.0 || force_diff_advantage.y < -30.0) {
+                    //std::cout<<"disadvantage, run!"<<std::endl;
+                    pop_vec -= (*r).dir * ((100.0*pow(0.99, (*r).dist)) + 10.0);
+                }
+                break;
+            case 4: // repel border
+                // repel strongly
+                pop_vec -= (*r).dir * ((200.0*pow(0.99, (*r).dist)) + 10.0);
+                break;
+        }
+    }
+
+    dir = sf::Vector2f(pop_vec.x, pop_vec.y);
+
+}

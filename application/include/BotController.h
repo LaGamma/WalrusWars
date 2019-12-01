@@ -1,30 +1,33 @@
 #ifndef _BotController_H_
 #define _BotController_H_
-#include <queue>
 #include "Controller.h"
-#include <stack>
 
 
 class BotController : public Controller {
 
-  struct cell{
-    int pi, pj, pos_x, pos_y;
-    float f, g, h;
+  struct Ray {
+      sf::Vector2<double> dir;
+      double dist;
+      int obj;
   };
-
 
   public:
       BotController();
       void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum);
-      void changeState(int);
-      int state;
-      std::queue<cell> openList;
-      bool closedList[40][30];
-      cell cellDetails[40][30];
-      void calculatePath(GameLogic &logic, int playerNum);
-      std::stack<int> directionStack;
+  private:
+      void calculateRays(GameLogic &logic, int playerNum);
+      void calculateForce(GameLogic &logic, int playerNum);
+
+      enum ControllerState {fighting, exiting};
+      ControllerState state;
+
+      std::list<Ray> rays;
       sf::Vector2f dir;
-      sf::Vector2f accumulator;
+
+    float top_wall_y;
+    float bottom_wall_y;
+    float left_wall_x;
+    float right_wall_x;
 };
 
 

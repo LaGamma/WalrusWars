@@ -12,6 +12,7 @@ int main(int argc, char** argv)
   CameraView view;
   GameLogic logic;
 
+  logic.init();
   view.init();
 
   //create clock

@@ -24,8 +24,6 @@ void CameraView::init() {
     playerPortrait.loadFromFile("../images/playerPortrait.png");
     nameFrame.loadFromFile("../images/nameFrame.png");
     colorIcon.loadFromFile("../images/colorIcon.png");
-
-
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
@@ -37,6 +35,7 @@ void CameraView::init() {
         fish_animation_list.back()->init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     }
 
+    debug_mode = false;
 }
 
 void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
@@ -95,40 +94,37 @@ void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(bg);
 
     //main menu items
-    sf::Text Play("Play", font, 75);
-    sf::Text Stats("Help", font, 75);
-    sf::Text Options("Options", font, 75);
+    sf::Text Play(PLAY_STRING, font, 75);
+    sf::Text Help(HELP_STRING, font, 75);
+    sf::Text Options(OPTIONS_STRING, font, 75);
     Play.setPosition(33 * WINDOW_WIDTH / 75, 325 * WINDOW_HEIGHT / 600);
-    Stats.setPosition(33 * WINDOW_WIDTH / 75, 2 * WINDOW_HEIGHT / 3);
+    Help.setPosition(33 * WINDOW_WIDTH / 75, 2 * WINDOW_HEIGHT / 3);
     Options.setPosition(33 * WINDOW_WIDTH / 80, 475 * WINDOW_HEIGHT / 600);
 
     //handle coloring of selection
     if (main_menu_selection == 'P'){
-        Stats.setFillColor(sf::Color::White);
+        Help.setFillColor(sf::Color::White);
         Play.setFillColor(sf::Color::Black);
     }
     if (main_menu_selection == 'H'){
         Play.setFillColor(sf::Color::White);
         Options.setFillColor(sf::Color::White);
-        Stats.setFillColor(sf::Color::Black);
+        Help.setFillColor(sf::Color::Black);
     }
     if (main_menu_selection == 'O'){
-        Stats.setFillColor(sf::Color::White);
+        Help.setFillColor(sf::Color::White);
         Options.setFillColor(sf::Color::Black);
     }
 
     window.draw(Play);
-    window.draw(Stats);
+    window.draw(Help);
     window.draw(Options);
-//settings could contain controls, difficulty, toggle music on off, toggle sound effects, ect.
-
 
 }
 
 void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw transparent screen
-
     sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
@@ -143,7 +139,7 @@ void CameraView::drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic) {
     options_text.setCharacterSize(UI_TEXT_SIZE / 2);
     options_text.setFillColor(sf::Color(255, 255, 255, 255));
     options_text.setPosition(WINDOW_WIDTH / 2 - 25, 50);
-    options_text.setString(OPTIONS_STRING);
+    options_text.setString(OPTIONS_TITLE_STRING);
 
     window.draw(options_text);
 
@@ -212,7 +208,7 @@ void CameraView::drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic) {
 }
 
 void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic) {
-    window.clear(sf::Color::Blue);
+    window.clear(sf::Color(50,50,50));
 
     //play text
     sf::Text play_text;
@@ -220,9 +216,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     play_text.setCharacterSize(UI_TEXT_SIZE);
     play_text.setFillColor(sf::Color(255, 255, 255, 255));
     play_text.setPosition(33 * WINDOW_WIDTH / 75, 2 * WINDOW_HEIGHT / 3);
-    play_text.setString("Play");
-
-    window.draw(play_text);
+    play_text.setString(PLAY_STRING);
 
     //quit text
     sf::Text quit_text;
@@ -230,7 +224,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     quit_text.setCharacterSize(UI_TEXT_SIZE);
     quit_text.setFillColor(sf::Color(255, 255, 255, 255));
     quit_text.setPosition(33 * WINDOW_WIDTH / 75, 475 * WINDOW_HEIGHT / 600);
-    quit_text.setString("Quit");
+    quit_text.setString(QUIT_STRING);
 
     //Player portrait frame
     sf::RectangleShape player1_portrait_frame = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
@@ -254,18 +248,18 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     player2Type_text.setFillColor(sf::Color(255, 255, 255, 255));
     player2Type_text.setPosition(player2_portrait_frame.getPosition().x+200, player2_portrait_frame.getPosition().y -90);
     if (player1OrBot == 1) {
-        player1Type_text.setString("Player 1");
+        player1Type_text.setString(P1);
         //adjust position so centered over portrait
         player1Type_text.setPosition(player1_portrait_frame.getPosition().x+150, player1_portrait_frame.getPosition().y -90);
     }
     else
-        player1Type_text.setString("Bot");
+        player1Type_text.setString(BOT);
     if (player2OrBot == 1) {
-        player2Type_text.setString("Player 2");
+        player2Type_text.setString(P2);
         player2Type_text.setPosition(player2_portrait_frame.getPosition().x+150, player2_portrait_frame.getPosition().y -90);
     }
     else
-        player2Type_text.setString("Bot");
+        player2Type_text.setString(BOT);
     window.draw(player1Type_text);
     window.draw(player2Type_text);
 
@@ -297,27 +291,27 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     player1_portrait_indicator.setPosition(player1_portrait.getPosition());
     player2_portrait_indicator.setPosition(player2_portrait.getPosition());
 
-
     //name frame
-    sf::RectangleShape player1_name_bg = sf::RectangleShape(sf::Vector2f(250,60));
-    sf::RectangleShape player2_name_bg = sf::RectangleShape(sf::Vector2f(250,60));
-    sf::RectangleShape player1_name_border = sf::RectangleShape(sf::Vector2f(270,80));
-    sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(270,80));
+    sf::RectangleShape player1_name_bg = sf::RectangleShape(sf::Vector2f(300,60));
+    sf::RectangleShape player2_name_bg = sf::RectangleShape(sf::Vector2f(300,60));
+    sf::RectangleShape player1_name_border = sf::RectangleShape(sf::Vector2f(330,90));
+    sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(330,90));
     player1_name_bg.setFillColor(sf::Color(100,100,100));
     player2_name_bg.setFillColor(sf::Color(100,100,100));
-    if (enteringNameText == true) {
-        if (player1_menu_selection == '1')
+    if (enteringNameText) {
+        if (player1_menu_selection == '1') {
             player1_name_border.setFillColor(sf::Color(255, 0, 0));
-        else
+        } else {
             player2_name_border.setFillColor(sf::Color(255, 0, 0));
-    }else{
+        }
+    } else {
         player1_name_border.setFillColor(sf::Color(200, 200, 200));
         player2_name_border.setFillColor(sf::Color(200, 200, 200));
     }
-    player1_name_bg.setPosition((player1_portrait.getPosition().x+120),player1_portrait.getPosition().y+320);
-    player2_name_bg.setPosition((player2_portrait.getPosition().x+120),player2_portrait.getPosition().y+320);
-    player1_name_border.setPosition((player1_portrait.getPosition().x+110), player1_portrait.getPosition().y+310);
-    player2_name_border.setPosition((player2_portrait.getPosition().x+110), player2_portrait.getPosition().y+310);
+    player1_name_bg.setPosition((player1_portrait.getPosition().x+115),player1_portrait.getPosition().y+320);
+    player2_name_bg.setPosition((player2_portrait.getPosition().x+115),player2_portrait.getPosition().y+320);
+    player1_name_border.setPosition((player1_portrait.getPosition().x+100), player1_portrait.getPosition().y+310);
+    player2_name_border.setPosition((player2_portrait.getPosition().x+100), player2_portrait.getPosition().y+310);
     window.draw(player1_name_border);
     window.draw(player2_name_border);
     window.draw(player1_name_bg);
@@ -330,12 +324,12 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     name1_text.setCharacterSize(UI_TEXT_SIZE);
     name1_text.setFillColor(sf::Color(255,255,255,255));
     name1_text.setPosition(player1_name_bg.getPosition().x+10, player1_name_bg.getPosition().y-55);
-    name1_text.setString(walrus1_name_str);
+    name1_text.setString(logic.walrus1.getName());
     name2_text.setFont(font);
     name2_text.setCharacterSize(UI_TEXT_SIZE);
     name2_text.setFillColor(sf::Color(255,255,255,255));
     name2_text.setPosition(player2_name_bg.getPosition().x+10, player2_name_bg.getPosition().y-55);
-    name2_text.setString(walrus2_name_str);
+    name2_text.setString(logic.walrus2.getName());
     window.draw(name2_text);
     window.draw(name1_text);
 
@@ -481,7 +475,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
         player1.setFillColor(logic.walrus1.getColor());
         player1.setTextureRect(walrus1_animation.uvRect);
         window.draw(player1);
-        text.setString("Walrus 1 Won!");
+        text.setString(logic.walrus1.getName() + WON);
     }
 
     else
@@ -491,7 +485,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
         player2.setFillColor(logic.walrus2.getColor());
         player2.setTextureRect(walrus2_animation.uvRect);
         window.draw(player2);
-        text.setString("Walrus 2 Won!");
+        text.setString(logic.walrus2.getName() + WON);
     }
 
     //draw Play Again, Stats, and Quit options
@@ -537,23 +531,23 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     //stats: kills, deaths, powerups collected, slash attacks used, meters travelled (need to figure out a way to do this)
     //divide screen in half, walrus 1 and walrus 2 stats:
     window.clear(sf::Color::Blue);
+
     //draw walrus 1 header
     sf::Text walrus1header;
     walrus1header.setFont(font);
     walrus1header.setCharacterSize(UI_TEXT_SIZE);
     walrus1header.setFillColor(sf::Color(255, 255, 255, 255));
     walrus1header.setPosition(WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10);
-    walrus1header.setString(WALRUS_1_NAME);
-
+    walrus1header.setString(logic.walrus1.getName());
     window.draw(walrus1header);
+
     //draw walrus 2 header
     sf::Text walrus2header;
     walrus2header.setFont(font);
     walrus2header.setCharacterSize(UI_TEXT_SIZE);
     walrus2header.setFillColor(sf::Color(255, 255, 255, 255));
-    walrus2header.setPosition(walrus1header.getPosition().x + walrus1header.getLocalBounds().width + 125, WINDOW_HEIGHT / 10);
-    walrus2header.setString(WALRUS_2_NAME);
-
+    walrus2header.setPosition(walrus1header.getPosition().x + walrus1header.getLocalBounds().width + WINDOW_WIDTH/3, WINDOW_HEIGHT / 10);
+    walrus2header.setString(logic.walrus2.getName());
     window.draw(walrus2header);
 
     sf::Text kills_text1;
@@ -561,9 +555,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     kills_text1.setCharacterSize(UI_TEXT_SIZE / 2);
     kills_text1.setFillColor(sf::Color(255, 255, 255, 255));
     kills_text1.setPosition(walrus1header.getPosition().x, walrus1header.getPosition().y + 100);
-    std::string kills_string = "Kills: " + std::to_string(logic.walrus1.kills);
+    std::string kills_string = KILLS + std::to_string(logic.walrus1.kills);
     kills_text1.setString(kills_string);
-
     window.draw(kills_text1);
 
     sf::Text kills_text2;
@@ -571,9 +564,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     kills_text2.setCharacterSize(UI_TEXT_SIZE / 2);
     kills_text2.setFillColor(sf::Color(255, 255, 255, 255));
     kills_text2.setPosition(walrus2header.getPosition().x, walrus1header.getPosition().y + 100);
-    std::string kills_string2 = "Kills: " + std::to_string(logic.walrus2.kills);
+    std::string kills_string2 = KILLS + std::to_string(logic.walrus2.kills);
     kills_text2.setString(kills_string2);
-
     window.draw(kills_text2);
 
     sf::Text deaths_text1;
@@ -581,9 +573,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     deaths_text1.setCharacterSize(UI_TEXT_SIZE / 2);
     deaths_text1.setFillColor(sf::Color(255, 255, 255, 255));
     deaths_text1.setPosition(walrus1header.getPosition().x, kills_text1.getPosition().y + 50);
-    std::string death_string1 = "Deaths: " + std::to_string(logic.walrus1.deaths);
+    std::string death_string1 = DEATHS + std::to_string(logic.walrus1.deaths);
     deaths_text1.setString(death_string1);
-
     window.draw(deaths_text1);
 
     sf::Text deaths_text2;
@@ -591,20 +582,17 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     deaths_text2.setCharacterSize(UI_TEXT_SIZE / 2);
     deaths_text2.setFillColor(sf::Color(255, 255, 255, 255));
     deaths_text2.setPosition(walrus2header.getPosition().x, kills_text2.getPosition().y + 50);
-    std::string death_string2 = "Deaths: " + std::to_string(logic.walrus2.deaths);
+    std::string death_string2 = DEATHS + std::to_string(logic.walrus2.deaths);
     deaths_text2.setString(death_string2);
-
     window.draw(deaths_text2);
-
 
     sf::Text powerup_text1;
     powerup_text1.setFont(font);
     powerup_text1.setCharacterSize(UI_TEXT_SIZE / 2);
     powerup_text1.setFillColor(sf::Color(255, 255, 255, 255));
     powerup_text1.setPosition(walrus1header.getPosition().x, deaths_text1.getPosition().y + 50);
-    std::string powerup_string1 = "Powerups: " + std::to_string(logic.walrus1.powerups_collected);
+    std::string powerup_string1 = POWERUPS + std::to_string(logic.walrus1.powerups_collected);
     powerup_text1.setString(powerup_string1);
-
     window.draw(powerup_text1);
 
     sf::Text powerup_text2;
@@ -612,9 +600,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     powerup_text2.setCharacterSize(UI_TEXT_SIZE / 2);
     powerup_text2.setFillColor(sf::Color(255, 255, 255, 255));
     powerup_text2.setPosition(walrus2header.getPosition().x, deaths_text2.getPosition().y + 50);
-    std::string powerup_string2 = "Powerups: " + std::to_string(logic.walrus2.powerups_collected);
+    std::string powerup_string2 = POWERUPS + std::to_string(logic.walrus2.powerups_collected);
     powerup_text2.setString(powerup_string2);
-
     window.draw(powerup_text2);
 
     sf::Text slash_attacks_text1;
@@ -622,9 +609,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     slash_attacks_text1.setCharacterSize(UI_TEXT_SIZE / 2);
     slash_attacks_text1.setFillColor(sf::Color(255, 255, 255, 255));
     slash_attacks_text1.setPosition(walrus1header.getPosition().x, powerup_text1.getPosition().y + 50);
-    std::string slash_string1 = "Slash Attacks: " + std::to_string(logic.walrus1.slash_attack_num);
+    std::string slash_string1 = SLASH_ATTACKS + std::to_string(logic.walrus1.slash_attack_num);
     slash_attacks_text1.setString(slash_string1);
-
     window.draw(slash_attacks_text1);
 
     sf::Text slash_attacks_text2;
@@ -632,11 +618,9 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     slash_attacks_text2.setCharacterSize(UI_TEXT_SIZE / 2);
     slash_attacks_text2.setFillColor(sf::Color(255, 255, 255, 255));
     slash_attacks_text2.setPosition(walrus2header.getPosition().x, powerup_text2.getPosition().y + 50);
-    std::string slash_string2 = "Slash Attacks: " + std::to_string(logic.walrus2.slash_attack_num);
+    std::string slash_string2 = SLASH_ATTACKS + std::to_string(logic.walrus2.slash_attack_num);
     slash_attacks_text2.setString(slash_string2);
-
     window.draw(slash_attacks_text2);
-
 
 
     int distance1 = int(logic.walrus1.distance_travelled) / 10;
@@ -645,9 +629,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     meter_text1.setCharacterSize(UI_TEXT_SIZE / 2);
     meter_text1.setFillColor(sf::Color(255, 255, 255, 255));
     meter_text1.setPosition(walrus1header.getPosition().x, slash_attacks_text1.getPosition().y + 50);
-    std::string meter_string1 = "Distance (m): " + std::to_string(distance1);
+    std::string meter_string1 = DIST + std::to_string(distance1);
     meter_text1.setString(meter_string1);
-
     window.draw(meter_text1);
 
 
@@ -657,9 +640,8 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     meter_text2.setCharacterSize(UI_TEXT_SIZE / 2);
     meter_text2.setFillColor(sf::Color(255, 255, 255, 255));
     meter_text2.setPosition(walrus2header.getPosition().x, slash_attacks_text2.getPosition().y + 50);
-    std::string meter_string2 = "Distance (m): " + std::to_string(distance2);
+    std::string meter_string2 = DIST + std::to_string(distance2);
     meter_text2.setString(meter_string2);
-
     window.draw(meter_text2);
 
     //Main Menu text
@@ -667,12 +649,9 @@ void CameraView::drawStatsMenu(sf::RenderWindow &window, GameLogic &logic) {
     quit_text.setFont(font);
     quit_text.setCharacterSize(UI_TEXT_SIZE / 2);
     quit_text.setFillColor(sf::Color::Black);
-    quit_text.setPosition(WINDOW_WIDTH / 3, WINDOW_HEIGHT - 100);
+    quit_text.setPosition(2*WINDOW_WIDTH / 5, WINDOW_HEIGHT - 100);
     quit_text.setString(MAIN_MENU);
-
     window.draw(quit_text);
-
-
 
 }
 
@@ -789,7 +768,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     collision_pt.setFillColor(sf::Color::Red);
     window.draw(collision_pt);
 
-    // draw w1 attack point
+    /*// draw w1 attack point
     if (logic.walrus1.getState() == Player::attacking) {
         collision_pt.setRadius(logic.walrus1.getMass()*PLAYER_HITBOX_SCALE);
         collision_pt.setPosition(logic.p1AttackPoint - sf::Vector2f(collision_pt.getRadius(), collision_pt.getRadius()));
@@ -802,7 +781,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         collision_pt.setPosition(logic.p2AttackPoint - sf::Vector2f(collision_pt.getRadius(), collision_pt.getRadius()));
         collision_pt.setFillColor(sf::Color(255,0,0,100));
         window.draw(collision_pt);
-    }
+    }*/
 
     //draw minimap background
     /*
@@ -938,8 +917,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(roundCounter_text);
 
     //draw walrus names above stamina bars
-    walrus1_name.setString(walrus1_name_str);
-    walrus2_name.setString(walrus2_name_str);
+    walrus1_name.setString(logic.walrus1.getName());
+    walrus2_name.setString(logic.walrus2.getName());
     walrus1_name.setFont(font);
     walrus2_name.setFont(font);
     walrus1_name.setCharacterSize(UI_TEXT_SIZE);
@@ -950,8 +929,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     walrus2_name.setPosition(stamina_bar2.getPosition().x, stamina_bar2.getPosition().y-40);
     window.draw(walrus1_name);
     window.draw(walrus2_name);
-
-
+  
+    // draw bot rays
+    if (debug_mode) {
+        if (!logic.walrus1.isDead()) {player1Controller->update(window, logic, 0.0, 1);}
+        if (!logic.walrus2.isDead()) {player2Controller->update(window,logic,0.0,2);}
+    }
 }
 
 
@@ -1134,7 +1117,7 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
             }
         }
         if (player1_menu_selection == 'Q') {
-            player1_menu_selection == 'P';
+            player1_menu_selection = 'P';
             logic.returnToMenu();
         }
         if (player1_menu_selection == '1') {
@@ -1174,6 +1157,7 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
+    // screen shake view transformation
     if (screenshake_timer > 0) {
         screenshake_timer -= dSec;
         sf::View view = window.getDefaultView();
@@ -1186,7 +1170,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
     }
 
     if (logic.getState() == GameLogic::GameState::playing) {
-        //update animations
+        // update fish animations
         for (auto anim = fish_animation_list.begin(); anim != fish_animation_list.end(); anim++) {
             (*anim)->updateFish(dSec);
         }
@@ -1200,8 +1184,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
             player2Controller->update(window, logic, dSec, 2);
         }
 
-    } else {
-        //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
+
+    } else { //handle game input here (for MainMenu, PauseMenu, GameOverMenu, etc)
 
         // process events
         sf::Event Event;
@@ -1233,6 +1217,9 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             logic.togglePause();
                             soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
                             break;
+                        case sf::Keyboard::Tilde:
+                            debug_mode = !debug_mode;
+                            break;
                         /*case sf::Keyboard::W:
                             if (player2_menu_selection == '1' || player2_menu_selection == '2')
                                 player2_menu_selection = player2_menu_selection;
@@ -1245,7 +1232,6 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                     }
                     break;
             }
-
 
         }
     }

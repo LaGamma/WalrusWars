@@ -25,6 +25,10 @@
 #define RAISING_TUSKS_MOVEMENT_SCALEDOWN 0.0f
 #define ATTACKING_MOVEMENT_SCALEDOWN 0.2f
 
+// bot
+#define NUM_OF_RAYS_CAST 16
+#define PI 3.14159265
+
 // powerups
 #define FISH_SPEED_BOOST 0.1
 #define FISH_MASS_BOOST 8
@@ -62,15 +66,25 @@
 // strings
 #define GO_RIGHT "GO ->"
 #define GO_LEFT "<- GO"
-#define OPTIONS_STRING "OPTIONS:"
+#define OPTIONS_TITLE_STRING "OPTIONS:"
 #define SFX_VOLUME_STRING "SFX Volume: "
 #define MUSIC_VOLUME_STRING "Music Volume: "
+#define PLAY_STRING "Play"
+#define HELP_STRING "Help"
+#define OPTIONS_STRING "Options"
 #define QUIT_STRING "Quit"
 #define REPLAY "Play Again"
 #define STATS_TEXT "Stats"
-#define WALRUS_1_NAME "Wally"
-#define WALRUS_2_NAME "Wahlberg"
 #define MAIN_MENU "Main Menu"
+#define P1 "Player 1"
+#define P2 "Player 2"
+#define BOT "Bot"
+#define WON " Won!"
+#define KILLS "Kills: "
+#define DEATHS "Deaths: "
+#define POWERUPS "Powerups: "
+#define SLASH_ATTACKS "Slash Attacks: "
+#define DIST "Distance (m): "
 
 //volume
 #define SFX_VOLUME_BASE 50.0f;
