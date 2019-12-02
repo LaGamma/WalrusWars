@@ -1296,10 +1296,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             soundManager.playSound(SoundManager::SFX::menuSelect, logic.getSFXVolume());
                             break;
                         case sf::Keyboard::Tilde:
-                            if (debug_mode == true)
-                                debug_mode = false;
-                            else
-                                debug_mode = true;
+                            debug_mode = !debug_mode;
                             break;
                     }
                     break;
