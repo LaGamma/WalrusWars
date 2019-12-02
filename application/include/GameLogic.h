@@ -43,9 +43,9 @@ class GameLogic {
     float player_hit;
     float splash;
     float powerup;
-    Player walrus1;
-    Player walrus2;
-    Stage stage;
+    std::unique_ptr<Player> walrus1 = std::unique_ptr<Player>(new Player());
+    std::unique_ptr<Player> walrus2 = std::unique_ptr<Player>(new Player());
+    std::unique_ptr<Stage> stage = std::unique_ptr<Stage>(new Stage());
     int round = 1;
     float RoundTimer = 0;
 

@@ -12,8 +12,9 @@ int main(int argc, char** argv)
   CameraView view;
   GameLogic logic;
 
-  logic.init();
   view.init();
+  logic.init();
+  
 
   //create clock
   sf::Clock clock;

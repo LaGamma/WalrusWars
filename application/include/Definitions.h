@@ -86,13 +86,14 @@
 #define SLASH_ATTACKS "Slash Attacks: "
 #define DIST "Distance (m): "
 #define PAUSED "Paused"
+#define RESUME "Resume"
 
 //volume
-#define SFX_VOLUME_BASE 50.0f;
-#define MUSIC_VOLUME_BASE 50.0f;
-#define SFX_VOLUME_MAX 100.0f;
-#define MUSIC_VOLUME_MAX 100.0f;
-#define VOLUME_BAR_WIDTH 100.0f;
+#define SFX_VOLUME_BASE 50.0f
+#define MUSIC_VOLUME_BASE 50.0f
+#define SFX_VOLUME_MAX 100.0f
+#define MUSIC_VOLUME_MAX 100.0f
+#define VOLUME_BAR_WIDTH 200.0f
 
 // volume
 #define BUMP_VOL_SCALE 0.2f
