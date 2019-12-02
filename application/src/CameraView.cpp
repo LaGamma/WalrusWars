@@ -788,19 +788,19 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     text.setCharacterSize(UI_TEXT_SIZE);
     text.setFillColor(sf::Color(255, 0, 0, 255));
     if (logic.walrus1->isDead()) {
-        text.setPosition(3 * WINDOW_WIDTH / 4, (WINDOW_HEIGHT / 2) - (UI_TEXT_SIZE / 2));
         text.setString(GO_RIGHT);
+        text.setPosition(3 * WINDOW_WIDTH / 4, (WINDOW_HEIGHT / 2) - (UI_TEXT_SIZE / 2));
         window.draw(text);
     } else if (logic.walrus2->isDead()) {
-        text.setPosition(WINDOW_WIDTH / 4, (WINDOW_HEIGHT / 2) - (UI_TEXT_SIZE / 2));
         text.setString(GO_LEFT);
+        text.setPosition(WINDOW_WIDTH / 4 - text.getGlobalBounds().width, (WINDOW_HEIGHT / 2) - (UI_TEXT_SIZE / 2));
         window.draw(text);
     }
     // draw collision point
-    collision_pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5, 5));
+    /*collision_pt.setPosition(logic.playerCollisionPoint - sf::Vector2f(5, 5));
     collision_pt.setRadius(5);
     collision_pt.setFillColor(sf::Color::Red);
-    window.draw(collision_pt);
+    window.draw(collision_pt);*/
 
     /*// draw w1 attack point
     if (logic.walrus1->getState() == Player::attacking) {
