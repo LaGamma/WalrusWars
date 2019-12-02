@@ -239,7 +239,11 @@ void BotController::calculateForce(GameLogic &logic, int playerNum) {
                 break;
             case 2: // fish
                 // attract to fish direction
-                pop_vec += (*r).dir * ((100.0*pow(0.97, (*r).dist)) + 10.0);
+                if (state == fighting) {
+                    pop_vec += (*r).dir * ((100.0 * pow(0.97, (*r).dist)) + 10.0);
+                } else {
+                    pop_vec += (*r).dir * 50.0 * pow(0.97, (*r).dist);
+                }
                 break;
             case 3: // opponent
                 opponent_force_component = sf::Vector2f(opponent_vel.x * -(*r).dir.x, opponent_vel.y * -(*r).dir.y);
