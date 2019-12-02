@@ -497,7 +497,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
 
 void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
 
-    window.clear(sf::Color::Red);
+    window.clear(sf::Color(20,20,150));
     sf::Text text;
     text.setFont(font);
     text.setCharacterSize(UI_TEXT_SIZE);
@@ -530,21 +530,21 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     replay_text.setFont(font);
     replay_text.setCharacterSize(UI_TEXT_SIZE);
     replay_text.setFillColor(sf::Color(255, 255, 255, 255));
-    replay_text.setPosition(WINDOW_WIDTH / 3, WINDOW_HEIGHT / 2);
+    replay_text.setPosition(WINDOW_WIDTH / 4, 7*WINDOW_HEIGHT / 12);
     replay_text.setString(REPLAY);
 
     sf::Text stats_text;
     stats_text.setFont(font);
     stats_text.setCharacterSize(UI_TEXT_SIZE);
     stats_text.setFillColor(sf::Color(255, 255, 255, 255));
-    stats_text.setPosition(replay_text.getPosition().x, replay_text.getPosition().y + 50);
+    stats_text.setPosition(replay_text.getPosition().x, replay_text.getPosition().y + 70);
     stats_text.setString(STATS_TEXT);
 
     sf::Text quit_text;
     quit_text.setFont(font);
     quit_text.setCharacterSize(UI_TEXT_SIZE);
     quit_text.setFillColor(sf::Color(255, 255, 255, 255));
-    quit_text.setPosition(replay_text.getPosition().x, stats_text.getPosition().y + 50);
+    quit_text.setPosition(replay_text.getPosition().x, stats_text.getPosition().y + 70);
     quit_text.setString(QUIT_STRING);
 
     //handle coloring of selection
