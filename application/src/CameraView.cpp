@@ -1184,10 +1184,18 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
     } else if (logic.getState() == GameLogic::GameState::nameTextSubMenu) {
         //std::cout << "Select Color" << std::endl;
         if (player1_menu_selection == '1') {
-            logic.walrus1->setName(walrus1_name_str);
+            if (walrus1_name_str.length() > 0) {
+                logic.walrus1->setName(walrus1_name_str);
+            } else {
+                logic.walrus1->setName("Wally");
+            }
         }
         else {
-            logic.walrus2->setName(walrus2_name_str);
+            if (walrus2_name_str.length() > 0) {
+                logic.walrus2->setName(walrus2_name_str);
+            } else {
+                logic.walrus2->setName("Wahlberg");
+            }
         }
         enteringNameText = false;
         colorSelector = true;
