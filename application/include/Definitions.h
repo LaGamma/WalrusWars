@@ -87,6 +87,7 @@
 #define DIST "Distance (m): "
 #define PAUSED "Paused"
 #define RESUME "Resume"
+#define MAX_INPUT_SIZE 7
 
 //volume
 #define SFX_VOLUME_BASE 50.0f

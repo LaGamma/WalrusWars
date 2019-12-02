@@ -69,6 +69,8 @@ class CameraView {
     sf::Texture playerNeutralSelect;
 
     //player names
+    std::string walrus1_name_str;
+    std::string walrus2_name_str;
     sf::Text walrus1_name;
     sf::Text walrus2_name;
 
