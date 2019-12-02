@@ -2,6 +2,7 @@
 #include <GameLogic.h>
 #include <CameraView.h>
 #include <iostream>
+#include <memory>
 
 
 int main(int argc, char** argv)
@@ -9,12 +10,11 @@ int main(int argc, char** argv)
   // create main window
   sf::RenderWindow App(sf::VideoMode(WINDOW_WIDTH,WINDOW_HEIGHT,32), APP_TITLE);
 
-  CameraView view;
-  GameLogic logic;
+  std::unique_ptr<CameraView> view = std::unique_ptr<CameraView>(new CameraView());
+  std::unique_ptr<GameLogic> logic = std::unique_ptr<GameLogic>(new GameLogic());
 
-  view.init();
-  logic.init();
-  
+  logic->init();
+  view->init();
 
   //create clock
   sf::Clock clock;
@@ -30,11 +30,11 @@ int main(int argc, char** argv)
     //std::cout << dSec << "\n";
 
     // process game input
-    view.processInput(App, logic, dSec);
+    view->processInput(App, *logic, dSec);
     // tick natural game logic
-    logic.update(dSec);
+    logic->update(dSec);
     // draw window
-    view.draw(App, logic);
+    view->draw(App, *logic);
 
   }
 

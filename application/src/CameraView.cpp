@@ -915,10 +915,12 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape stamina_bar2 = sf::RectangleShape(sf::Vector2f(300*WINDOW_WIDTH/800, 25*WINDOW_HEIGHT/600));
     stamina_bar1.setFillColor(sf::Color(255, 0, 0, 255));
     stamina_bar2.setFillColor(sf::Color(255, 0, 0, 255));
+    stamina_bar1.setOutlineColor(sf::Color::Black);
+    stamina_bar1.setOutlineThickness(2);
+    stamina_bar2.setOutlineColor(sf::Color::Black);
+    stamina_bar2.setOutlineThickness(2);
     stamina_bar1.setPosition(70*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
     stamina_bar2.setPosition(stamina_bar1.getPosition().x + stamina_bar1.getSize().x + 70*WINDOW_WIDTH/800, 60*WINDOW_HEIGHT/600);
-    window.draw(stamina_bar1);
-    window.draw(stamina_bar2);
 
     //draw stamina gauges, these change
     //need to adjust dimensions to be based on walrus staminas
@@ -931,6 +933,28 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     stamina_left2.setFillColor(sf::Color(255, 255, 0, 255));
     stamina_left1.setPosition(stamina_bar1.getPosition());
     stamina_left2.setPosition(stamina_bar2.getPosition());
+
+    // grey out bar if dead
+    Player::PlayerState state1 = logic.walrus1->getState();
+    Player::PlayerState state2 = logic.walrus2->getState();
+
+    if (state1 == Player::PlayerState::dead) {
+        stamina_bar1.setFillColor(sf::Color(50,50,50));
+        stamina_left1.setFillColor(sf::Color(100,100,100));
+    } else if (state1 == Player::PlayerState::resting) {
+        stamina_bar1.setFillColor(sf::Color(100,100,100));
+        stamina_left1.setFillColor(sf::Color(150,150,150));
+    }
+    if (state2 == Player::PlayerState::dead) {
+        stamina_bar2.setFillColor(sf::Color(50,50,50));
+        stamina_left2.setFillColor(sf::Color(100,100,100));
+    } else if (state2 == Player::PlayerState::resting) {
+        stamina_bar2.setFillColor(sf::Color(100,100,100));
+        stamina_left2.setFillColor(sf::Color(150,150,150));
+    }
+
+    window.draw(stamina_bar1);
+    window.draw(stamina_bar2);
     window.draw(stamina_left1);
     window.draw(stamina_left2);
 
@@ -955,16 +979,16 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     walrus2_name.setString(logic.walrus2->getName());
     walrus1_name.setFont(font);
     walrus2_name.setFont(font);
-    walrus1_name.setCharacterSize(UI_TEXT_SIZE);
-    walrus2_name.setCharacterSize(UI_TEXT_SIZE);
+    walrus1_name.setCharacterSize(UI_TEXT_SIZE/3);
+    walrus2_name.setCharacterSize(UI_TEXT_SIZE/3);
     walrus1_name.setFillColor(sf::Color(255,255,255,255));
     walrus1_name.setOutlineColor(sf::Color::Black);
     walrus1_name.setOutlineThickness(1);
-    walrus1_name.setPosition(stamina_bar1.getPosition().x+5, stamina_bar1.getPosition().y-40);
+    walrus1_name.setPosition(stamina_bar1.getPosition().x+5, stamina_bar1.getPosition().y-5);
     walrus2_name.setFillColor(sf::Color(255,255,255,255));
     walrus2_name.setOutlineColor(sf::Color::Black);
     walrus2_name.setOutlineThickness(1);
-    walrus2_name.setPosition(stamina_bar2.getPosition().x, stamina_bar2.getPosition().y-40);
+    walrus2_name.setPosition(stamina_bar2.getPosition().x+5, stamina_bar2.getPosition().y-5);
     window.draw(walrus1_name);
     window.draw(walrus2_name);
 
