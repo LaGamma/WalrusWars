@@ -4,6 +4,8 @@
 #include "Stage.h"
 #include "Fish.h"
 #include <list>
+#include <memory>
+
 class GameLogic {
   public:
     GameLogic();

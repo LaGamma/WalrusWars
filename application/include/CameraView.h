@@ -6,6 +6,7 @@
 #include "Controller.h"
 #include "Animation.h"
 #include "SoundManager.h"
+#include <memory>
 
 class CameraView {
   public:
