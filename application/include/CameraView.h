@@ -69,6 +69,7 @@ class CameraView {
     sf::Texture playerNeutralSelect;
     sf::Texture roundCounter10;
     sf::Texture roundCounter20;
+    sf::Texture roundCounter;
 
     //player names
     std::string walrus1_name_str = "Wally";
