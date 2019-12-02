@@ -38,7 +38,7 @@ class CameraView {
     char options_menu_selection = 'S';
     char game_over_menu_selection = 'P';
     char player1_menu_selection = 'P';
-    char pause_menu_selection = 'Q';
+    char pause_menu_selection = 'R';
     char color_selection = '1';
     bool colorSelector = false;
     bool enteringNameText = false;
@@ -69,9 +69,8 @@ class CameraView {
     sf::Texture playerNeutralSelect;
 
     //player names
-    std::string player_name1 = "Wally";
-    std::string player_name2 = "Waldo";
-    std::string player_name3 = "Wahlberg";
+    std::string walrus1_name_str;
+    std::string walrus2_name_str;
     sf::Text walrus1_name;
     sf::Text walrus2_name;
 

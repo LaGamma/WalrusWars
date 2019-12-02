@@ -8,10 +8,8 @@ BotController::BotController() {
 
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 
-    sf::Vector2f self_pos = (playerNum == 1) ? logic.walrus1.getPos() : logic.walrus2.getPos();
-    bool opponent_dead = (playerNum == 1) ? logic.walrus2.isDead() : logic.walrus1.isDead();
-
-    float bot_handicap = 1;  // higher number == slower bot
+    sf::Vector2f self_pos = (playerNum == 1) ? logic.walrus1->getPos() : logic.walrus2->getPos();
+    bool opponent_dead = (playerNum == 1) ? logic.walrus2->isDead() : logic.walrus1->isDead();
 
     if(!opponent_dead) {
         state = fighting;
@@ -22,7 +20,8 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         right_wall_x = WINDOW_WIDTH+50;
     } else {
         state = exiting;
-
+        
+        // adapt repel walls to player position
         if (self_pos.y < top_wall_y) {
             top_wall_y = self_pos.y - 150.0f;
         }
@@ -63,11 +62,11 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
     }
     window.draw(line, 5, sf::LinesStrip);
 
+    
     calculateRays(logic, playerNum);
 
     // draw rays
     for (auto r = rays.begin(); r != rays.end(); r++) {
-
         sf::Vertex line[] = {
                 sf::Vertex(self_pos + sf::Vector2f((float)(*r).dir.x, (float)(*r).dir.y) * (float)(*r).dist),
                 sf::Vertex(self_pos)
@@ -78,6 +77,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         window.draw(line, 2, sf::Lines);
     }
 
+    
     calculateForce(logic, playerNum);
 
     // draw direction line
@@ -91,7 +91,10 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
 
     double angst_magnitude = sqrt((dir.x * dir.x) + (dir.y * dir.y));
-
+    
+    //sf::Vector2<double> unit_vec = sf::Vector2<double>(dir.x / angst_magnitude, dir.y / angst_magnitude);
+    //dir = sf::Vector2f(unit_vec.x *(angst_magnitude/200.0), unit_vec.y *(angst_magnitude/200.0));
+    
     if (angst_magnitude > 30 && state == fighting) {
         // set target movement direction
         sf::Vector2<double> unit_vec = sf::Vector2<double>(dir.x / angst_magnitude, dir.y / angst_magnitude);
@@ -108,7 +111,7 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
     }
 
     // apply movement force
-    (playerNum == 1) ? logic.walrus1.applyActiveForce(dir, dSec / bot_handicap) : logic.walrus2.applyActiveForce(dir, dSec / bot_handicap);
+    (playerNum == 1) ? logic.walrus1->applyActiveForce(dir, dSec) : logic.walrus2->applyActiveForce(dir, dSec);
 
     // process events
     sf::Event Event;
@@ -136,8 +139,8 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
 
 void BotController::calculateRays(GameLogic &logic, int playerNum) {
 
-    sf::Vector2<double> opponent_pos = (playerNum == 1) ? static_cast<sf::Vector2<double>>(logic.walrus2.getPos()) : static_cast<sf::Vector2<double>>(logic.walrus1.getPos());
-    sf::Vector2<double> self_pos = (playerNum == 1) ? static_cast<sf::Vector2<double>>(logic.walrus1.getPos()) : static_cast<sf::Vector2<double>>(logic.walrus2.getPos());
+    sf::Vector2<double> opponent_pos = (playerNum == 1) ? static_cast<sf::Vector2<double>>(logic.walrus2->getPos()) : static_cast<sf::Vector2<double>>(logic.walrus1->getPos());
+    sf::Vector2<double> self_pos = (playerNum == 1) ? static_cast<sf::Vector2<double>>(logic.walrus1->getPos()) : static_cast<sf::Vector2<double>>(logic.walrus2->getPos());
 
     rays.clear();
 
@@ -151,7 +154,7 @@ void BotController::calculateRays(GameLogic &logic, int playerNum) {
         sf::Vector2<double> projection = self_pos + (unit_vec / 10.0);
 
         if (state == fighting) {
-            while (logic.stage.getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4) {
+            while (logic.stage->getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4) {
                 projection += (unit_vec / 10.0);
             }
             projection -= self_pos;
@@ -162,10 +165,10 @@ void BotController::calculateRays(GameLogic &logic, int playerNum) {
             rays.push_back(r);
 
         } else {
-            while (logic.stage.getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4 && projection.x > left_wall_x && projection.x < right_wall_x && projection.y > top_wall_y && projection.y < bottom_wall_y) {
+            while (logic.stage->getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4 && projection.x > left_wall_x && projection.x < right_wall_x && projection.y > top_wall_y && projection.y < bottom_wall_y) {
                 projection += (unit_vec / 10.0);
             }
-            if (logic.stage.getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4) {
+            if (logic.stage->getTileDura((int)(projection.x/ICE_BLOCKS_SIZE_Y), (int)(projection.y/ICE_BLOCKS_SIZE_Y), logic.getStageProgression()) > 0.4) {
                 projection -= self_pos;
                 double magnitude = sqrt(projection.x*projection.x + projection.y*projection.y);
                 // create ray to water (1) and add to ray list
@@ -217,8 +220,8 @@ void BotController::calculateRays(GameLogic &logic, int playerNum) {
 
 void BotController::calculateForce(GameLogic &logic, int playerNum) {
 
-    sf::Vector2f opponent_vel = (playerNum == 1) ? logic.walrus2.getVel() : logic.walrus1.getVel();
-    sf::Vector2f self_vel = (playerNum == 1) ? logic.walrus1.getVel() : logic.walrus2.getVel();
+    sf::Vector2f opponent_vel = (playerNum == 1) ? logic.walrus2->getVel() : logic.walrus1->getVel();
+    sf::Vector2f self_vel = (playerNum == 1) ? logic.walrus1->getVel() : logic.walrus2->getVel();
 
     sf::Vector2<double> pop_vec = sf::Vector2<double>(0,0);
 
@@ -236,7 +239,11 @@ void BotController::calculateForce(GameLogic &logic, int playerNum) {
                 break;
             case 2: // fish
                 // attract to fish direction
-                pop_vec += (*r).dir * ((100.0*pow(0.97, (*r).dist)) + 10.0);
+                if (state == fighting) {
+                    pop_vec += (*r).dir * ((100.0 * pow(0.97, (*r).dist)) + 10.0);
+                } else {
+                    pop_vec += (*r).dir * 50.0 * pow(0.97, (*r).dist);
+                }
                 break;
             case 3: // opponent
                 opponent_force_component = sf::Vector2f(opponent_vel.x * -(*r).dir.x, opponent_vel.y * -(*r).dir.y);
