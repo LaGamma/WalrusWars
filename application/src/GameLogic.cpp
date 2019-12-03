@@ -304,14 +304,6 @@ void GameLogic::handlePlayerAttack(int attacker, sf::Vector2f dir) {
 
 void GameLogic::returnToMenu() {
     state = mainMenu;
-    //reset stats
-    walrus1->resetStats();
-    walrus2->resetStats();
-    stage->generateMap();
-    //reset progression
-    progression = 0;
-    //reset rounds
-    round = 1;
 }
 
 void GameLogic::setSFXVolume(float vol) {
@@ -403,6 +395,7 @@ void GameLogic::handlePlayerSelectMenu() {
     //reset stats
     walrus1->resetStats();
     walrus2->resetStats();
+    stage->generateMap();
     //reset progression
     progression = 0;
     //reset rounds
