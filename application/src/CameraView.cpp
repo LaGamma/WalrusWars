@@ -718,7 +718,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
                 // draw ice graphics based on melt
                 ice.setSize(sf::Vector2f(ICE_BLOCKS_SIZE_X * dura, ICE_BLOCKS_SIZE_Y * dura));
                 ice.setPosition((i * ICE_BLOCKS_SIZE_X + ((ICE_BLOCKS_SIZE_X - ice.getSize().x) / 2)), (j * ICE_BLOCKS_SIZE_Y + ((ICE_BLOCKS_SIZE_Y - ice.getSize().y) / 2)));
-                ice.setFillColor(sf::Color(50, 247, 250, 200 * dura));
+                ice.setFillColor(sf::Color(50, 247, 250, 230 * dura));
                 ice.setOutlineColor(sf::Color(255, 255, 255, 255));
                 ice.setOutlineThickness(4 * dura);
                 window.draw(ice);
@@ -728,7 +728,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
 
     //draw splash
-    sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(75,75));
+    /*sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(75,75));
     walrusSplash_object.setTexture(&walrusSplash);
     walrusSplash_object.setTextureRect(walrusSplash_animation.uvRect);
     if (logic.walrus1->isDead()) {
@@ -738,7 +738,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     else if (logic.walrus2->isDead()) {
         walrusSplash_object.setPosition(logic.walrus2->getPos());
         window.draw(walrusSplash_object);
-    }
+    }*/
 
     // draw fish
     auto anim = fish_animation_list.begin();
