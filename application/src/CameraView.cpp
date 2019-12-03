@@ -95,8 +95,16 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
-    //main menu background
     window.clear(sf::Color(50,50,50));
+
+    //draw water
+    sf::RectangleShape water_object;
+    water_object.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    water_object.setTexture(&water);
+    water_object.setTextureRect(water_animation.uvRect);
+    window.draw(water_object);
+
+    //main menu background
     sf::RectangleShape bg;
     bg.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     bg.setTexture(&menu_background);
@@ -493,9 +501,9 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     }if (player1_menu_selection == '2'){
         window.draw(player2_portrait_indicator);
     }if (player1_menu_selection == 'P') {
-        play_text.setFillColor(sf::Color::Black);
+        play_text.setFillColor(sf::Color::Cyan);
     }if (player1_menu_selection == 'Q') {
-        quit_text.setFillColor(sf::Color::Black);
+        quit_text.setFillColor(sf::Color::Cyan);
     }
 
     window.draw(play_text);
@@ -1288,6 +1296,9 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float dSec) {
 
+    // update water
+    water_animation.updateWater(dSec);
+
     // screen shake view transformation
     if (screenshake_timer > 0) {
         screenshake_timer -= dSec;
@@ -1322,9 +1333,6 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
         //walrus splash
         walrusSplash_animation.updateWalrusSplash(dSec);
-
-        //water
-        water_animation.updateWater(dSec);
 
 
     } else {
