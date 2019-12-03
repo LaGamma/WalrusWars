@@ -28,6 +28,7 @@ void CameraView::init() {
     roundCounter10.loadFromFile("../images/roundCounter10.png");
     roundCounter20.loadFromFile("../images/roundCounter20.png");
     walrusSplash.loadFromFile("../images/walrusSplash.png");
+    water.loadFromFile("../images/water_animation.png");
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
@@ -35,6 +36,7 @@ void CameraView::init() {
     roundCounter10_animation.init(&roundCounter10, sf::Vector2u(3,1), 0.3);
     roundCounter20_animation.init(&roundCounter20, sf::Vector2u(3,1), 0.3);
     walrusSplash_animation.init(&walrusSplash, sf::Vector2u(3,1), 0.3);
+    water_animation.init(&water, sf::Vector2u(3,1), 0.9);
     soundManager.playMusic(SoundManager::Music::title);
 
     for (int i = 0; i < MAX_NUM_OF_FISH; i++) {
@@ -94,7 +96,7 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
 void CameraView::drawMainMenu(sf::RenderWindow &window, GameLogic &logic) {
 
     //main menu background
-    window.clear(sf::Color(150, 150, 150));
+    window.clear(sf::Color(50,50,50));
     sf::RectangleShape bg;
     bg.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     bg.setTexture(&menu_background);
@@ -701,6 +703,13 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     window.clear(sf::Color::Blue);
 
+    //draw water
+    sf::RectangleShape water_object;
+    water_object.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    water_object.setTexture(&water);
+    water_object.setTextureRect(water_animation.uvRect);
+    window.draw(water_object);
+
     //draw ice blocks
     for (int i = 0; i < ICE_BLOCKS_WIDTH+1; i++) {
         for (int j = 0; j < ICE_BLOCKS_HEIGHT+1; j++) {
@@ -719,7 +728,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
 
     //draw splash
-    sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(100,100));
+    sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(75,75));
     walrusSplash_object.setTexture(&walrusSplash);
     walrusSplash_object.setTextureRect(walrusSplash_animation.uvRect);
     if (logic.walrus1->isDead()) {
@@ -1040,6 +1049,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         if (!logic.walrus1->isDead()) {player1Controller->update(window, logic, 0.0, 1);}
         if (!logic.walrus2->isDead()) {player2Controller->update(window,logic,0.0,2);}
     }
+
 }
 
 
@@ -1312,6 +1322,9 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
         //walrus splash
         walrusSplash_animation.updateWalrusSplash(dSec);
+
+        //water
+        water_animation.updateWater(dSec);
 
 
     } else {

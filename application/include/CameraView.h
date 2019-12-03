@@ -57,6 +57,7 @@ class CameraView {
     Animation roundCounter10_animation;
     Animation roundCounter20_animation;
     Animation walrusSplash_animation;
+    Animation water_animation;
     std::list<std::unique_ptr<Animation>> fish_animation_list;
     sf::Texture spriteMapWalrus;
     sf::Texture spriteMapFish;
@@ -74,6 +75,7 @@ class CameraView {
     sf::Texture roundCounter20;
     sf::Texture roundCounter;
     sf::Texture walrusSplash;
+    sf::Texture water;
 
     //player names
     std::string walrus1_name_str;

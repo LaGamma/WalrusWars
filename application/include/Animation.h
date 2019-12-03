@@ -11,6 +11,7 @@ public:
   void updateFish(float dSec);
   void updateroundFire(float dSec);
   void updateWalrusSplash(float dSec);
+  void updateWater(float dSec);
 
 
   sf::IntRect uvRect;
