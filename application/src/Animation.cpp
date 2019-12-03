@@ -156,6 +156,22 @@ void Animation::updateFish(float dSec) {
     uvRect.width = abs(uvRect.width);
 }
 
+void Animation::updateroundFire(float dSec) {
+    totalTime += dSec;
+    //currentSprite.y = 1;
+    if (totalTime >= switchTime) {
+        totalTime -= switchTime;
+        currentSprite.x++;
+        //make the animation loop through row
+        if (currentSprite.x >= spriteCount.x) {
+            currentSprite.x = 0;
+        }
+    }
+    //update uv rect
+    uvRect.top = currentSprite.y * uvRect.height;
+    uvRect.left = currentSprite.x * uvRect.width;
+    uvRect.width = abs(uvRect.width);
+}
 
 void Animation::setCurrentSprite(int x, int y){
     currentSprite.x = x;

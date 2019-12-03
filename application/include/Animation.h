@@ -9,6 +9,7 @@ public:
   void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
   void updateWalrus(sf::Vector2f dir, Player::PlayerState state, float dSec);
   void updateFish(float dSec);
+  void updateroundFire(float dSec);
 
 
   sf::IntRect uvRect;
