@@ -27,12 +27,14 @@ void CameraView::init() {
     roundCounter.loadFromFile("../images/roundCounter.png");
     roundCounter10.loadFromFile("../images/roundCounter10.png");
     roundCounter20.loadFromFile("../images/roundCounter20.png");
+    walrusSplash.loadFromFile("../images/walrusSplash.png");
     font.loadFromFile("../fonts/menuFont.ttf");
     soundManager.load();
     walrus1_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
     walrus2_animation.init(&spriteMapWalrus, sf::Vector2u(3,11), 0.15);
     roundCounter10_animation.init(&roundCounter10, sf::Vector2u(3,1), 0.3);
     roundCounter20_animation.init(&roundCounter20, sf::Vector2u(3,1), 0.3);
+    walrusSplash_animation.init(&walrusSplash, sf::Vector2u(3,1), 0.3);
     soundManager.playMusic(SoundManager::Music::title);
 
     for (int i = 0; i < MAX_NUM_OF_FISH; i++) {
@@ -715,6 +717,19 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         }
     }
 
+    //draw splash
+    sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(100,100));
+    walrusSplash_object.setTexture(&walrusSplash);
+    walrusSplash_object.setTextureRect(walrusSplash_animation.uvRect);
+    if (logic.walrus1->isDead()) {
+        walrusSplash_object.setPosition(logic.walrus1->getPos());
+        window.draw(walrusSplash_object);
+    }
+    else if (logic.walrus2->isDead()) {
+        walrusSplash_object.setPosition(logic.walrus2->getPos());
+        window.draw(walrusSplash_object);
+    }
+
     // draw fish
     auto anim = fish_animation_list.begin();
     for (auto fish = logic.fish_list.begin(); fish != logic.fish_list.end(); fish++, anim++) {
@@ -1293,6 +1308,9 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
         //round counter flames
         roundCounter10_animation.updateroundFire(dSec);
         roundCounter20_animation.updateroundFire(dSec);
+
+        //walrus splash
+        walrusSplash_animation.updateWalrusSplash(dSec);
 
 
     } else {

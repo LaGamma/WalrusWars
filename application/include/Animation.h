@@ -10,6 +10,7 @@ public:
   void updateWalrus(sf::Vector2f dir, Player::PlayerState state, float dSec);
   void updateFish(float dSec);
   void updateroundFire(float dSec);
+  void updateWalrusSplash(float dSec);
 
 
   sf::IntRect uvRect;

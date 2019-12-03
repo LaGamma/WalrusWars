@@ -34,7 +34,6 @@ class GameLogic {
     enum GameState {mainMenu, playing, pauseMenu, gameOverMenu, optionsMenu, playerSelectMenu, nameTextSubMenu, colorSelectSubMenu, statsMenu};
     GameState getState();
     int getRound();
-    float getRoundTimer();
     bool winner1;
     bool p1_attack_handling_in_progress;
     bool p2_attack_handling_in_progress;
