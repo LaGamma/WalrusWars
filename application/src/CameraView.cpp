@@ -713,6 +713,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
                 ice.setOutlineColor(sf::Color(255, 255, 255, 255));
                 ice.setOutlineThickness(4 * dura);
                 window.draw(ice);
+
             }
         }
     }
