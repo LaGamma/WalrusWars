@@ -26,6 +26,7 @@ class CameraView {
     void drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawStatsMenu(sf::RenderWindow &window, GameLogic &logic);
     void drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic);
+    void drawHelpMenu(sf::RenderWindow &window, GameLogic &logic);
 
     void menuUp(sf::RenderWindow &window, GameLogic &logic);
     void menuDown(sf::RenderWindow &window, GameLogic &logic);

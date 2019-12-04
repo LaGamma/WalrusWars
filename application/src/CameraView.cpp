@@ -43,7 +43,7 @@ void CameraView::init() {
         fish_animation_list.push_back(std::unique_ptr<Animation>(new Animation()));
         fish_animation_list.back()->init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
     }
-    
+
     debug_mode = false;
 }
 
@@ -86,6 +86,9 @@ void CameraView::draw(sf::RenderWindow &window, GameLogic &logic) {
             break;
         case GameLogic::GameState::nameTextSubMenu:
             drawPlayerSelectMenu(window, logic);
+            break;
+        case GameLogic::GameState::helpMenu:
+            drawHelpMenu(window, logic);
             break;
 
     }
@@ -145,7 +148,7 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
     sf::RectangleShape rect = sf::RectangleShape(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
     rect.setFillColor(sf::Color(255,255,0,128));
     window.draw(rect);
-    
+
     sf::Text pauseText;
     pauseText.setFont(font);
     pauseText.setCharacterSize(UI_TEXT_SIZE);
@@ -155,7 +158,7 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
     pauseText.setPosition(WINDOW_WIDTH / 2 - 100, WINDOW_HEIGHT / 4);
     pauseText.setString(PAUSED);
     window.draw(pauseText);
-    
+
     sf::Text resumeText;
     resumeText.setFont(font);
     resumeText.setCharacterSize(UI_TEXT_SIZE);
@@ -164,7 +167,7 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
     resumeText.setOutlineThickness(2);
     resumeText.setPosition(WINDOW_WIDTH / 2 - 110, WINDOW_HEIGHT / 2 + 100);
     resumeText.setString(RESUME);
-    
+
     sf::Text quit_text;
     quit_text.setFont(font);
     quit_text.setCharacterSize(UI_TEXT_SIZE);
@@ -173,8 +176,8 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
     quit_text.setOutlineThickness(2);
     quit_text.setPosition(WINDOW_WIDTH / 2 - 50, WINDOW_HEIGHT / 2 + 170);
     quit_text.setString(QUIT_STRING);
-    
-    
+
+
     if (pause_menu_selection == 'Q') {
         quit_text.setFillColor(sf::Color::Black);
         quit_text.setOutlineColor(sf::Color(50,50,50));
@@ -182,15 +185,44 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
         resumeText.setFillColor(sf::Color::Black);
         resumeText.setOutlineColor(sf::Color(50,50,50));
     }
-    
+
     window.draw(resumeText);
     window.draw(quit_text);
 
 }
 
+void CameraView::drawHelpMenu(sf::RenderWindow &window, GameLogic &logic) {
+  window.clear(sf::Color(50,50,50));
+  sf::Text instructions1("Knock the other walrus off the ice!", font, UI_TEXT_SIZE/2);
+  instructions1.setFillColor(sf::Color(255, 255, 255, 255));
+  instructions1.setPosition(WINDOW_WIDTH / 2 - 325, 25);
+  window.draw(instructions1);
+  sf::Text instructions2("Player 1 movement = WASD, Player 2 movement = Arrow Keys\n Player 1 attack = LShift, Player 2 attack = RSHIFT", font, UI_TEXT_SIZE/2);
+  instructions2.setFillColor(sf::Color(255, 255, 255, 255));
+  instructions2.setPosition(WINDOW_WIDTH / 2 - 450, 80);
+  window.draw(instructions2);
+  sf::Text instructions3("Red Fish increases speed, Green Fish increases size", font, UI_TEXT_SIZE/2);
+  instructions3.setFillColor(sf::Color(255, 255, 255, 255));
+  instructions3.setPosition(WINDOW_WIDTH / 2 - 410, 160);
+  window.draw(instructions3);
+  sf::Text instructions4("Progress to the next stage to continue! \nThe first walrus to reach the end wins!", font, UI_TEXT_SIZE/2);
+  instructions4.setFillColor(sf::Color(255, 255, 255, 255));
+  instructions4.setPosition(WINDOW_WIDTH / 2 - 350, 240);
+  window.draw(instructions4);
+  sf::Text instructions5("Play against a bot or a friend.", font, UI_TEXT_SIZE/2);
+  instructions5.setFillColor(sf::Color(255, 255, 255, 255));
+  instructions5.setPosition(WINDOW_WIDTH / 2 - 300, 400);
+  window.draw(instructions5);
+  sf::Text instructions6("Return to Menu", font, UI_TEXT_SIZE);
+  instructions6.setFillColor(sf::Color(0, 0, 0, 255));
+  instructions6.setPosition(WINDOW_WIDTH / 2 - 300, 480);
+  window.draw(instructions6);
+
+}
+
 void CameraView::drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic) {
     window.clear(sf::Color(50,50,50));
-    
+
     // draw options title text
     sf::Text options_text(OPTIONS_TITLE_STRING, font, UI_TEXT_SIZE*1.5);
     options_text.setFillColor(sf::Color(255, 255, 255, 255));
@@ -347,7 +379,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     sf::RectangleShape player2_name_border = sf::RectangleShape(sf::Vector2f(330,90));
     player1_name_bg.setFillColor(sf::Color(100,100,100));
     player2_name_bg.setFillColor(sf::Color(100,100,100));
-    
+
     //name text
     sf::Text name1_text;
     sf::Text name2_text;
@@ -359,8 +391,8 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     name2_text.setCharacterSize(UI_TEXT_SIZE);
     name2_text.setFillColor(sf::Color(255,255,255,255));
     name2_text.setString(logic.walrus2->getName());
-    
-    
+
+
     if (enteringNameText) {
         if (player1_menu_selection == '1') {
             player1_name_border.setFillColor(sf::Color(255, 0, 0));
@@ -385,7 +417,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     window.draw(player2_name_bg);
     window.draw(name2_text);
     window.draw(name1_text);
-    
+
 
     //color icons
     sf::RectangleShape ciBrown = sf::RectangleShape(sf::Vector2f(60,60));
@@ -1082,7 +1114,7 @@ void CameraView::menuUp(sf::RenderWindow &window, GameLogic &logic) {
         else if (game_over_menu_selection == 'Q')
             game_over_menu_selection = 'S';
     }
-    
+
     else if (logic.getState() == GameLogic::GameState::playerSelectMenu) {
         if (player1_menu_selection == '1' || player1_menu_selection == '2')
             player1_menu_selection = player1_menu_selection;
@@ -1193,7 +1225,7 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
         if (main_menu_selection == 'P') {
             logic.handlePlayerSelectMenu();
         } else if (main_menu_selection == 'H') {
-            std::cout << "help menu" << std::endl;
+            logic.handleHelpMenu();
         } else if (main_menu_selection == 'O') {
             logic.handleOptionsMenu();
         }
@@ -1210,7 +1242,11 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
             logic.returnToMenu();
             soundManager.playMusic(SoundManager::Music::title);
         }
-    } else if (logic.getState() == GameLogic::GameState::optionsMenu) {
+    }
+    else if (logic.getState() == GameLogic::GameState::helpMenu){
+      logic.returnToMenu();
+    }
+    else if (logic.getState() == GameLogic::GameState::optionsMenu) {
         if (options_menu_selection == 'Q') {
             options_menu_selection = 'S';
             logic.returnToMenu();
@@ -1244,7 +1280,7 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
                 logic.handleNameTextSubMenu();
                 walrus1_name_str = "";
                 walrus1_name.setString(walrus1_name_str);
-                
+
             }
         }
         if (player1_menu_selection == '2') {
@@ -1373,7 +1409,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             break;
                     }
                     break;
-                // handle name input    
+                // handle name input
                 case sf::Event::TextEntered:
                     if (enteringNameText && isalnum(Event.text.unicode)) {
                         if (player1_menu_selection == '1' && walrus1_name_str.length() < MAX_INPUT_SIZE) {
@@ -1382,7 +1418,7 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
                             walrus2_name_str += static_cast<char>(Event.text.unicode);
                         }
                     }
-                    break;  
+                    break;
             }
 
         }

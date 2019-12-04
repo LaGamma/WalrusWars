@@ -390,6 +390,10 @@ void GameLogic::handleOptionsMenu() {
 void GameLogic::handleStatsMenu() {
     state = statsMenu;
 }
+
+void GameLogic::handleHelpMenu() {
+  state = helpMenu;
+}
 void GameLogic::handlePlayerSelectMenu() {
     state = playerSelectMenu;
     //reset stats
