@@ -1,8 +1,6 @@
 #include "PlayerController.h"
 
-PlayerController::PlayerController() {
-
-};
+PlayerController::PlayerController() = default;
 
 void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 

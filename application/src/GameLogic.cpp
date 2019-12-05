@@ -3,9 +3,7 @@
 #include <Definitions.h>
 #include "GameLogic.h"
 
-GameLogic::GameLogic() {
-
-}
+GameLogic::GameLogic() = default;
 
 void GameLogic::init() {
     state = mainMenu;
@@ -19,8 +17,8 @@ void GameLogic::init() {
     music_volume = MUSIC_VOLUME_BASE;
     walrus1->setColor(sf::Color(255,255,255,255));
     walrus2->setColor(sf::Color(155,155,155,255));
-    walrus1->setName("Wally");
-    walrus2->setName("Wahlberg");
+    walrus1->setName(DEFAULT_NAME_1);
+    walrus2->setName(DEFAULT_NAME_2);
 }
 
 void GameLogic::update(float dSec) {

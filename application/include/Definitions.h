@@ -87,6 +87,8 @@
 #define DIST "Distance (m): "
 #define PAUSED "Paused"
 #define RESUME "Resume"
+#define DEFAULT_NAME_1 "Wally"
+#define DEFAULT_NAME_2 "Wahlberg"
 #define MAX_INPUT_SIZE 7
 
 //volume

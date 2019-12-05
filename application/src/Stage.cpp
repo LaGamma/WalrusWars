@@ -1,9 +1,7 @@
 #include "Stage.h"
 #include <memory>
 
-Stage::Stage(){
-
-}
+Stage::Stage() = default;
 
 void Stage::generateMap(){
 	int i;

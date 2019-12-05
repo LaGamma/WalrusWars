@@ -6,9 +6,7 @@
 #include <Definitions.h>
 #include <cmath>
 
-CameraView::CameraView() {
-
-}
+CameraView::CameraView() = default;
 
 void CameraView::init() {
     //load in textures
@@ -449,7 +447,7 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     colorSelectionIndicator.setOutlineColor(sf::Color(255,0,0,255));
     colorSelectionIndicator.setOutlineThickness(5);
     colorSelectionIndicator.setFillColor(sf::Color(255,255,255,0));
-    if (colorSelector == true) {
+    if (colorSelector) {
         window.draw(ciBrown);
         window.draw(ciDBrown);
         window.draw(ciWhite);
@@ -1308,14 +1306,14 @@ void CameraView::menuSelect(sf::RenderWindow &window, GameLogic &logic) {
             if (walrus1_name_str.length() > 0) {
                 logic.walrus1->setName(walrus1_name_str);
             } else {
-                logic.walrus1->setName("Wally");
+                logic.walrus1->setName(DEFAULT_NAME_1);
             }
         }
         else {
             if (walrus2_name_str.length() > 0) {
                 logic.walrus2->setName(walrus2_name_str);
             } else {
-                logic.walrus2->setName("Wahlberg");
+                logic.walrus2->setName(DEFAULT_NAME_2);
             }
         }
         enteringNameText = false;

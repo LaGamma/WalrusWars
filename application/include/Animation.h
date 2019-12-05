@@ -22,7 +22,7 @@ public:
   void setCurrentSpriteX(int x);
   void setCurrentSpriteY(int y);
   int row = 0;
-  bool flip = 0;
+  bool flip = false;
 private:
   sf::Vector2u spriteCount; //stores number of rows and columns of sprites
   sf::Vector2f currentSprite; //stores the row and column of current sprites

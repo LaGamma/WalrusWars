@@ -10,11 +10,11 @@ class Stage {
     void tickMelt(int);
     float getTileDura(int,int,int);
   private:
-    float centerStage[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2];
-    float leftStage1[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2];
-    float leftStage2[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2];
-    float rightStage1[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2];
-    float rightStage2[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2];
+    float centerStage[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
+    float leftStage1[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
+    float leftStage2[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
+    float rightStage1[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
+    float rightStage2[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
 
 };
 

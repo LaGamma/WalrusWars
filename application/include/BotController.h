@@ -13,13 +13,10 @@ class BotController : public Controller {
 
   public:
       BotController();
-      void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum);
+      void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) override;
   private:
       void calculateRays(GameLogic &logic, int playerNum);
       void calculateForce(GameLogic &logic, int playerNum);
-
-      enum ControllerState {fighting, exiting};
-      ControllerState state;
 
       std::list<Ray> rays;
       sf::Vector2f dir;
