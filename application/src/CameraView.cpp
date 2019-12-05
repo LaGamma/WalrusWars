@@ -749,8 +749,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(water_object);
 
     //draw ice blocks
-    for (int i = 0; i < ICE_BLOCKS_WIDTH+5; i++) {
-        for (int j = 0; j < ICE_BLOCKS_HEIGHT+5; j++) {
+    for (int i = 0; i < ICE_BLOCKS_WIDTH+2; i++) {
+        for (int j = 0; j < ICE_BLOCKS_HEIGHT+2; j++) {
             float dura = logic.stage->getTileDura(i, j, logic.getStageProgression());
             if (dura > 0) {
                 // draw ice graphics based on melt
