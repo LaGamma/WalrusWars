@@ -5,17 +5,16 @@
 
 class Stage {
   public:
-    Stage();
+    Stage() = default;
     void generateMap();
     void tickMelt(int);
     float getTileDura(int,int,int);
   private:
-    float centerStage[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
-    float leftStage1[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
-    float leftStage2[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
-    float rightStage1[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
-    float rightStage2[ICE_BLOCKS_WIDTH+2][ICE_BLOCKS_HEIGHT+2]{};
-
+    std::array<std::array<float, ICE_BLOCKS_HEIGHT+2>, ICE_BLOCKS_WIDTH+2> centerStage;
+    std::array<std::array<float, ICE_BLOCKS_HEIGHT+2>, ICE_BLOCKS_WIDTH+2> leftStage1;
+    std::array<std::array<float, ICE_BLOCKS_HEIGHT+2>, ICE_BLOCKS_WIDTH+2> rightStage1;
+    std::array<std::array<float, ICE_BLOCKS_HEIGHT+2>, ICE_BLOCKS_WIDTH+2> leftStage2;
+    std::array<std::array<float, ICE_BLOCKS_HEIGHT+2>, ICE_BLOCKS_WIDTH+2> rightStage2;
 };
 
 #endif

@@ -1,8 +1,6 @@
 #include "SoundManager.h"
 #include <iostream>
 
-SoundManager::SoundManager() = default;
-
 void SoundManager::load() {
   if(!bumpBuffer.loadFromFile("../audio/bump.wav")) {
     std::cout << "Could not load audio\n";

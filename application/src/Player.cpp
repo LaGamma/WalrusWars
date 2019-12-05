@@ -10,6 +10,7 @@ Player::Player() {
     powerups_collected = 0;
     slash_attack_num = 0;
     distance_travelled = 0.0f;
+    name = "placeholder_string";
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {
@@ -197,7 +198,7 @@ void Player::setColor(sf::Color newColor) {
     color = newColor;
 }
 void Player::setName(std::string newName) {
-    strcpy(name, newName.c_str());
+    name =  newName;
 }
 void Player::resetStats() {
     kills = 0;

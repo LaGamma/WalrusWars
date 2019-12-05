@@ -6,8 +6,6 @@
 #include <Definitions.h>
 #include <cmath>
 
-CameraView::CameraView() = default;
-
 void CameraView::init() {
     //load in textures
     spriteMapWalrus.loadFromFile("../images/WalrusSS.png");
@@ -743,14 +741,16 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     //draw water
     sf::RectangleShape water_object;
-    water_object.setSize(sf::Vector2f(WINDOW_WIDTH, WINDOW_HEIGHT));
+    // add a bit extra on the edges to account for screen shake
+    water_object.setSize(sf::Vector2f(WINDOW_WIDTH+50, WINDOW_HEIGHT+50));
+    water_object.setPosition(-25, -25);
     water_object.setTexture(&water);
     water_object.setTextureRect(water_animation.uvRect);
     window.draw(water_object);
 
     //draw ice blocks
-    for (int i = 0; i < ICE_BLOCKS_WIDTH+1; i++) {
-        for (int j = 0; j < ICE_BLOCKS_HEIGHT+1; j++) {
+    for (int i = 0; i < ICE_BLOCKS_WIDTH+5; i++) {
+        for (int j = 0; j < ICE_BLOCKS_HEIGHT+5; j++) {
             float dura = logic.stage->getTileDura(i, j, logic.getStageProgression());
             if (dura > 0) {
                 // draw ice graphics based on melt
@@ -1338,8 +1338,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
         screenshake_timer -= dSec;
         sf::View view = window.getDefaultView();
         view.setCenter(view.getCenter() +
-                       sf::Vector2f(rand() % (1 + (int) (screenshake_magnitude * screenshake_timer * 0.3)),
-                                    rand() % (1 + (int) (screenshake_magnitude * screenshake_timer * 0.3))));
+                       sf::Vector2f(rand() % (1 + (int) (screenshake_magnitude * screenshake_timer * 0.3)) - (int)(screenshake_magnitude * screenshake_timer * 0.3 / 2),
+                                    rand() % (1 + (int) (screenshake_magnitude * screenshake_timer * 0.3)) - (int)(screenshake_magnitude * screenshake_timer * 0.3 / 2)));
         window.setView(view);
     } else {
         screenshake_timer = 0;
@@ -1362,8 +1362,8 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
         }
 
         //round counter flames
-        roundCounter10_animation.updateroundFire(dSec);
-        roundCounter20_animation.updateroundFire(dSec);
+        roundCounter10_animation.updateRoundFire(dSec);
+        roundCounter20_animation.updateRoundFire(dSec);
 
         //walrus splash
         walrusSplash_animation.updateWalrusSplash(dSec);

@@ -8,7 +8,7 @@
 
 class GameLogic {
   public:
-    GameLogic();
+    GameLogic() = default;
     void init();
     void update(float);
     void handlePlayerDeath(int);

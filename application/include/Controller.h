@@ -7,7 +7,7 @@
 
 class Controller {
   public:
-    Controller();
+    Controller() = default;
     virtual void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) = 0;
 };
 

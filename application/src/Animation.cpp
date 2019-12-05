@@ -2,9 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-Animation::Animation()
-{
-}
 
 void Animation::init(sf::Texture* texture, sf::Vector2u sprite_count, float switch_time)
 {
@@ -156,7 +153,7 @@ void Animation::updateFish(float dSec) {
     uvRect.width = abs(uvRect.width);
 }
 
-void Animation::updateroundFire(float dSec) {
+void Animation::updateRoundFire(float dSec) {
     totalTime += dSec;
     //currentSprite.y = 1;
     if (totalTime >= switchTime) {
@@ -215,9 +212,6 @@ void Animation::setCurrentSprite(int x, int y){
     uvRect.left = currentSprite.x * uvRect.width;
     uvRect.width = abs(uvRect.width);
     row = y;
-}
-void Animation::setCurrentSpriteX(int x){
-    currentSprite.x = x;
 }
 
 void Animation::setCurrentSpriteY(int y) {

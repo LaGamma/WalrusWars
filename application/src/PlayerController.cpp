@@ -1,7 +1,5 @@
 #include "PlayerController.h"
 
-PlayerController::PlayerController() = default;
-
 void PlayerController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 
     sf::Vector2f dir = sf::Vector2f(0,0);

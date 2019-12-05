@@ -4,7 +4,7 @@
 #include <SFML/Audio.hpp>
 class SoundManager {
   public:
-    SoundManager();
+    SoundManager() = default;
     enum Music{title,battle};
     enum SFX{bump,splash,menuSelect,menuMove,fish};
     void playSound(SFX, float);

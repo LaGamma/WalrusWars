@@ -12,7 +12,7 @@ class BotController : public Controller {
   };
 
   public:
-      BotController();
+      BotController() = default;
       void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) override;
   private:
       void calculateRays(GameLogic &logic, int playerNum);

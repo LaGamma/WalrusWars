@@ -10,7 +10,7 @@
 
 class CameraView {
   public:
-    CameraView();
+    CameraView() = default;
     void init();
     void processInput(sf::RenderWindow &window, GameLogic &logic, float dSec);
     void draw(sf::RenderWindow &window, GameLogic &logic);

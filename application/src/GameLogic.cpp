@@ -3,8 +3,6 @@
 #include <Definitions.h>
 #include "GameLogic.h"
 
-GameLogic::GameLogic() = default;
-
 void GameLogic::init() {
     state = mainMenu;
     walrus1->resetStats();

@@ -5,11 +5,11 @@
 
 class Animation {
 public:
-  Animation();
+  Animation() = default;
   void init(sf::Texture* texture, sf::Vector2u spriteCount, float switchTime);
   void updateWalrus(sf::Vector2f dir, Player::PlayerState state, float dSec);
   void updateFish(float dSec);
-  void updateroundFire(float dSec);
+  void updateRoundFire(float dSec);
   void updateWalrusSplash(float dSec);
   void updateWater(float dSec);
 
@@ -18,8 +18,6 @@ public:
 
   //reset current sprite when player dies
   void setCurrentSprite(int x, int y);
-  //needed to set beginning of attack animation
-  void setCurrentSpriteX(int x);
   void setCurrentSpriteY(int y);
   int row = 0;
   bool flip = false;

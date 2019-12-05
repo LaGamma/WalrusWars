@@ -2,8 +2,6 @@
 #include <iostream>
 #include <cmath>
 
-BotController::BotController() = default;
-
 void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) {
 
     sf::Vector2f self_pos = (playerNum == 1) ? logic.walrus1->getPos() : logic.walrus2->getPos();
