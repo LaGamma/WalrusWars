@@ -13,7 +13,7 @@ public:
   void updateWalrusSplash(float dSec);
   void updateWater(float dSec);
   //reset current sprite when player dies
-  void setCurrentSprite(int x, int y);
+  void setCurrentSprite(int x, int y, bool flip);
   //set fish color
   void setCurrentSpriteY(int y);
 

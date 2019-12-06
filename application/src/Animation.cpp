@@ -65,7 +65,7 @@ void Animation::updateWalrus(sf::Vector2f dir, Player::PlayerState state, float 
     // handle animation progression based on player state
     switch(state) {
         case Player::idle:
-            setCurrentSprite(0,0);
+            setCurrentSprite(0,0, false);
             break;
         case Player::resting:
             totalTime += dSec;
@@ -204,13 +204,19 @@ void Animation::updateWater(float dSec) {
 }
 
 
-void Animation::setCurrentSprite(int x, int y){
+void Animation::setCurrentSprite(int x, int y, bool flip){
     currentSprite.x = x;
     currentSprite.y = y;
     uvRect.top = currentSprite.y * uvRect.height;
     uvRect.left = currentSprite.x * uvRect.width;
     uvRect.width = abs(uvRect.width);
     row = y;
+
+    // flip sprite if needed
+    if (flip) {
+        uvRect.left = (currentSprite.x + 1) * abs(uvRect.width);
+        uvRect.width = -abs(uvRect.width);
+    }
 }
 
 void Animation::setCurrentSpriteY(int y) {

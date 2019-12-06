@@ -206,6 +206,56 @@ void CameraView::drawHelpMenu(sf::RenderWindow &window, GameLogic &logic) {
   instructions4.setPosition(WINDOW_WIDTH / 2 - 300, 760);
   window.draw(instructions4);
 
+  // p1 sprite
+  player1.setSize(sf::Vector2f(80, 80));
+  player1.setPosition(WINDOW_WIDTH*17/20, WINDOW_HEIGHT/7+10);
+  player1.setFillColor(logic.walrus1->getColor());
+  player1.setTexture(&spriteMapWalrus);
+  walrus1_animation.setCurrentSprite(1,9, false);
+  player1.setTextureRect(walrus1_animation.uvRect);
+  window.draw(player1);
+  // baby walruses
+  player1.setSize(sf::Vector2f(40, 40));
+  player1.setPosition(player1.getPosition() + sf::Vector2f(60,35));
+  walrus1_animation.setCurrentSprite(2,3, false);
+  player1.setTextureRect(walrus1_animation.uvRect);
+  window.draw(player1);
+  player1.setSize(sf::Vector2f(40, 40));
+  player1.setPosition(player1.getPosition() + sf::Vector2f(-10,10));
+  window.draw(player1);
+
+  // p2 sprite
+  player2.setSize(sf::Vector2f(80, 80));
+  player2.setPosition(WINDOW_WIDTH*15/20, WINDOW_HEIGHT/7+10);
+  player2.setFillColor(logic.walrus2->getColor());
+  player2.setTexture(&spriteMapWalrus);
+  walrus2_animation.setCurrentSprite(1,9, true);
+  player2.setTextureRect(walrus2_animation.uvRect);
+  window.draw(player2);
+  // baby walruses
+  player2.setSize(sf::Vector2f(40, 40));
+  player2.setPosition(player2.getPosition() + sf::Vector2f(-20,35));
+  walrus2_animation.setCurrentSprite(2,3, true);
+  player2.setTextureRect(walrus2_animation.uvRect);
+  window.draw(player2);
+  player2.setSize(sf::Vector2f(40, 40));
+  player2.setPosition(player2.getPosition() + sf::Vector2f(10,10));
+  window.draw(player2);
+
+  sf::CircleShape fish_circle = sf::CircleShape(40);
+  Animation fish_anim = Animation();
+  fish_anim.init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
+  fish_circle.setPosition(WINDOW_WIDTH*11/16, WINDOW_HEIGHT*12/16);
+  fish_circle.setTexture(&spriteMapFish);
+  fish_anim.setCurrentSprite(1, 0, false);
+  fish_circle.setTextureRect(fish_anim.uvRect);
+  window.draw(fish_circle);
+  fish_anim.setCurrentSprite(1,1, false);
+  fish_circle.setTextureRect(fish_anim.uvRect);
+  fish_circle.setPosition(fish_circle.getPosition() + sf::Vector2f(100, 0));
+  window.draw(fish_circle);
+
+
 }
 
 void CameraView::drawOptionsMenu(sf::RenderWindow &window, GameLogic &logic) {
@@ -545,7 +595,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     if (logic.winner1)
     {
         //walrus1 won
-        walrus1_animation.setCurrentSprite(0,0);
+        walrus1_animation.setCurrentSprite(0,0, false);
         player1.setFillColor(logic.walrus1->getColor());
         player1.setTextureRect(walrus1_animation.uvRect);
         window.draw(player1);
@@ -555,7 +605,7 @@ void CameraView::drawGameOverMenu(sf::RenderWindow &window, GameLogic &logic) {
     else
     {
         //walrus2 won
-        walrus2_animation.setCurrentSprite(0,0);
+        walrus2_animation.setCurrentSprite(0,0, false);
         player2.setFillColor(logic.walrus2->getColor());
         player2.setTextureRect(walrus2_animation.uvRect);
         window.draw(player2);
