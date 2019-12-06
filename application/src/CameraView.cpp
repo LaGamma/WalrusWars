@@ -37,7 +37,7 @@ void CameraView::init() {
 
     for (int i = 0; i < MAX_NUM_OF_FISH; i++) {
         fish_animation_list.push_back(std::unique_ptr<Animation>(new Animation()));
-        fish_animation_list.back()->init(&spriteMapFish, sf::Vector2u(2,2), 0.3);
+        fish_animation_list.back()->init(&spriteMapFish, sf::Vector2u(2,2), 0.2);
     }
 
     debug_mode = false;
@@ -189,30 +189,22 @@ void CameraView::drawPauseMenu(sf::RenderWindow &window, GameLogic &logic) {
 
 void CameraView::drawHelpMenu(sf::RenderWindow &window, GameLogic &logic) {
   window.clear(sf::Color(50,50,50));
-  sf::Text instructions1("Knock the other walrus off the ice!", font, UI_TEXT_SIZE/2);
+  sf::Text instructions1(BACKGROUND_A + logic.walrus1->getName() + " & " + logic.walrus2->getName() + BACKGROUND_B, font, UI_TEXT_SIZE/2);
   instructions1.setFillColor(sf::Color(255, 255, 255, 255));
-  instructions1.setPosition(WINDOW_WIDTH / 2 - 325, 25);
+  instructions1.setPosition(WINDOW_WIDTH / 20, 25);
   window.draw(instructions1);
-  sf::Text instructions2("Player 1 movement = WASD, Player 2 movement = Arrow Keys\n Player 1 attack = LShift, Player 2 attack = RSHIFT", font, UI_TEXT_SIZE/2);
-  instructions2.setFillColor(sf::Color(255, 255, 255, 255));
-  instructions2.setPosition(WINDOW_WIDTH / 2 - 450, 80);
+  sf::Text instructions2(CONTROL_INSTRUCTIONS, font, UI_TEXT_SIZE/2);
+  instructions2.setFillColor(sf::Color(0, 0, 255, 255));
+  instructions2.setPosition(WINDOW_WIDTH / 20, 350);
   window.draw(instructions2);
-  sf::Text instructions3("Red Fish increases speed, Green Fish increases size", font, UI_TEXT_SIZE/2);
-  instructions3.setFillColor(sf::Color(255, 255, 255, 255));
-  instructions3.setPosition(WINDOW_WIDTH / 2 - 410, 160);
+  sf::Text instructions3(GAME_RULES, font, UI_TEXT_SIZE/2);
+  instructions3.setFillColor(sf::Color(255, 255, 0, 255));
+  instructions3.setPosition(WINDOW_WIDTH / 20, 480);
   window.draw(instructions3);
-  sf::Text instructions4("Progress to the next stage to continue! \nThe first walrus to reach the end wins!", font, UI_TEXT_SIZE/2);
-  instructions4.setFillColor(sf::Color(255, 255, 255, 255));
-  instructions4.setPosition(WINDOW_WIDTH / 2 - 350, 240);
+  sf::Text instructions4(MAIN_MENU, font, UI_TEXT_SIZE);
+  instructions4.setFillColor(sf::Color(0, 0, 0, 255));
+  instructions4.setPosition(WINDOW_WIDTH / 2 - 300, 760);
   window.draw(instructions4);
-  sf::Text instructions5("Play against a bot or a friend.", font, UI_TEXT_SIZE/2);
-  instructions5.setFillColor(sf::Color(255, 255, 255, 255));
-  instructions5.setPosition(WINDOW_WIDTH / 2 - 300, 400);
-  window.draw(instructions5);
-  sf::Text instructions6("Return to Menu", font, UI_TEXT_SIZE);
-  instructions6.setFillColor(sf::Color(0, 0, 0, 255));
-  instructions6.setPosition(WINDOW_WIDTH / 2 - 300, 480);
-  window.draw(instructions6);
 
 }
 
@@ -766,17 +758,17 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
 
     //draw splash
-    /*sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(75,75));
+    sf::RectangleShape walrusSplash_object = sf::RectangleShape(sf::Vector2f(60,60));
     walrusSplash_object.setTexture(&walrusSplash);
     walrusSplash_object.setTextureRect(walrusSplash_animation.uvRect);
-    if (logic.walrus1->isDead()) {
-        walrusSplash_object.setPosition(logic.walrus1->getPos());
+    if (logic.walrus1->isDead() && splash_timer) {
+        walrusSplash_object.setPosition(logic.walrus1->getPos() - sf::Vector2f(30,30));
         window.draw(walrusSplash_object);
     }
-    else if (logic.walrus2->isDead()) {
-        walrusSplash_object.setPosition(logic.walrus2->getPos());
+    else if (logic.walrus2->isDead() && splash_timer) {
+        walrusSplash_object.setPosition(logic.walrus2->getPos() - sf::Vector2f(30,30));
         window.draw(walrusSplash_object);
-    }*/
+    }
 
     // draw fish
     auto anim = fish_animation_list.begin();
@@ -953,6 +945,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     window.draw(stage_veil);
     */
 
+    // play any triggered sound effects
     if (logic.player_hit) {
         soundManager.playSound(SoundManager::SFX::bump, logic.player_hit);
         screenshake_magnitude = logic.player_hit;
@@ -971,6 +964,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     }
     if(logic.splash){
       soundManager.playSound(SoundManager::SFX::splash, logic.splash);
+      splash_timer = 0.5f;
       logic.splash = 0;
     }
     if(logic.powerup){
@@ -1006,6 +1000,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     Player::PlayerState state1 = logic.walrus1->getState();
     Player::PlayerState state2 = logic.walrus2->getState();
 
+    // gray out the stamina bar if dead or resting
     if (state1 == Player::PlayerState::dead) {
         stamina_bar1.setFillColor(sf::Color(50,50,50));
         stamina_left1.setFillColor(sf::Color(100,100,100));
@@ -1020,7 +1015,6 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
         stamina_bar2.setFillColor(sf::Color(100,100,100));
         stamina_left2.setFillColor(sf::Color(150,150,150));
     }
-
     window.draw(stamina_bar1);
     window.draw(stamina_bar2);
     window.draw(stamina_left1);
@@ -1050,6 +1044,7 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
     roundCounter_text.setCharacterSize(UI_TEXT_SIZE / 2);
     roundCounter_text.setFillColor(sf::Color(255, 255, 255, 255));
 
+    // update round counter sprites
     if (logic.getRound() < 10) {
         roundCounter_text.setPosition(roundCounterbg.getPosition().x + 55, roundCounterbg.getPosition().y+30);
         window.draw(roundCounterbg);
@@ -1084,8 +1079,8 @@ void CameraView::drawGame(sf::RenderWindow &window, GameLogic &logic) {
 
     // draw bot rays
     if (debug_mode) {
-        if (!logic.walrus1->isDead()) {player1Controller->update(window, logic, 0.0, 1);}
-        if (!logic.walrus2->isDead()) {player2Controller->update(window,logic,0.0,2);}
+        if (!logic.walrus1->isDead()) {player1Controller->update(window, logic, 0, 1);}
+        if (!logic.walrus2->isDead()) {player2Controller->update(window,logic,0,2);}
     }
 
 }
@@ -1367,6 +1362,12 @@ void CameraView::processInput(sf::RenderWindow &window, GameLogic &logic, float 
 
         //walrus splash
         walrusSplash_animation.updateWalrusSplash(dSec);
+        if (splash_timer) {
+            splash_timer -= dSec;
+            if (splash_timer < 0) {
+                splash_timer = 0;
+            }
+        }
 
 
     } else {

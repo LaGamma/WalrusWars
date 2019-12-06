@@ -10,7 +10,6 @@ Player::Player() {
     powerups_collected = 0;
     slash_attack_num = 0;
     distance_travelled = 0.0f;
-    name = "placeholder_string";
 }
 
 void Player::spawn(sf::Vector2f spawn_pos) {

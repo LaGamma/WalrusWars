@@ -116,6 +116,7 @@ class CameraView {
 
     float screenshake_magnitude;
     float screenshake_timer;
+    float splash_timer;
 
     bool debug_mode;
 };

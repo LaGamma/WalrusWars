@@ -363,7 +363,7 @@ void GameLogic::handlePlayerDeath(int walrus) {
         }
     }
 
-    splash = 1;
+    splash = 1.0f;
 
 }
 

@@ -20,7 +20,6 @@ class GameLogic {
     void resetGame();
     void handleOptionsMenu();
     void handleHelpMenu();
-
     void handleStatsMenu();
     void handlePlayerSelectMenu();
     void handleNameTextSubMenu();
@@ -47,7 +46,6 @@ class GameLogic {
     std::unique_ptr<Player> walrus2 = std::unique_ptr<Player>(new Player());
     std::unique_ptr<Stage> stage = std::unique_ptr<Stage>(new Stage());
     int round = 1;
-    float RoundTimer = 0;
 
     sf::Vector2f playerCollisionPoint;
     sf::Vector2f p1AttackPoint;

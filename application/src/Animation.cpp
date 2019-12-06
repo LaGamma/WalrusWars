@@ -172,7 +172,6 @@ void Animation::updateRoundFire(float dSec) {
 
 void Animation::updateWalrusSplash(float dSec) {
     totalTime += dSec;
-    //currentSprite.y = 1;
     if (totalTime >= switchTime) {
         totalTime -= switchTime;
         currentSprite.x++;

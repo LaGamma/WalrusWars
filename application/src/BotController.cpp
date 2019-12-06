@@ -104,28 +104,31 @@ void BotController::update(sf::RenderWindow &window, GameLogic &logic, float dSe
         dir = sf::Vector2f(unit_vec.x / 4, unit_vec.y / 4);
     }
 
-    // apply movement force
-    (playerNum == 1) ? logic.walrus1->applyActiveForce(dir, dSec) : logic.walrus2->applyActiveForce(dir, dSec);
+    // dont process input here if we are just calling the update in debug mode
+    if (dSec > 0) {
+        // apply movement force
+        (playerNum == 1) ? logic.walrus1->applyActiveForce(dir, dSec) : logic.walrus2->applyActiveForce(dir, dSec);
 
-    // process events
-    sf::Event Event;
-    while (window.pollEvent(Event)) {
-        switch (Event.type) {
-            //window closed
-            case sf::Event::Closed:
-                window.close();
-                break;
-                //window out of focus
-            case sf::Event::LostFocus:
-                logic.togglePause();
-                break;
-            case sf::Event::GainedFocus:
-                break;
-            case sf::Event::KeyPressed:
-                if (Event.key.code == sf::Keyboard::P) {
+        // process events
+        sf::Event Event;
+        while (window.pollEvent(Event)) {
+            switch (Event.type) {
+                //window closed
+                case sf::Event::Closed:
+                    window.close();
+                    break;
+                    //window out of focus
+                case sf::Event::LostFocus:
                     logic.togglePause();
-                }
-                break;
+                    break;
+                case sf::Event::GainedFocus:
+                    break;
+                case sf::Event::KeyPressed:
+                    if (Event.key.code == sf::Keyboard::P) {
+                        logic.togglePause();
+                    }
+                    break;
+            }
         }
     }
 }

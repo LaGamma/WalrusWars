@@ -5,21 +5,21 @@
 
 class BotController : public Controller {
 
-  struct Ray {
-      sf::Vector2<double> dir;
-      double dist;
-      int obj;
-  };
-
   public:
       BotController() = default;
       void update(sf::RenderWindow &window, GameLogic &logic, float dSec, int playerNum) override;
   private:
-      void calculateRays(GameLogic &logic, int playerNum);
-      void calculateForce(GameLogic &logic, int playerNum);
 
-      std::list<Ray> rays;
-      sf::Vector2f dir;
+    struct Ray {
+        sf::Vector2<double> dir;
+        double dist;
+        int obj;
+    };
+    void calculateRays(GameLogic &logic, int playerNum);
+    void calculateForce(GameLogic &logic, int playerNum);
+
+    std::list<Ray> rays;
+    sf::Vector2f dir;
 
     float top_wall_y;
     float bottom_wall_y;
