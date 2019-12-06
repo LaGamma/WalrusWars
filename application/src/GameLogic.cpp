@@ -173,6 +173,12 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             fish_list.clear();
             walrus1->spawn(sf::Vector2f(15 * WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
             walrus2->spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
+
+            // balance difficulty curve
+            if (progression == -1) {
+                walrus2->handlePowerUp(1);
+            }
+
         } else {
             sf::Vector2f newVel = walrus1->getVel();
             newVel.x *= -1;
@@ -190,6 +196,11 @@ void GameLogic::handleBoundaryCollision(int walrus, float xpos) {
             fish_list.clear();
             walrus1->spawn(sf::Vector2f(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2));
             walrus2->spawn(sf::Vector2f(WINDOW_WIDTH / 16, WINDOW_HEIGHT / 2));
+
+            // balance difficulty curve
+            if (progression == 1) {
+                walrus1->handlePowerUp(1);
+            }
         } else {
             sf::Vector2f newVel = walrus2->getVel();
             newVel.x *= -1;
@@ -379,6 +390,12 @@ void GameLogic::resetGame() {
     state = playing;
     walrus1->spawn(sf::Vector2f(5 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
     walrus2->spawn(sf::Vector2f(3 * WINDOW_WIDTH / 8, WINDOW_HEIGHT / 2));
+    // balance difficulty curve
+    if (progression == -1) {
+        walrus2->handlePowerUp(1);
+    } else if (progression == 1) {
+        walrus1->handlePowerUp(1);
+    }
 }
 void GameLogic::handleOptionsMenu() {
     state = optionsMenu;
