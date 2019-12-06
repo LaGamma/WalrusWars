@@ -407,6 +407,8 @@ void CameraView::drawPlayerSelectMenu(sf::RenderWindow &window, GameLogic &logic
     sf::RectangleShape player2_portrait_indicator = sf::RectangleShape(sf::Vector2f(325*WINDOW_WIDTH/800, 425*WINDOW_HEIGHT/800));
     player1_portrait_indicator.setTexture(&playerNeutralSelect);
     player2_portrait_indicator.setTexture(&playerNeutralSelect);
+    player1_portrait_indicator.setFillColor(sf::Color::Cyan);
+    player2_portrait_indicator.setFillColor(sf::Color::Cyan);
     player1_portrait_indicator.setPosition(player1_portrait.getPosition());
     player2_portrait_indicator.setPosition(player2_portrait.getPosition());
 
