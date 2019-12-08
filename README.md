@@ -10,6 +10,7 @@ A majestic battle of desperation on a shrinking arctic ice flow in the modern ag
 4. ```cd Release```
 5. ```cmake ..```
 6. ```make```
+7. ```./application```
 
 ![artwork_2](./application/images/menu_title.png)
 
