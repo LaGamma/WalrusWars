@@ -14,7 +14,7 @@ A majestic battle of desperation on a shrinking arctic ice flow in the modern ag
 
 ![artwork_2](./application/images/menu_title.png)
 
-[Software Architecture](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=walruswars#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Femail.wm.edu%2Fuc%3Fid%3D1JHP4jRh6C4aZxVL00ZnhryCHLmA5V09V%26export%3Ddownload) (in progress)
+[Software Architecture](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=walruswars#Uhttps%3A%2F%2Fdrive.google.com%2Fa%2Femail.wm.edu%2Fuc%3Fid%3D1JHP4jRh6C4aZxVL00ZnhryCHLmA5V09V%26export%3Ddownload)
 
 team repo for CS437
 https://drive.google.com/drive/folders/0ABzZGHm_5xqQUk9PVA
