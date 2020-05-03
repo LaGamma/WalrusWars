@@ -1,7 +1,10 @@
 # Walrus Wars
 A majestic battle of desperation on a shrinking arctic ice flow in the modern age of global warming.
 
-## installation instructions:
+## Easy download now available on itch.io!
+https://yushjoshi.itch.io/walrus-wars
+
+## manual installation instructions:
 - Prerequisites must be installed: cmake and SFML
 
 1. ```git clone https://github.com/LaGamma/WalrusWars/```
