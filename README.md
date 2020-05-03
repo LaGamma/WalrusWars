@@ -1,7 +1,7 @@
 # Walrus Wars
 A majestic battle of desperation on a shrinking arctic ice flow in the modern age of global warming.
 
-## Easy download now available on itch.io!
+## Easy download for Windows now available on itch.io!
 https://yushjoshi.itch.io/walrus-wars
 
 ## manual installation instructions:
